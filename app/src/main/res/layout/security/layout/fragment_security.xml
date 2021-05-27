@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/ioa_theme_layouts_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/AuthenticatorTheme">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeListHeadersTextView
+            android:id="@+id/security_text_enabledfactors"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ioa_md_header_height"
+            android:text="@string/ioa_sec_header"
+            style="@style/AuthenticatorListHeaderStyle"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:gravity="start"
+            android:textAlignment="viewStart" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/security_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            tools:listitem="@layout/item_security" />
+    </LinearLayout>
+    
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+        android:id="@+id/security_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/ioa_sec_empty"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+</com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundCoordinatorLayout>

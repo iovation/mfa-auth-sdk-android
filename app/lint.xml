@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+	<issue id="InvalidPackage">
+		<ignore path="**/scprov*.jar" />
+	</issue>
+
+	<issue id="UnusedResources">
+		<ignore regexp="(lk_*)|(ioa_*)" />
+		<ignore path="**/menu/*" />
+		<ignore path="**/layout/*" />
+		<ignore path="**/drawable*/*" />
+	</issue>
+
+	<issue id="ContentDescription">
+		<ignore path="**/layout/*" />
+	</issue>
+
+	<issue id="DefaultLocale">
+		<ignore path="**/aerogear/*" />
+	</issue>
+
+</lint>

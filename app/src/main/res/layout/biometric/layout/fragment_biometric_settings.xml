@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/ioa_theme_layouts_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/authenticatorColorBackground">
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.auth_method.SettingsPanel
+        android:id="@+id/fingerprint_settings_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_panel_settings" />
+</com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundRelativeLayout>

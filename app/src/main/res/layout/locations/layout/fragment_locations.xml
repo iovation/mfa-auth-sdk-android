@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/ioa_theme_layouts_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/locations_toolbar"
+        layout="@layout/toinclude_toolbar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_map_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:contentDescription="@string/ioa_calabash_add_geo_map"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/locations_toolbar"
+        tools:context=".MapsActivity" />
+
+</com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundConstraintLayout>

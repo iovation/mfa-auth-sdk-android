@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/ioa_theme_layouts_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/authenticatorColorBackground">
+
+    <include
+        android:id="@+id/pincode_settings_toolbar"
+        layout="@layout/toinclude_toolbar" />
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.auth_method.SettingsPanel
+        android:id="@+id/pincode_settings_panel"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pincode_settings_toolbar"
+        tools:layout="@layout/fragment_panel_settings" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/checkPinCodeFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pincode_settings_toolbar" />
+</com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundConstraintLayout>

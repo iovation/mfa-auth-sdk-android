@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    tools:parentTag="com.launchkey.android.authenticator.sdk.ui.internal.auth_method.pin_code.PinCodeKey"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.FittingTextView
+    android:id="@+id/pinpadkey_text_number"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="0.65"
+    android:gravity="bottom|center_horizontal"
+    android:textSize="@dimen/lk_pinpadkey_textsize_max"
+    tools:text="#" />
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.FittingTextView
+        android:id="@+id/pinpadkey_text_label"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.35"
+        android:gravity="top|center_horizontal"
+        android:textSize="@dimen/lk_pinpadkey_textsize"
+        tools:text="ABC" />
+
+</merge>

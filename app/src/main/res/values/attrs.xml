@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TextButton">
+        <attr name="srcLeft" format="integer"/>
+        <attr name="textLabel" format="string|reference"/>
+        <attr name="textButton" format="string|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="TextImageButton">
+        <attr name="buttonTextAllCaps" format="boolean|reference"/>
+        <attr name="text" format="string|reference"/>
+        <attr name="textColor" format="color|reference"/>
+        <attr name="textSize" format="dimension|reference"/>
+        <attr name="src" format="integer"/>
+        <attr name="srcPadding" format="dimension|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="PinIndicator">
+        <attr name="colorSet" format="color|reference"/>
+        <attr name="colorUnset" format="color|reference"/>
+        <attr name="numTotal" format="integer|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="FactorIndicator">
+        <attr name="srcPending" format="integer"/>
+        <attr name="srcCompleted" format="integer"/>
+        <attr name="srcError" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="OldLaunchSwitch">
+        <attr name="srcOverlay" format="reference"/>
+        <attr name="heightToWidthRatio" format="float|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="PinCodeKey">
+        <attr name="numberOnly" format="boolean|reference"/>
+        <attr name="numberText" format="string|reference"/>
+        <attr name="labelText" format="string|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="MaxDimensionsFrameLayout">
+        <attr name="mdfl_maxWidth" format="dimension|reference"/>
+        <attr name="mdfl_maxHeight" format="dimension|reference"/>
+        <attr name="mdfl_paddingPercentHorizontal" format="integer|reference"/>
+        <attr name="mdfl_paddingPercentVertical" format="integer|reference"/>
+        <attr name="mdfl_paddingFactorIfLimitedSize" format="float|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="CircularProgressBar">
+        <attr name="cpb_cutoutRatio" format="float|reference"/>
+        <attr name="cpb_startAngleOffset" format="integer|reference"/>
+    </declare-styleable>
+    
+    <declare-styleable name="ExpirationTimer">
+        <attr name="et_size" format="integer">
+            <enum name="small" value="0"/>
+            <enum name="big" value="1"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="AuthenticatorTheme">
+
+        <attr name="authenticatorColorPrimary" format="color"/>
+        <attr name="authenticatorColorPrimaryDark" format="color"/>
+        <attr name="authenticatorColorAccent" format="color"/>
+        <attr name="authenticatorColorBackground" format="color|reference"/>
+        <attr name="authenticatorColorBackgroundOverlay" format="color"/>
+
+        <attr name="authenticatorColorButtonBackground" format="color|reference"/>
+        <attr name="authenticatorColorButtonText" format="color"/>
+
+        <attr name="authenticatorColorNegativeWidgetBackground" format="color|reference"/>
+        <attr name="authenticatorColorNegativeWidgetText" format="color"/>
+
+        <attr name="authenticatorToolbarBackground" format="color|reference"/>
+        <attr name="authenticatorToolbarItems" format="color"/>
+
+        <attr name="authenticatorAuthSliderTrackLight" format="color"/>
+        <attr name="authenticatorAuthSliderTrackDark" format="color"/>
+        <attr name="authenticatorAuthSliderThumbNormal" format="color"/>
+        <attr name="authenticatorAuthSliderThumbPressed" format="color"/>
+
+        <attr name="authenticatorPinPadButtonOverlayColorSelector" format="color|reference"/>
+        <attr name="authenticatorPinPadButtonBackgroundDrawableSelector" format="reference"/>
+
+        <attr name="authenticatorCirclePadHighlightColor" format="color"/>
+        <attr name="authenticatorCirclePadMarksColor" format="color"/>
+
+        <attr name="authenticatorAuthToolbarVisibility" format="integer">
+            <enum name="visible" value="0"/>
+            <enum name="invisible" value="4"/>
+            <enum name="gone" value="8"/>
+        </attr>
+
+        <attr name="authenticatorHeadersVisibility" format="integer">
+            <enum name="visible" value="0"/>
+            <enum name="invisible" value="4"/>
+            <enum name="gone" value="8"/>
+        </attr>
+
+        <attr name="authenticatorSecurityListIconsVisibility" format="integer">
+            <enum name="visible" value="0"/>
+            <enum name="invisible" value="4"/>
+            <enum name="gone" value="8"/>
+        </attr>
+
+        <attr name="authenticatorShowHelpIcons" format="boolean"/>
+
+        <attr name="authenticatorFactorPinIcon" format="reference"/>
+        <attr name="authenticatorFactorCircleIcon" format="reference"/>
+        <attr name="authenticatorFactorBluetoothIcon" format="reference"/>
+        <attr name="authenticatorFactorGeofencingIcon" format="reference"/>
+        <attr name="authenticatorFactorFingerprintIcon" format="reference"/>
+
+        <attr name="authenticatorAuthRequestOngoingImageBluetooth" format="reference"/>
+        <attr name="authenticatorAuthRequestOngoingImageGeofencing" format="reference"/>
+        <attr name="authenticatorAuthRequestOngoingImageFingerprint" format="reference"/>
+
+        <attr name="authenticatorListItemsBackgroundColor" format="color|reference"/>
+        <attr name="authenticatorListItemsTextColor" format="color|reference"/>
+        <attr name="authenticatorMapGeoFenceColor" format="color"/>
+        <attr name="authenticatorEditTextHintColor" format="color"/>
+        <attr name="authenticatorEditTextInputColor" format="color"/>
+        <attr name="authenticatorFactorListIconColor" format="color|reference"/>
+        <attr name="authenticatorSettingsHeadersBackgroundColor" format="color|reference"/>
+        <attr name="authenticatorSettingsHeadersTextColor" format="color"/>
+
+        <!-- 4.6 -->
+        <attr name="authenticatorExpirationTimerBackgroundColor" format="color"/>
+        <attr name="authenticatorExpirationTimerFillColor" format="color"/>
+        <attr name="authenticatorExpirationTimerWarningColor" format="color"/>
+        <attr name="authenticatorResponseDenialReasonNormalColor" format="color"/>
+        <attr name="authenticatorResponseDenialReasonCheckedColor" format="color"/>
+        <attr name="authenticatorResponseButtonBackground" format="color|reference"/>
+        <attr name="authenticatorResponseButtonTextColor" format="color"/>
+        <attr name="authenticatorResponseButtonFillColor" format="color"/>
+        <attr name="authenticatorResponseButtonNegativeBackground" format="color|reference"/>
+        <attr name="authenticatorResponseButtonNegativeTextColor" format="color"/>
+        <attr name="authenticatorResponseButtonNegativeFillColor" format="color"/>
+        <attr name="authenticatorResponseAuthorizedColor" format="color"/>
+        <attr name="authenticatorResponseDeniedColor" format="color"/>
+        <attr name="authenticatorResponseFailedColor" format="color"/>
+        <attr name="authenticatorAuthContentViewColorBackground" format="color"/>
+    </declare-styleable>
+</resources>

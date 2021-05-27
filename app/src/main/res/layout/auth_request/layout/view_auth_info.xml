@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2018. iovation, LLC. All rights reserved.
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="#f1f1f1">
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeAuthContentBgLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/lk_spacing_m"
+        android:accessibilityLiveRegion="assertive"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:padding="@dimen/lk_spacing_m"
+        android:screenReaderFocusable="true"
+        tools:background="#fff">
+
+        <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+            android:id="@+id/auth_info_label_title"
+            style="@style/AuthText.Title"
+            android:layout_marginTop="0dp"
+            tools:text="Auth Request Title" />
+
+        <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+            android:id="@+id/auth_info_label_details"
+            style="@style/AuthText.Subtitle"
+            android:gravity="start"
+            android:text="@string/ioa_ar_info_details"
+            android:textAlignment="viewStart"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+            android:id="@+id/auth_info_text_details"
+            style="@style/AuthText.Body"
+            android:layout_marginTop="0dp"
+            android:gravity="start"
+            android:textAlignment="viewStart"
+            android:visibility="gone"
+            tools:text="Auth Request details shown to the end user. This is sample text."
+            tools:visibility="visible" />
+
+        <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+            android:id="@+id/auth_info_label_timer"
+            style="@style/AuthText.Subtitle"
+            android:gravity="start"
+            android:importantForAccessibility="no"
+            android:text="@string/ioa_ar_info_timer"
+            android:textAlignment="viewStart" />
+
+        <com.launchkey.android.authenticator.sdk.ui.internal.view.ExpirationTimer
+            android:id="@+id/auth_info_timer"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_margin="@dimen/lk_spacing_m"
+            app:et_size="big" />
+
+        <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+            android:id="@+id/auth_info_label_actions"
+            style="@style/AuthText.Subtitle"
+            android:contentDescription="@string/ioa_acc_auth_info_response"
+            android:gravity="start"
+            android:text="@string/ioa_ar_info_actions"
+            android:textAlignment="viewStart" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/lk_spacing_s"
+            android:importantForAccessibility="yes"
+            android:orientation="horizontal">
+
+            <com.launchkey.android.authenticator.sdk.ui.internal.auth_request.DynamicThemeNegativeTimerAuthResponseButton
+                android:id="@+id/auth_info_action_negative"
+                style="@style/NegativeAuthResponseButton" />
+
+            <Space
+                android:layout_width="@dimen/lk_spacing_m"
+                android:layout_height="0dp" />
+
+            <com.launchkey.android.authenticator.sdk.ui.internal.auth_request.DynamicThemePositiveTimerAuthResponseButton
+                android:id="@+id/auth_info_action_positive"
+                style="@style/AuthResponseButton" />
+        </LinearLayout>
+    </com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeAuthContentBgLinearLayout>
+</ScrollView>

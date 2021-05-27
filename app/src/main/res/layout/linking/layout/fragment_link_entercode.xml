@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/ioa_theme_layouts_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeEditText
+        android:id="@+id/link_entercode_code"
+        android:layout_width="@dimen/lk_link_entercode_code_width"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/lk_spacing_xxl"
+        android:gravity="center"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        android:lines="1"
+        android:minLines="1"
+        android:maxLines="1"
+        android:maxLength="@integer/lk_link_code_length"
+        android:inputType="textNoSuggestions|text"
+        android:textSize="@dimen/lk_pair_entercode_code_text_size"
+        android:imeOptions="actionDone"
+        android:hint="@string/ioa_link_entercode_code_hint"
+        style="@style/AuthenticatorLinkingEditText" />
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeButton
+        android:id="@+id/pair_entercode_button_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/lk_pair_entercode_button_text_size"
+        android:text="@string/ioa_link_entercode_button_text"
+        android:paddingTop="@dimen/lk_spacing_m"
+        android:paddingBottom="@dimen/lk_spacing_m"
+        style="@style/AuthenticatorButtonStyle"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        android:paddingStart="@dimen/lk_spacing_l"
+        android:paddingEnd="@dimen/lk_spacing_l" />
+</LinearLayout>

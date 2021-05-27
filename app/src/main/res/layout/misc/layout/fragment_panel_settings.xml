@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeSettingsHeaderLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/lk_backgrounds_base"
+    android:padding="@dimen/ioa_security_method_settingspanel_spacing_outer">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/ioa_security_method_settingspanel_spacing_inner"
+        >
+
+        <TextView
+            android:id="@+id/panel_settings_text_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ioa_misc_settingspanel_default_text"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:layout_gravity="start|center_vertical"
+            />
+
+        <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeNegativeButton
+            android:id="@+id/panel_settings_button_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lk_button_height"
+            android:layout_gravity="end|center_vertical"
+            android:text="@string/ioa_misc_settingspanel_default_button"
+            android:contentDescription="@string/ioa_calabash_sett_factor_remove"
+            style="@style/AuthenticatorNegativeButtonStyle" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="start|center">
+
+            <TextView
+                android:id="@+id/panel_settings_text_verifiedwhen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                tools:text="Check: When required"
+                />
+
+            <TextView
+                android:id="@+id/panel_settings_text_extra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.5"
+                android:textColor="@color/lk_gray_dark"
+                tools:text="Change effective in 1h"
+                />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/panel_settings_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:paddingStart="@dimen/lk_spacing_xxl"
+            android:paddingEnd="0dp"
+            style="@style/AuthenticatorSwitchStyle" />
+    </FrameLayout>
+</com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeSettingsHeaderLinearLayout>

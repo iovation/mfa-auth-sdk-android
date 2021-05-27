@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/ioa_theme_layouts_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="#f1f1f1"
+    tools:parentTag="com.launchkey.android.authenticator.sdk.ui.internal.auth_request.IntRequestViewStep">
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeAuthContentBgGroup
+        android:id="@+id/authLabelAndFrameGroup"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:constraint_referenced_ids="auth_step_frame,authStepLabelProgressGroup,auth_step_label_progress_nums,auth_step_label_title,auth_step_label_progress_method"
+        app:layout_constraintBottom_toBottomOf="@id/auth_step_frame"
+        app:layout_constraintEnd_toEndOf="@id/auth_step_label_title"
+        app:layout_constraintStart_toStartOf="@id/auth_step_label_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+        android:id="@+id/auth_step_label_title"
+        style="@style/AuthText.Title"
+        android:layout_margin="@dimen/lk_spacing_m"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Website Login Request" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/authStepLabelProgressGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="auth_step_label_progress_method,auth_step_label_progress_nums"
+        app:layout_constraintBottom_toBottomOf="@id/auth_step_label_progress_method"
+        app:layout_constraintTop_toTopOf="@id/auth_step_label_progress_method" />
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+        android:id="@+id/auth_step_label_progress_method"
+        style="@style/AuthText.Subtitle"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/lk_spacing_xxs"
+        android:layout_marginEnd="@dimen/lk_spacing_xxs"
+        app:layout_constraintEnd_toStartOf="@id/auth_step_label_progress_nums"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/auth_step_label_title"
+        tools:text="Enter Code" />
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+        android:id="@+id/auth_step_label_progress_nums"
+        style="@style/AuthText.Subtitle"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="@dimen/lk_spacing_xxs"
+        app:layout_constraintBottom_toBottomOf="@id/auth_step_label_progress_method"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/auth_step_label_progress_method"
+        app:layout_constraintTop_toTopOf="@id/auth_step_label_progress_method"
+        tools:text="(Step 1 of 2)" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/auth_step_frame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/lk_spacing_m"
+        app:layout_constraintBottom_toTopOf="@id/auth_step_bottom"
+        app:layout_constraintEnd_toEndOf="@id/auth_step_label_title"
+        app:layout_constraintStart_toStartOf="@+id/auth_step_label_title"
+        app:layout_constraintTop_toBottomOf="@+id/auth_step_label_progress_method"
+        tools:background="#FFF" />
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeAuthContentBgGroup
+        android:id="@+id/authLabelGroup"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:constraint_referenced_ids="auth_step_label_title,auth_step_frame"
+        tools:background="#fff" />
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeAuthContentBgView
+        android:id="@+id/auth_step_bottom"
+        android:layout_width="0dp"
+        android:layout_height="105dp"
+        android:layout_marginVertical="@dimen/lk_spacing_m"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/auth_step_frame"
+        app:layout_constraintStart_toStartOf="@+id/auth_step_frame"
+        tools:background="#000" />
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.auth_request.TimerAuthResponseButton
+        android:id="@+id/auth_step_action_negative"
+        style="@style/NegativeAuthResponseButton"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/lk_spacing_m"
+        app:layout_constraintBottom_toBottomOf="@id/auth_step_bottom"
+        app:layout_constraintEnd_toStartOf="@id/auth_step_timer"
+        app:layout_constraintStart_toStartOf="@id/auth_step_bottom"
+        app:layout_constraintTop_toTopOf="@id/auth_step_bottom" />
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.ExpirationTimer
+        android:id="@+id/auth_step_timer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/auth_step_action_negative"
+        app:layout_constraintEnd_toEndOf="@id/auth_step_bottom"
+        app:layout_constraintStart_toEndOf="@id/auth_step_action_negative"
+        app:layout_constraintTop_toTopOf="@id/auth_step_action_negative" />
+</androidx.constraintlayout.widget.ConstraintLayout>

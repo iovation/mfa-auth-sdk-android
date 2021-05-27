@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/ioa_theme_layouts_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundFrameLayout
+        android:id="@+id/link_frame_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/link_toolbar"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/authenticatorColorBackground" />
+
+    <!-- Static background for the Toolbar to be animated on top of -->
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lk_toolbar_height"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:background="?attr/authenticatorToolbarBackground" />
+
+    <include
+        layout="@layout/toinclude_toolbar"
+        android:id="@+id/link_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lk_toolbar_height"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <public name="private_lk_ui_plural_resources" />
+
+    <plurals name="ioa_misc_autounlink_message_format">
+        <item quantity="one">This authenticator has been disabled and unlinked because %1$d attempt to verify this authentication method failed.</item>
+        <item quantity="other">This authenticator has been disabled and unlinked because %1$d consecutive attempts to verify this authentication method have failed.</item>
+    </plurals>
+
+    <!-- sec > location (geo) -->
+    <plurals name="ioa_sec_geo_add_error_invalidname_message_format">
+        <item quantity="one">Please choose a name for this location that is at least %1$d character in length.</item>
+        <item quantity="other">Please choose a name for this location that is at least %1$d characters in length.</item>
+    </plurals>
+
+    <!-- sec > bluetooth proximity (bp) -->
+    <plurals name="ioa_sec_bp_add_error_invalidname_message_format">
+        <item quantity="one">The Wearable name must be at least %1$d character. Please modify the name, and then try again.</item>
+        <item quantity="other">The Wearable name must be at least %1$d characters. Please modify the name, and then try again.</item>
+    </plurals>
+
+    <!-- auth request (ar) -->
+    <!-- new auth flow -->
+    <plurals name="ioa_ar_error_result_poli_amount_message_format">
+        <item quantity="one">To authorize this request in the future, this authenticator must have at least %1$d additional method of authentication enabled.</item>
+        <item quantity="other">To authorize this request in the future, this authenticator must have at least %1$d additional methods of authentication enabled.</item>
+    </plurals>
+
+    <!-- timestamps -->
+    <plurals name="ioa_time_ago_long_seconds">
+        <item quantity="one">%1$d second</item>
+        <item quantity="other">%1$d seconds</item>
+    </plurals>
+    <plurals name="ioa_time_ago_long_minute">
+        <item quantity="one">about %1$d minute</item>
+        <item quantity="other">about %1$d minutes</item>
+    </plurals>
+    <plurals name="ioa_time_ago_long_minutes">
+        <item quantity="one">%1$d minute</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
+    <plurals name="ioa_time_ago_long_hours">
+        <item quantity="one">%1$d hour</item>
+        <item quantity="other">%1$d hours</item>
+    </plurals>
+    <plurals name="ioa_time_ago_long_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <plurals name="ioa_time_ago_long_weeks">
+        <item quantity="one">%1$d week</item>
+        <item quantity="other">%1$d weeks</item>
+    </plurals>
+    <plurals name="ioa_time_ago_long_months">
+        <item quantity="one">%1$d month</item>
+        <item quantity="other">%1$d months</item>
+    </plurals>
+    <plurals name="ioa_time_ago_long_years">
+        <item quantity="one">%1$d year</item>
+        <item quantity="other">%1$d years</item>
+    </plurals>
+
+    <plurals name="ioa_misc_autounlink_warning_title_format">
+        <item quantity="one">Warning: %1$d Attempt Remains</item>
+        <item quantity="other">Warning: %1$d Attempts Remain</item>
+    </plurals>
+
+    <plurals name="ioa_misc_autounlink_warning_message_format">
+        <item quantity="one">Failing this authentication method once more will disable and unlink this authenticator.</item>
+        <item quantity="other">Failing this authentication method %1$d more consecutive times will disable and unlink this authenticator.</item>
+    </plurals>
+</resources>

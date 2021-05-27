@@ -1,0 +1,3 @@
+[submodule "android-internal-tools"]
+	path = android-internal-tools
+	url = ssh://git@source.iovation.com:7999/c3/android-internal-tools.git

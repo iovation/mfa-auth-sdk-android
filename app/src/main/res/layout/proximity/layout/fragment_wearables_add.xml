@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/ioa_theme_layouts_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/authenticatorColorBackground"
+    tools:theme="@style/AuthenticatorTheme">
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeSettingsHeaderFrameLayout
+        android:id="@+id/proximity_add_filter_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lk_backgrounds_base"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/ioa_md_header_height"
+            android:layout_gravity="start|center_vertical"
+            style="@style/AuthenticatorListHeaderNoBgStyle"
+            android:text="@string/ioa_sec_bp_add_switch_includeunnameddevices" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/proximity_add_filter_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            style="@style/AuthenticatorSwitchStyle"
+            android:clickable="false"
+            android:paddingStart="@dimen/lk_spacing_m"
+            android:paddingEnd="@dimen/lk_spacing_m" />
+    </com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeSettingsHeaderFrameLayout>
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+        android:id="@+id/proximity_add_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/lk_spacing_l"
+        android:gravity="center"
+        android:text="@string/ioa_sec_bp_add_empty"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:visibility="invisible" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/proximity_add_swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/proximity_add_filter_layout">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/wearables_add_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fadeScrollbars="false"
+            tools:listitem="@layout/item_bluetooth_device_discover" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundRelativeLayout>

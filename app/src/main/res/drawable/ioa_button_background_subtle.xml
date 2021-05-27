@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2017. iovation, LLC. All rights reserved.
+  -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:drawable="@drawable/ioa_button_background_subtle_pressed"
+    android:state_pressed="true"/>
+
+<item
+    android:drawable="@drawable/ioa_button_background_subtle_normal"
+    android:state_pressed="false"/>
+</selector>

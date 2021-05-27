@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2018. iovation, LLC. All rights reserved.
+  -->
+
+<com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeSettingsHeaderLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/ioa_security_method_settingspanel_spacing_outer"
+    android:background="@color/lk_backgrounds_base">
+
+    <FrameLayout
+        android:id="@+id/toinclude_method_addcheck_header_layout_upper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="@dimen/ioa_security_method_settingspanel_spacing_inner">
+
+        <TextView
+            android:id="@+id/toinclude_method_addcheck_header_text_topleft"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start|center_vertical"
+            android:textAlignment="viewStart"
+            android:textSize="@dimen/ioa_security_method_settingspanel_text"
+            tools:text="@string/ioa_sec_panel_verify_whenrequired" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/toinclude_method_addcheck_header_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/ioa_security_method_settingspanel_switch_height"
+            android:layout_gravity="end"
+            android:checked="true"
+            style="@style/AuthenticatorSwitchStyle" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/toinclude_method_addcheck_header_text_bottomleft"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/ioa_security_method_settingspanel_text"
+            tools:text="@string/ioa_sec_pin_check_enter" />
+
+        <com.launchkey.android.authenticator.sdk.ui.internal.view.FittingTextView
+            android:id="@+id/toinclude_method_addcheck_header_text_bottomright"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="70"
+            android:gravity="end"
+            android:textAlignment="viewEnd"
+            tools:text="\u25CF\u25CF\u25CF\u25CF1"
+            style="@style/PinCodeInput" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/to_include_method_addcheck_header_requirements_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:listitem="@layout/item_pin_code_requirement" />
+</com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeSettingsHeaderLinearLayout>

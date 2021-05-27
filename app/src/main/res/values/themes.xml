@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2016. iovation, LLC. All rights reserved.
+  -->
+
+<resources>
+    <style name="AuthenticatorTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="authenticatorColorPrimary">@color/lk_wl_default_primary</item>
+        <item name="authenticatorColorPrimaryDark">@color/lk_wl_default_primaryDark</item>
+        <item name="authenticatorColorAccent">@color/lk_wl_default_accent</item>
+        <item name="authenticatorColorBackground">@color/lk_wl_default_backgrounds</item>
+        <item name="authenticatorColorBackgroundOverlay">@color/lk_wl_default_backgrounds_overlay</item>
+
+        <item name="authenticatorColorButtonText">@color/lk_gray_dark</item>
+        <item name="authenticatorColorButtonBackground">?attr/authenticatorColorAccent</item>
+        <item name="authenticatorColorNegativeWidgetText">?attr/authenticatorColorButtonText</item>
+        <item name="authenticatorColorNegativeWidgetBackground">?attr/authenticatorColorButtonBackground</item>
+
+        <!-- standard colors will be defined by the sdk flags for AppCompat elements -->
+        <item name="colorPrimary">?attr/authenticatorColorPrimary</item>
+        <item name="colorPrimaryDark">?attr/authenticatorColorPrimaryDark</item>
+        <item name="colorAccent">?attr/authenticatorColorAccent</item>
+        <item name="colorButtonNormal">?attr/authenticatorColorButtonBackground</item>
+        <item name="alertDialogTheme">@style/AuthenticatorDialogStyle</item>
+
+        <item name="authenticatorToolbarBackground">?attr/authenticatorColorPrimary</item>
+        <item name="authenticatorToolbarItems">@android:color/white</item>
+        <item name="actionMenuTextColor">?attr/authenticatorToolbarItems</item>
+
+        <item name="authenticatorAuthSliderTrackLight">#fcfcfc</item>
+        <item name="authenticatorAuthSliderTrackDark">?attr/colorPrimaryDark</item>
+        <item name="authenticatorAuthSliderThumbNormal">#fcfcfc</item>
+        <item name="authenticatorAuthSliderThumbPressed">?attr/colorPrimary</item>
+
+        <item name="authenticatorAuthToolbarVisibility">gone</item>
+        <item name="authenticatorHeadersVisibility">visible</item>
+        <item name="authenticatorSecurityListIconsVisibility">visible</item>
+        <item name="authenticatorShowHelpIcons">true</item>
+
+        <item name="authenticatorPinPadButtonOverlayColorSelector">@color/default_pinpad_button_overlay</item>
+        <item name="authenticatorPinPadButtonBackgroundDrawableSelector">@drawable/lk_button_pinpad_background</item>
+
+        <item name="authenticatorCirclePadHighlightColor">@color/lk_wl_default_accent</item>
+        <item name="authenticatorCirclePadMarksColor">@color/lk_gray_dark</item>
+
+        <item name="authenticatorFactorPinIcon">@drawable/ic_dialpad_black_24dp</item>
+        <item name="authenticatorFactorCircleIcon">@drawable/ic_settings_backup_restore_black_24dp</item>
+        <item name="authenticatorFactorBluetoothIcon">@drawable/ic_bluetooth_black_24dp</item>
+        <item name="authenticatorFactorGeofencingIcon">@drawable/ic_place_black_24dp</item>
+        <item name="authenticatorFactorFingerprintIcon">@drawable/ic_fingerprint_black_24dp</item>
+
+        <item name="authenticatorAuthRequestOngoingImageBluetooth">@drawable/ic_bluetooth_searching_black_512px</item>
+        <item name="authenticatorAuthRequestOngoingImageGeofencing">@drawable/ic_location_on_black_512px</item>
+        <item name="authenticatorAuthRequestOngoingImageFingerprint">@drawable/ic_fingerprint_black_512px</item>
+
+        <item name="authenticatorMapGeoFenceColor">@color/lk_wl_default_accent</item>
+        <item name="authenticatorEditTextHintColor">@color/lk_gray_light</item>
+        <item name="authenticatorEditTextInputColor">@color/lk_gray_dark</item>
+        <item name="authenticatorFactorListIconColor">@color/lk_wl_default_list_item_icons</item>
+        <item name="authenticatorSettingsHeadersBackgroundColor">@color/lk_backgrounds_base</item>
+        <item name="authenticatorSettingsHeadersTextColor">@color/lk_gray_dark</item>
+        <item name="authenticatorListItemsBackgroundColor">@color/lk_backgrounds_touchable</item>
+        <item name="authenticatorListItemsTextColor">@color/lk_gray</item>
+
+        <!-- 4.6 -->
+        <item name="authenticatorExpirationTimerBackgroundColor">@color/ioa_ar_expirationtimer_bg_default</item>
+        <item name="authenticatorExpirationTimerFillColor">@color/ioa_ar_expirationtimer_fill_default</item>
+        <item name="authenticatorExpirationTimerWarningColor">@color/ioa_ar_expirationtimer_warn_default</item>
+        <item name="authenticatorResponseDenialReasonNormalColor">@color/ioa_ar_denialoptions_normal</item>
+        <item name="authenticatorResponseDenialReasonCheckedColor">@color/ioa_ar_denialoptions_checked</item>
+        <item name="authenticatorResponseButtonBackground">@drawable/ioa_responsebutton_bg_positive</item>
+        <item name="authenticatorResponseButtonTextColor">@android:color/white</item>
+        <item name="authenticatorResponseButtonFillColor">@color/ioa_ar_arb_positive_fill</item>
+        <item name="authenticatorResponseButtonNegativeBackground">@drawable/ioa_responsebutton_bg_negative</item>
+        <item name="authenticatorResponseButtonNegativeTextColor">@android:color/white</item>
+        <item name="authenticatorResponseButtonNegativeFillColor">@color/ioa_ar_arb_negative_fill</item>
+        <item name="authenticatorResponseAuthorizedColor">@color/ioa_ar_authorized</item>
+        <item name="authenticatorResponseDeniedColor">@color/ioa_ar_denied</item>
+        <item name="authenticatorResponseFailedColor">@color/ioa_ar_failed</item>
+        <item name="authenticatorAuthContentViewColorBackground">@color/ioa_ar_contentview_bg</item>
+    </style>
+
+    <!-- theme -->
+    <item name="ioa_theme_layouts_root" type="id" />
+</resources>

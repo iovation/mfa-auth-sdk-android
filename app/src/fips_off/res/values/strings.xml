@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ioa_sec_pin_add_length_too_short_requirement">PIN Code must be 4 characters minimum</string>
+</resources>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="lk_spacing_xxs">3dp</dimen>
+    <dimen name="lk_spacing_xs">5dp</dimen>
+    <dimen name="lk_spacing_s">10dp</dimen>
+    <dimen name="lk_spacing_m">15dp</dimen>
+    <dimen name="lk_spacing_l">22dp</dimen>
+    <dimen name="lk_spacing_xl">26dp</dimen>
+    <dimen name="lk_spacing_xxl">32dp</dimen>
+
+    <dimen name="lk_toolbar_height">58dp</dimen>
+
+    <dimen name="lk_textbutton_stroke">1dp</dimen>
+    <dimen name="lk_textbutton_spacing">10dp</dimen>
+
+    <dimen name="lk_link_entercode_code_width">280dp</dimen>
+    <dimen name="lk_pair_entercode_code_text_size">38sp</dimen>
+    <dimen name="lk_pair_entercode_button_text_size">17sp</dimen>
+
+    <dimen name="lk_pin_thick_outer_ring">1dp</dimen>
+
+    <!-- text -->
+
+    <!-- textbutton -->
+
+    <!-- custom toast -->
+    <dimen name="lk_toast_padding">10dp</dimen>
+
+    <!-- misc -->
+
+    <dimen name="lk_custom_button_textsize">11sp</dimen>
+    <dimen name="lk_custom_button_white_textsize">15sp</dimen>
+    <dimen name="lk_custom_button_corner">4dp</dimen>
+
+    <dimen name="lk_custom_button_blue_textsize">11sp</dimen>
+
+    <dimen name="lk_pinpadkey_textsize">22sp</dimen>
+    <dimen name="lk_pinpadkey_textsize_max">34sp</dimen>
+    <dimen name="lk_pad_error_height">45dp</dimen>
+
+    <dimen name="lk_launch_waiting_icon_dimension">130dp</dimen>
+    <dimen name="lk_launch_waiting_spinner_dimension">180dp</dimen>
+
+    <dimen name="lk_launchswitch_width_max">100dp</dimen>
+
+    <dimen name="lk_security_switch_maxwidth">400dp</dimen>
+    <dimen name="lk_security_switch_maxheight">290dp</dimen>
+    <dimen name="lk_security_factor_pinpad_maxwidth">260dp</dimen>
+    <dimen name="lk_security_factor_pinpad_maxheight">600dp</dimen>
+    <dimen name="lk_security_factor_circlepad_maxwidth">300dp</dimen>
+
+    <!--devices-->
+    <dimen name="lk_devices_item_height">55dp</dimen>
+    <dimen name="lk_devices_item_button_width">110dp</dimen>
+    <dimen name="lk_devices_item_button_height">40dp</dimen>
+    <dimen name="lk_devices_item_button_margin_horizontal">20dp</dimen>
+    <dimen name="lk_devices_item_button_margin_vertical">14dp</dimen>
+
+    <!--custom style-->
+    <dimen name="lk_custom_button_unlink_text_size">15sp</dimen>
+
+    <!--logs-->
+
+    <!--authorizations-->
+    <!-- to avoid clash with possible nav drawer dragging -->
+    <dimen name="lk_authorizations_item_drag_margin_left">20dp</dimen>
+    <!-- make sure icon dimen = item height -->
+    <dimen name="lk_authorizations_item_icon_spacing">15dp</dimen>
+    <dimen name="lk_authorizations_item_icon_dimension">45dp</dimen>
+    <dimen name="lk_authorizations_item_height">96dp</dimen>
+    <dimen name="lk_authorizations_item_title_size">17sp</dimen>
+    <dimen name="lk_authorizations_item_subtitle_size">15sp</dimen>
+    <dimen name="lk_authorizations_item_time_size">15sp</dimen>
+
+    <dimen name="lk_spacing_activity">16dp</dimen>
+    <dimen name="lk_spacing_drawable">10dp</dimen>
+
+    <dimen name="lk_button_height">38dp</dimen>
+
+    <dimen name="lk_security_list_avail_item_spacing_outter">10sp</dimen>
+    <dimen name="lk_security_list_avail_item_spacing_inner">6sp</dimen>
+    <dimen name="lk_security_list_avail_item_height">70dp</dimen>
+    <dimen name="lk_security_list_avail_item_name_size">16sp</dimen>
+    <dimen name="lk_security_list_avail_item_desc_size">13sp</dimen>
+    <dimen name="lk_security_list_avail_item_icon_size">40sp</dimen>
+
+    <dimen name="ioa_md_header_height">48dp</dimen>
+    <dimen name="ioa_md_header_text">14sp</dimen>
+    <dimen name="ioa_md_spacing_vertical">12dp</dimen>
+    <dimen name="ioa_md_spacing_left">24dp</dimen>
+
+    <dimen name="ioa_security_method_settingspanel_text">14sp</dimen>
+    <dimen name="ioa_security_method_settingspanel_spacing_outer">20sp</dimen>
+    <dimen name="ioa_security_method_settingspanel_spacing_outer_balance">30sp</dimen>
+    <dimen name="ioa_security_method_settingspanel_spacing_inner">8sp</dimen>
+    <dimen name="ioa_security_method_settingspanel_switch_height">35dp</dimen>
+    <dimen name="ioa_auth_short_timeranddeny_height">90dp</dimen>
+
+    <dimen name="lk_session_delete_icon_size">48dp</dimen>
+</resources>

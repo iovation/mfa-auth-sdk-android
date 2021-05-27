@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/ioa_theme_layouts_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/panel_header"
+        layout="@layout/toinclude_method_addcheck_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/toinclude_method_addcheck_header" />
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.auth_method.circle_code.CircleCodeView
+        android:id="@+id/circle_pad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/ioa_sec_cir_content_description"
+        android:paddingStart="60dp"
+        android:paddingEnd="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/panel_header"
+        app:layout_constraintWidth_max="@dimen/lk_security_factor_circlepad_maxwidth" />
+</androidx.constraintlayout.widget.ConstraintLayout>

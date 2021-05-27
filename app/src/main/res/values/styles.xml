@@ -1,0 +1,103 @@
+<resources>
+    <style name="AuthenticatorLinkingEditText" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/lk_wl_default_primary</item>
+        <item name="colorPrimaryDark">@color/lk_wl_default_primaryDark</item>
+        <item name="colorAccent">@color/lk_wl_default_accent</item>
+    </style>
+    <style name="AuthenticatorAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/lk_wl_default_accent</item>
+        <item name="android:layoutDirection">rtl</item>
+    </style>
+
+    <style name="PinCodeInput" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:maxLength">25</item>
+        <item name="android:ellipsize">none</item>
+        <item name="android:lines">1</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="AuthText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/lk_spacing_s</item>
+        <item name="android:layout_marginBottom">@dimen/lk_spacing_s</item>
+    </style>
+
+    <style name="AuthText.Title">
+        <item name="android:layout_marginTop">@dimen/lk_spacing_m</item>
+        <item name="android:layout_marginBottom">@dimen/lk_spacing_m</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="AuthText.Subtitle">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AuthText.Body">
+        <item name="android:textSize">11sp</item>
+        <item name="android:lineSpacingExtra">8dp</item>
+    </style>
+
+    <style name="AuthResponseButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">70dp</item>
+        <item name="android:layout_weight">50</item>
+        <item name="android:background">@drawable/ioa_responsebutton_bg_positive</item>
+    </style>
+
+    <style name="NegativeAuthResponseButton" parent="AuthResponseButton">
+        <item name="android:background">@drawable/ioa_responsebutton_bg_negative</item>
+    </style>
+    
+    <style name="ShapeAppearanceOverlay.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="AuthenticatorDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">?attr/authenticatorColorAccent</item>
+    </style>
+
+    <style name="AuthenticatorButtonStyle" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">?attr/authenticatorColorButtonBackground</item>
+        <item name="android:textColor">?attr/authenticatorColorButtonText</item>
+        <item name="android:padding">@dimen/lk_spacing_s</item>
+    </style>
+
+    <style name="AuthenticatorNegativeButtonStyle" parent="AuthenticatorButtonStyle">
+        <item name="colorButtonNormal">?attr/authenticatorColorNegativeWidgetBackground</item>
+        <item name="android:textColor">?attr/authenticatorColorNegativeWidgetText</item>
+    </style>
+
+    <style name="AuthenticatorSwitchStyle" parent="Base.ThemeOverlay.AppCompat.Dark">
+        <item name="colorControlActivated">?attr/authenticatorColorAccent</item>
+        <item name="colorControlHighlight">?attr/authenticatorColorAccent</item>
+        <item name="colorControlNormal">?attr/authenticatorColorPrimaryDark</item>
+        <item name="android:colorForeground">?attr/authenticatorColorPrimaryDark</item>
+        <item name="colorSwitchThumbNormal">?attr/authenticatorColorPrimaryDark</item>
+    </style>
+
+    <style name="AuthenticatorListHeaderStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/ioa_md_header_height</item>
+        <item name="android:paddingStart">@dimen/ioa_md_spacing_left</item>
+        <item name="android:paddingTop">@dimen/ioa_md_spacing_vertical</item>
+        <item name="android:paddingBottom">@dimen/ioa_md_spacing_vertical</item>
+        <item name="android:background">@color/lk_wl_default_backgrounds</item>
+        <item name="android:textSize">@dimen/ioa_md_header_text</item>
+        <item name="android:textColor">@color/lk_gray_med</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:lines">1</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:visibility">?attr/authenticatorHeadersVisibility</item>
+    </style>
+
+    <style name="AuthenticatorListHeaderNoBgStyle" parent="AuthenticatorListHeaderStyle">
+        <item name="android:background">@color/transparent</item>
+    </style>
+</resources>

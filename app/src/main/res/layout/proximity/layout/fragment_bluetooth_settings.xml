@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/ioa_theme_layouts_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/authenticatorColorBackground"
+    tools:theme="@style/AuthenticatorTheme">
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.auth_method.SettingsPanel
+        android:id="@+id/bluetooth_settings_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_panel_settings" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_below="@id/bluetooth_settings_panel"
+        android:layout_alignParentBottom="true">
+
+        <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeListHeadersTextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ioa_md_header_height"
+            android:text="@string/ioa_sec_bp_sett_header"
+            style="@style/AuthenticatorListHeaderStyle" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bluetooth_settings_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_bluetooth_device" />
+    </LinearLayout>
+</com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundRelativeLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2018. iovation, LLC. All rights reserved.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/lk_spacing_s"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeFittingTextView
+        android:id="@+id/view_auth_method_pincode_viewer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lk_pad_error_height"
+        android:gravity="center_horizontal|top"
+        android:textColor="@android:color/black"
+        android:alpha="0.6"
+        style="@style/TextAppearance.AppCompat.Large"
+        tools:text="●●●●●●●●●" />
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.auth_method.pin_code.PinCodeView
+        android:id="@+id/view_auth_method_pincode_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <public name="private_lk_ui_string_resources" />
+
+    <!-- generic -->
+    <string name="ioa_generic_ok">OK</string>
+    <string name="ioa_generic_done">Done</string>
+    <string name="ioa_generic_yes">Yes</string>
+    <string name="ioa_generic_cancel">Cancel</string>
+    <string name="ioa_generic_save">Save</string>
+    <string name="ioa_generic_help">Help</string>
+    <string name="ioa_generic_warning">Warning</string>
+
+    <!-- linking (link) -->
+    <string name="ioa_link_entercode_title">Enter Code</string>
+    <string name="ioa_link_entercode_code_hint">ABCD123</string>
+    <string name="ioa_link_entercode_button_text">TAP TO FINISH</string>
+    <string name="ioa_link_entercode_info">Use the keyboard to enter the 7-character code to link your device.</string>
+    <string name="ioa_link_entercode_error_illegalcharacters">Only letters and numbers are accepted.</string>
+    <string name="ioa_link_scancode_title">Scan Code</string>
+    <string name="ioa_link_scancode_info">Use the camera to scan the QR code to link your device.</string>
+    <string name="ioa_link_scancode_error_retry">Could not scan the code, try again</string>
+    <string name="ioa_link_scancode_error_permissiondenied">In order to scan the QR code to link the device, the application needs access to the camera. Go to the application settings to grant access to the camera.</string>
+    <string name="ioa_link_error_title">Linking Error</string>
+    <string name="ioa_link_error_invalid_scan">The QR code you scanned is invalid or expired. Please scan a valid QR code and try again.</string>
+    <string name="ioa_link_error_invalid_enter">The code you entered is invalid or expired. Please enter a valid code and try again.</string>
+    <string name="ioa_link_dialog_setname_title">Set Device Name</string>
+    <string name="ioa_link_dialog_setname_hint">Device name</string>
+    <string name="ioa_link_dialog_linking_verifyingcode_message">Please wait while setup of this device is confirmed&#8230;</string>
+    <string name="ioa_link_linked">This device has been linked and set up successfully</string>
+
+    <!-- security (sec) -->
+    <string name="ioa_sec_title">Auth Methods</string>
+    <string name="ioa_sec_menu_add">Add Factor</string>
+    <string name="ioa_sec_loading">Loading&#8230;</string>
+    <string name="ioa_sec_header">Enabled</string>
+    <string name="ioa_sec_empty">You have no additional auth methods enabled</string>
+    <string name="ioa_sec_factor_pin">PIN Code</string>
+    <string name="ioa_sec_factor_pin_description">Verify a code only you know</string>
+    <string name="ioa_sec_factor_cir">Circle Code</string>
+    <string name="ioa_sec_factor_cir_description">Verify a pattern of movements</string>
+    <string name="ioa_sec_factor_geo">Locations</string>
+    <string name="ioa_sec_factor_geo_description">Verify this device\'s location</string>
+    <string name="ioa_sec_factor_bp">Wearables</string>
+    <string name="ioa_sec_factor_bp_description">Verify proximity of Wearable devices</string>
+    <string name="ioa_sec_factor_fs">Biometric Scan</string>
+    <string name="ioa_sec_factor_fs_description">Verify biometrics</string>
+    <string name="ioa_sec_dialog_add_title">Available</string>
+    <string name="ioa_sec_dialog_geo_firstadded_title">Warning: Location Pending Activation</string>
+    <string name="ioa_sec_dialog_geo_firstadded_message_format">Your location has been added, and is pending activation. For security purposes, this new location will not become active for %1$s</string>
+    <string name="ioa_sec_dialog_bp_firstadded_title">Warning: Wearable Device Pending Activation</string>
+    <string name="ioa_sec_dialog_bp_firstadded_message_format">Your Wearable device has been added, and is pending activation. For security purposes, this new Wearable factor will not become active for %1$s</string>
+    <string name="ioa_sec_error_allfactorsenabled_title">None Available</string>
+    <string name="ioa_sec_error_allfactorsenabled_message">All available security methods have already been enabled on this device.</string>
+    <string name="ioa_sec_error_pendingrequest">No changes can be made while you have a pending authentication request.</string>
+    <string name="ioa_sec_error_unlinkedunallowed">No changes can be made while your authenticator is unlinked.</string>
+    <string name="ioa_sec_panel_remove_single">REMOVE</string>
+    <string name="ioa_sec_panel_verify_extra_format">Change effective in %1$s</string>
+    <string name="ioa_sec_panel_verify_always">Check: Always</string>
+    <string name="ioa_sec_panel_verify_whenrequired">Check: When required</string>
+    <string name="ioa_sec_currentlychecking_extra_format">(for %1$s)</string>
+    <string name="ioa_sec_dialog_permissiondenied_title">Needed permission was denied</string>
+    <string name="ioa_sec_dialog_permissiondenied_button_positive">GO TO SETTINGS</string>
+    <string name="ioa_sec_dialog_permissiondenied_button_neutral">NOT NOW</string>
+    <string name="ioa_sec_passivefactor_active">Active</string>
+    <string name="ioa_sec_passivefactor_activein">Active in %1$s</string>
+    <string name="ioa_sec_passivefactor_removed">Removed</string>
+    <string name="ioa_sec_passivefactor_removedin">Removed in %1$s</string>
+    <string name="ioa_sec_update_btconnectionrequired_title">WARNING: Wearable Device Incompatibility</string>
+
+    <!-- sec > pin (pin) -->
+    <string name="ioa_sec_pin_add_title">Add PIN Code</string>
+    <string name="ioa_sec_pin_sett_title">PIN Code Settings</string>
+    <string name="ioa_sec_pin_check_title">Verifying PIN Code</string>
+    <string name="ioa_sec_pin_check_enter">Enter PIN Code</string>
+    <string name="ioa_sec_pin_check_toverify">Enter PIN to verify</string>
+    <string name="ioa_sec_pin_check_toremove">Enter PIN to disable</string>
+    <string name="ioa_sec_pin_check_error_wrong">Incorrect PIN. Please try again.</string>
+    <string name="ioa_sec_pin_add_error_alreadyset">PIN Code has already been set.</string>
+    <string name="ioa_sec_pin_add_length_too_short_format">PIN Code must be at least %1$s digits</string>
+    <string name="ioa_sec_pin_add_length_too_long_format">PIN Code must be at most %1$s digits</string>
+    <string name="ioa_sec_pin_help_title">About PIN Code</string>
+    <string name="ioa_sec_pin_help_message">Similar to a standard device PIN lock, the PIN Code verifies a sequence of numbers chosen by you.</string>
+
+    <!-- sec > circle (cir) -->
+    <string name="ioa_sec_cir_add_title">Add Circle Code</string>
+    <string name="ioa_sec_cir_sett_title">Circle Code Settings</string>
+    <string name="ioa_sec_cir_check_title">Verifying Circle Code</string>
+    <string name="ioa_sec_cir_check_enter">Enter Circle Code</string>
+    <string name="ioa_sec_cir_check_toverify">Enter Circle Code to verify</string>
+    <string name="ioa_sec_cir_check_toremove">Enter Circle Code to disable</string>
+    <string name="ioa_sec_cir_content_description">Circle Code</string>
+    <string name="ioa_sec_cir_octant_content_description">Position %d</string>
+    <string name="ioa_sec_cir_add_error_alreadyset">Circle Code has already been set.</string>
+    <string name="ioa_sec_cir_check_error_wrong">Wrong Circle Code. Please try again.</string>
+    <string name="ioa_sec_cir_add_repeat">Repeat code to confirm</string>
+    <string name="ioa_sec_cir_add_error_too_short">Code too short. Please use longer pattern.</string>
+    <string name="ioa_sec_cir_add_error_too_long">Code too long. Please use shorter pattern.</string>
+    <string name="ioa_sec_cir_add_error_mismatch">Codes don\'t match. Please start over.</string>
+    <string name="ioa_sec_cir_help_title">About Circle Code</string>
+    <string name="ioa_sec_cir_help_message">Similar to a digital combination lock, the Circle Code verifies a sequence of movements around a circular path.</string>
+
+    <!-- sec > Locations (geo) -->
+    <string name="ioa_sec_geo_title">Add Location</string>
+    <string name="ioa_sec_geo_sett_title">Locations Settings</string>
+    <string name="ioa_sec_geo_menu_add">Add Location</string>
+    <string name="ioa_sec_geo_help_title">About Locations</string>
+    <string name="ioa_sec_geo_help_message">Locations works passively in the background during authentication requests to ensure this device is physically located within one or more geographic zones defined by you.</string>
+    <string name="ioa_sec_geo_add_dialog_setname_title">Name this location</string>
+    <string name="ioa_sec_geo_add_dialog_setname_hint">Location name</string>
+    <string name="ioa_sec_geo_add_error_nogeofence_title">Wait</string>
+    <string name="ioa_sec_geo_add_error_nogeofence_message">Please place a location by tapping on the map and adjusting the size of the location with your fingers.</string>
+    <string name="ioa_sec_geo_add_error_usedname_message">Name already taken</string>
+    <string name="ioa_sec_geo_add_error_no_map_provider">Neither map provider (OSM or GSM) was provided by the application, cannot add a location</string>
+    <string name="ioa_sec_geo_add_marker">Fence location</string>
+    <string name="ioa_sec_geo_add_dialog_adding">Adding location</string>
+    <string name="ioa_sec_geo_sett_header">My Locations</string>
+    <string name="ioa_sec_geo_sett_loading">Loading locations&#8230;</string>
+    <string name="ioa_sec_geo_sett_panel_remove_text">Remove:</string>
+    <string name="ioa_sec_geo_sett_panel_remove_button">REMOVE ALL</string>
+    <string name="ioa_sec_geo_sett_dialog_undoremove_single_title">Confirm Cancel</string>
+    <string name="ioa_sec_geo_sett_dialog_remove_single_title">Confirm Removal</string>
+    <string name="ioa_sec_geo_sett_dialog_remove_single_message_format">Please confirm you want to remove the location named \'%1$s\' from this device.</string>
+    <string name="ioa_sec_geo_sett_dialog_remove_all_title">Confirm Removal</string>
+    <string name="ioa_sec_geo_sett_dialog_remove_all_messsage">Please confirm you want to remove ALL locations enabled on this device.</string>
+    <string name="ioa_sec_geo_sett_dialog_undoremoval_message_format">Do you want to undo the removal of the location named \'%1$s\'?</string>
+    <string name="ioa_sec_geo_sett_dialog_enabling_geofence">Enabling Locations</string>
+    <string name="ioa_sec_geo_sett_dialog_disabling_geofence">Disabling Locations</string>
+
+    <!-- sec > Wearable (bp) -->
+    <string name="ioa_sec_bp_title">Add Wearable</string>
+    <string name="ioa_sec_bp_sett_title">Wearables Settings</string>
+    <string name="ioa_sec_bp_menu_add">Add device</string>
+    <string name="ioa_sec_bp_help_title">About Wearables</string>
+    <string name="ioa_sec_bp_help_message">Wearables work in the background during auth requests to verify that the Wearable devices you specify are connected and near to this device. BLE devices may require Location services.</string>
+    <string name="ioa_sec_bp_add_searching">Searching for compatible Wearable devices&#8230;</string>
+    <string name="ioa_sec_bp_add_empty">No compatible Wearable devices found.</string>
+    <string name="ioa_sec_bp_add_switch_includeunnameddevices">Include unnamed devices</string>
+    <string name="ioa_sec_bp_add_dialog_setname_title">Name this Wearable</string>
+    <string name="ioa_sec_bp_add_dialog_setname_hint">Wearable</string>
+    <string name="ioa_sec_bp_add_error_bluetoothdisabled_title">@string/ioa_generic_warning</string>
+    <string name="ioa_sec_bp_add_error_bluetoothdisabled_message">This feature requires Bluetooth, but you currently have Bluetooth disabled on this device. Please turn on Bluetooth to ensure proper function.</string>
+    <string name="ioa_sec_bp_add_error_usedid_message">Wearables already added as a factor.</string>
+    <string name="ioa_sec_bp_add_error_usedname_message">Name already taken</string>
+    <string name="ioa_sec_bp_add_dialog_adding">Adding Wearable</string>
+    <string name="ioa_sec_bp_sett_header">My Wearables</string>
+    <string name="ioa_sec_bp_sett_loading">Loading devices&#8230;</string>
+    <string name="ioa_sec_bp_sett_panel_remove_text">Remove:</string>
+    <string name="ioa_sec_bp_sett_panel_remove_button">REMOVE ALL</string>
+    <string name="ioa_sec_bp_sett_dialog_undoremove_single_title">Confirm Cancel</string>
+    <string name="ioa_sec_bp_sett_dialog_remove_single_title">Confirm Removal</string>
+    <string name="ioa_sec_bp_sett_dialog_remove_single_message_format">Are you sure you want to remove the Wearable factor named \'%1$s\'?</string>
+    <string name="ioa_sec_bp_sett_dialog_remove_all_title">Confirm Removal</string>
+    <string name="ioa_sec_bp_sett_dialog_remove_all_messsage">Are you sure you want to remove all of the Wearable security factors from this device?</string>
+    <string name="ioa_sec_bp_sett_dialog_undoremoval_message_format">Do you want to undo the removal of the Wearable named \'%1$s\'?</string>
+
+    <!-- sec > fingerprint scan (fs) -->
+    <string name="ioa_sec_fs_begin_scan_message">Scan Biometric</string>
+    <string name="ioa_sec_fs_add_title">Add Biometric Scan</string>
+    <string name="ioa_sec_fs_sett_title">Biometric Scan Settings</string>
+    <string name="ioa_sec_fs_help_title">About Biometric Scan</string>
+    <string name="ioa_sec_fs_help_message">Biometric Scan will verify the unique biometric signature you have registered with this device.</string>
+    <string name="ioa_sec_fs_sett_panel_remove_text">Remove:</string>
+    <string name="ioa_sec_fs_error_notregistered">There are no biometrics registered with the device</string>
+    <string name="ioa_sec_fs_add_message">Initiate Biometric Scan</string>
+    <string name="ioa_sec_fs_add_button">START SCAN</string>
+    <string name="ioa_sec_fs_remove_button">DISABLE</string>
+    <string name="ioa_sec_fs_cancel_message">Canceling&#8230;</string>
+    <string name="ioa_sec_fs_no_enrolled_fingerprints_message">Cannot make use of Biometric Scan without registered biometrics.</string>
+
+    <!-- matches most of ioa_misc_dialog_network_message -->
+    <string name="ioa_ar_error_responding_message">This device is having trouble connecting to the internet. Please verify that this device is connected to a wifi or cellular network with a working internet connection.</string>
+
+    <!-- local auth request (lar) -->
+    <string name="ioa_lar_default_toolbar">Authenticate</string>
+
+
+    <!-- auth request (ar) -->
+    <string name="ioa_ar_menu_deny">Deny</string>
+    <string name="ioa_ar_menu_details">Details</string>
+    <string name="ioa_ar_default_toolbar_norequest">No Auth Request</string>
+    <string name="ioa_ar_dialog_responding_authorizing">Authorizing request&#8230;</string>
+    <string name="ioa_ar_dialog_responding_denying">Denying request&#8230;</string>
+    <string name="ioa_ar_dialog_details_title">Request Details</string>
+    <string name="ioa_ar_dialog_details_message_format">%1$s\n\n%2$s</string>
+    <string name="ioa_ar_dialog_details_message_empty">No details.</string>
+    <string name="ioa_ar_dialog_newdialog_title">New Auth Request</string>
+    <string name="ioa_ar_dialog_newdialog_message">There\'s a new request, this one is not valid anymore. Press \'OK\' to respond to the new one</string>
+    <string name="ioa_ar_dialog_policy_minreqnotmet_title">Authorization Not Allowed</string>
+    <string name="ioa_ar_dialog_policyfailed_type_message_format">This request has been automatically denied because you don\'t have the following authentication methods enabled on this device: %1$s</string>
+    <string name="ioa_ar_dialog_policyfailed_type_option_knowledge">Knowledge factor.</string>
+    <string name="ioa_ar_dialog_policyfailed_type_option_inherence">Inherence factor.</string>
+    <string name="ioa_ar_dialog_policyfailed_type_option_possession">Possession factor.</string>
+    <string name="ioa_ar_step_pin">Enter PIN code</string>
+    <string name="ioa_ar_step_cir">Enter circle code</string>
+    <string name="ioa_ar_step_bp">Verifying proximity of Wearable devices&#8230;</string>
+    <string name="ioa_ar_step_geo">Verifying device\'s locations&#8230;</string>
+    <string name="ioa_ar_step_fp">Scan your biometric&#8230;</string>
+    <string name="ioa_ar_step_slider">Slide up to authorize</string>
+    <string name="ioa_ar_error_bt_notsupported">Wearable cannot be used because this device does not support Bluetooth.</string>
+    <string name="ioa_ar_error_bt_disabled">This request has been automatically denied because Bluetooth is currently powered-off or unavailable on this device, but it\'s required for this request. Please verify Bluetooth is enabled on this device and try again.</string>
+    <string name="ioa_ar_error_bt_notfound">No compatible Wearable devices within range.</string>
+    <string name="ioa_ar_error_location_disabled">This request has been automatically denied because the location of your device needs to be verified, but location services are currently unavailable. Verify that location services are enabled and available, and please try again.</string>
+    <string name="ioa_ar_error_location_permission">This request has been automatically denied because the location of your device needs to be verified, but this mobile app hasn\'t been granted permission to use location services (GPS) on this device. Verify that this mobile app has been granted access to location services in your device settings. Once location services are enabled and available, please try again.</string>
+    <string name="ioa_ar_error_location_mock_dev">This request has been automatically denied because a developer setting on this device has been enabled that can interfere with the ability to accurately verify this device\'s location. Please disable this setting and try again.</string>
+    <string name="ioa_ar_error_location_wrong">To respond to this authorization request, this device must be within an approved location. Please move to an authorized location and try again.</string>
+    <string name="ioa_ar_error_responding_title">Error responding to Auth Request</string>
+    <!-- new auth flow -->
+    <string name="ioa_ar_dialog_responding">Sending response…</string>
+    <string name="ioa_ar_arb_directive_hold">Press and hold to</string>
+    <string name="ioa_ar_arb_action_deny">Deny</string>
+    <string name="ioa_ar_arb_action_authorize">Authorize</string>
+    <string name="ioa_ar_info_details">Request Details</string>
+    <string name="ioa_ar_info_timer">Expires In</string>
+    <string name="ioa_ar_info_actions">Your Response</string>
+    <string name="ioa_ar_step_num_format">(Step %1$d of %2$d)</string>
+    <string name="ioa_ar_end_action_format">Dismissing in %1$d…</string>
+    <string name="ioa_ar_error_result_title_prefix">Failed:</string>
+    <string name="ioa_ar_error_result_title_format">%1$s %2$s</string>
+    <string name="ioa_ar_error_result_poli_amount_title">Too Few Methods</string>
+    <string name="ioa_ar_error_result_poli_type_title">Required Authentication Method Not Enabled</string>
+    <string name="ioa_ar_error_result_poli_type_message_format">To authorize this request in the future, this authenticator must have at least one of the following authentication methods enabled: %1$s</string>
+    <string name="ioa_ar_error_result_poli_type_message_format_separator">, </string>
+    <string name="ioa_ar_error_result_perm_loc_title">Location Services Permission Not Granted</string>
+    <string name="ioa_ar_error_result_perm_loc_message">To authorize this request in the future, you must grant Location Services permission to this app from within your device settings.</string>
+    <string name="ioa_ar_error_result_perm_bt_title">Bluetooth Permission Not Granted</string>
+    <string name="ioa_ar_error_result_perm_bt_message">To authorize this request in the future, you must grant Bluetooth permission to this app by enabling Location Services for this app from within your device settings.</string>
+    <string name="ioa_ar_error_result_auth_loc_title">Improper Location</string>
+    <string name="ioa_ar_error_result_auth_loc_message">This device is not located within an authorized location. To authorize this request in the future, this device must be inside an approved geographic perimeter.</string>
+    <string name="ioa_ar_error_result_auth_loc_missing_title">No Location</string>
+    <string name="ioa_ar_error_result_auth_loc_missing_message">Could not retrieve the device location.</string>
+    <string name="ioa_ar_error_result_auth_bt_title">Wearable Not Found</string>
+    <string name="ioa_ar_error_result_auth_bt_message">None of your Wearables could be found. To authorize this request in the future, ensure at least one of your specified Wearable devices is turned on and located nearby.</string>
+    <string name="ioa_ar_error_result_auth_fs_title">Fingerprint Not Recognized</string>
+    <string name="ioa_ar_error_result_auth_fs_message">Your fingerprint was not recognized  as a registered fingerprint on this device. To authorize this request in the future, ensure the fingerprint being scanned has already been registered with this device.</string>
+    <string name="ioa_ar_error_result_auth_pc_title">Incorrect PIN Code</string>
+    <string name="ioa_ar_error_result_auth_pc_message">The PIN you entered was not valid. To authorize this request in the future, authenticate with a valid PIN.</string>
+    <string name="ioa_ar_error_result_auth_cc_title">Incorrect Circle Code</string>
+    <string name="ioa_ar_error_result_auth_cc_message">The Circle Code pattern you entered was invalid. To authorize this request in the future, authenticate with a valid pattern.</string>
+    <string name="ioa_ar_error_result_conf_title">Incompatible Configuration</string>
+    <string name="ioa_ar_error_result_conf_message">This authorization request contains a policy requiring an authentication method that has been configured to be unavailable. Authorizing this request is not possible.</string>
+    <string name="ioa_ar_error_result_sens_bt_title">Bluetooth Disabled</string>
+    <string name="ioa_ar_error_result_sens_bt_message">Bluetooth has been disabled on this device. To authorize this request in the future, ensure Bluetooth is enabled and turned on.</string>
+    <string name="ioa_ar_error_result_sens_loc_title">Location Services Disabled</string>
+    <string name="ioa_ar_error_result_sens_loc_message">Location Services have been disabled on this device. To authorize this request in the future, ensure Location Services are turned on.</string>
+    <string name="ioa_ar_error_result_expi_title">Request Expired</string>
+    <string name="ioa_ar_error_result_expi_message">This authorization request has expired because a response wasn\'t provided within the designated expiration time.</string>
+    <string name="ioa_ar_error_result_canc_title">Request Canceled</string>
+    <string name="ioa_ar_error_result_canc_message">This authorization request was canceled and is no longer valid.</string>
+    <string name="ioa_ar_error_result_button">Dismiss</string>
+    <string name="ioa_ar_denialoptions_title">Why are you denying this?</string>
+    <string name="ioa_ar_denialoptions_subtitle">Choose the best option</string>
+    <string name="ioa_ar_denialoptions_button_action">Finish</string>
+
+    <!-- misc -->
+    <string name="ioa_misc_dialogfragment_setname_default_title">Set name</string>
+    <string name="ioa_misc_devices_deviceunlinked_format">Device \'%1$s\' has been unlinked</string>
+    <string name="ioa_misc_devices_button_unlink">UNLINK</string>
+    <string name="ioa_misc_settingspanel_default_text">Remove:</string>
+    <string name="ioa_misc_settingspanel_default_button">Remove</string>
+    <string name="ioa_misc_sessions_empty">No active sessions.</string>
+    <string name="ioa_misc_devices_empty">No devices have been linked.</string>
+    <string name="ioa_misc_devices_current">Current device:</string>
+    <string name="ioa_misc_permission_denied_camera">Go to the application settings to grant access to the camera.</string>
+    <string name="ioa_misc_permission_denied_location">To add a location, modify your device settings and grant this app permission to access Location Services.</string>
+    <string name="ioa_misc_permission_ble_location_suggestion">To add Bluetooth Low Energy devices, it is recommended that you grant Locations permissions and enable Location Services due to BLE limitations.</string>
+    <string name="ioa_misc_permission_locations_services_turned_off">To add a location, enable Location Services within your device settings.</string>
+    <string name="ioa_misc_permission_settings_action">SETTINGS</string>
+    <string name="ioa_misc_dialog_network_title">Network Error</string>
+    <!-- included in ioa_ar_error_responding_message -->
+    <string name="ioa_misc_dialog_network_message">@string/ioa_error_nic</string>
+
+    <!-- messages for the End User based on error type -->
+    <!-- format: ioa_error_<BaseError type acronyms)-->
+    <string name="ioa_error_unknown">Unknown error</string>
+    <string name="ioa_error_unknown_format">Unknown error: %1$s</string>
+    <string name="ioa_error_nic">This authenticator can\'t establish a connection with the network. To proceed, please verify that this device is connected to an active wireless or cellular network with internet connectivity.</string>
+    <string name="ioa_error_ra_format">Problem encountered when setting device up (%1$s)</string>
+    <string name="ioa_error_c_format">Could not contact service (%1$s)</string>
+    <string name="ioa_error_dnl">Device is yet to be linked or it has been marked as unlinked by the service</string>
+    <string name="ioa_error_dnf">Could not find device to delete</string>
+    <string name="ioa_error_mlc">The linking code is invalid</string>
+    <string name="ioa_error_gs_format">Setup for Push Notifications could not be finalized (%1$s)</string>
+    <string name="ioa_error_ear">Auth Request has expired</string>
+    <string name="ioa_error_uc">Your Internet traffic could be monitored. Make sure you are on a reliable network.</string>
+    <string name="ioa_error_nsf">User authentication not possible without Security factors.</string>
+    <string name="ioa_error_larp">User authentication pending.</string>
+    <string name="ioa_error_uarfe">The Auth Request received from the API was formatted incorrectly.</string>
+    <string name="ioa_error_upfe">The Auth Policy inside of the Auth Request received from the API was formatted incorrectly.</string>
+    <string name="ioa_error_upte">The Auth Policy received from the API has an unsupported/unimplemented type.</string>
+    <!-- subset for API-specific errors -->
+    <string name="ioa_error_api_unknown">Unknown API error. Try again.</string>
+    <string name="ioa_error_api_unknown_format">Unknown API error: %1$s</string>
+    <string name="ioa_error_api_devicenameused">Device already in use. Try a different one.</string>
+    <string name="ioa_error_api_wrongsdkkey">Mobile SDK key incorrect. Please check with your service provider.</string>
+    <string name="ioa_error_api_wronglinkingcode">The linking code you entered is invalid. Please enter a valid code and try again.</string>
+
+    <!-- new strings -->
+    <string name="ioa_ar_error_fs_timeout">Fingerprint authentication timed out.</string>
+    <string name="ioa_ar_error_fs_unrecoverable">The sensor has failed to verify your fingerprint several times now. Please try again later.</string>
+    <string name="ioa_sec_dialog_method_disabled_title">Warning</string>
+    <string name="ioa_sec_dialog_method_disabled_message">An authentication method that you enabled previously is no longer available and has been removed. Please review your authentication methods at this time.</string>
+    <string name="ioa_misc_autounlink_title">Device Unlinked: Too Many Attempts</string>
+    <string name="ioa_misc_autounlink_thresholdloweredpastattempts_title">Warning: 1 Attempt Remaining</string>
+    <string name="ioa_misc_autounlink_thresholdloweredpastattempts_message">Failing another authentication method may disable and unlink this authenticator.</string>
+
+    <!-- misc -->
+    <string name="ioa_misc_util_activity_scanqr_title">Scan QR Code</string>
+
+    <!-- timestamps -->
+    <string name="ioa_time_ago_now">now</string>
+    <string name="ioa_time_ago_seconds">%1$ds</string>
+    <string name="ioa_time_ago_minutes">%1$dm</string>
+    <string name="ioa_time_ago_hours">%1$dh</string>
+    <string name="ioa_time_ago_days">%1$dd</string>
+    <string name="ioa_time_ago_weeks">%1$dw</string>
+    <string name="ioa_time_ago_months">%1$dM</string>
+    <string name="ioa_time_ago_years">%1$dY</string>
+
+    <!-- calabash -->
+    <string name="ioa_calabash_codes_format">tokens%1$s%2$s</string>
+    <string name="ioa_calabash_codes_add_issuer">addTokenIssuer</string>
+    <string name="ioa_calabash_codes_add_user">addTokenUser</string>
+    <string name="ioa_calabash_codes_add_secret">addTokenSecret</string>
+    <string name="ioa_calabash_pinpad_delete">pinpadDelete</string>
+    <string name="ioa_calabash_pinpad_check">pinpadCheck</string>
+    <string name="ioa_calabash_add_geo_map">addGeoMap</string>
+    <string name="ioa_calabash_sett_factor_remove">settFactorRemove</string>
+    <string name="ioa_calabash_sett_remove_geo_item_format">settRemoveGeo%1$s</string>
+    <string name="ioa_calabash_sett_remove_wear_item_format">settRemoveWear%1$s</string>
+
+    <!-- Accessibility -->
+    <string name="ioa_acc_nav_back">Back</string>
+    <string name="ioa_acc_nav_cancel">Cancel</string>
+    <string name="ioa_acc_pincode_submit">PIN Code button submit</string>
+    <string name="ioa_acc_pincode_delete">PIN Code button backspace</string>
+    <string name="ioa_acc_pincode_number_format">PIN Code button %1$d</string>
+    <string name="ioa_acc_auth_result_authorized">Authorization approved</string>
+    <string name="ioa_acc_auth_result_denied">Authorization denied</string>
+    <string name="ioa_acc_auth_info_response">Two buttons to authorize or deny</string>
+    <string name="ioa_acc_security_settings_pincode">PIN Code settings</string>
+    <string name="ioa_acc_security_settings_circlecode">Circle Code settings</string>
+    <string name="ioa_acc_security_settings_wearables">Wearables settings</string>
+    <string name="ioa_acc_security_settings_locations">Locations settings</string>
+    <string name="ioa_acc_security_settings_fingerprintscan">Biometric Scan settings</string>
+    <string name="ioa_acc_auth_timer_expiration_format">Expires in %1$s %2$s %3$s</string>
+    <string name="ioa_acc_auth_timer_expiration_format_separator">and</string><!-- e.g. "2 minutes and 2 seconds"-->
+</resources>

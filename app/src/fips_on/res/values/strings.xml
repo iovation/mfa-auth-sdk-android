@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ioa_sec_pin_add_length_too_short_requirement">PIN Code must be 8 characters minimum</string>
+    <string name="ioa_sec_pin_add_repeated_characters_only_not_allowed_requirement">PIN Code must not have strictly consecutive repeating digits</string>
+    <string name="ioa_sec_pin_add_characters_incrementing_or_decrementing_requirement">PIN Code must not have strictly consecutive incrementing or decrementing digits</string>
+</resources>

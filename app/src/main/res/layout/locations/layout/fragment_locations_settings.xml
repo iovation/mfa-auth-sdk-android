@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/authenticatorColorBackground">
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.auth_method.SettingsPanel
+        android:id="@+id/geofencing_settings_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_panel_settings" />
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeListHeadersTextView
+        android:id="@+id/locations_header_label"
+        style="@style/AuthenticatorListHeaderStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ioa_md_header_height"
+        android:text="@string/ioa_sec_geo_sett_header"
+        app:layout_constraintTop_toBottomOf="@id/geofencing_settings_panel" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/geofencing_settings_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/locations_header_label"
+        tools:listitem="@layout/item_geofencing_geofence" />
+
+</com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundConstraintLayout>

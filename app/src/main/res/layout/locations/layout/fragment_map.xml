@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~  Copyright (c) 2017. iovation, LLC. All rights reserved.
+  -->
+
+<com.launchkey.android.authenticator.sdk.ui.internal.auth_method.locations.map.ScalingFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_scaling_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/no_map_provider_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ioa_sec_geo_add_error_no_map_provider"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/geofencingmapfragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/ioa_calabash_add_geo_map" />
+</com.launchkey.android.authenticator.sdk.ui.internal.auth_method.locations.map.ScalingFrameLayout>

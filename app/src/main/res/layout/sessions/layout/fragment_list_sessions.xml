@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/authenticatorColorBackground"
+    android:theme="@style/AuthenticatorTheme">
+
+    <TextView
+        android:id="@+id/sessions_empty"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/ioa_misc_sessions_empty"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/sessions_swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sessions_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_session" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundFrameLayout>

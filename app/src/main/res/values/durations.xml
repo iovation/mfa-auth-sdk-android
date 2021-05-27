@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="lk_snackbar_delay">750</integer>
+    <integer name="lk_animation_infiniterotation">3000</integer>
+    <integer name="lk_authorizations_item_reset_or_dismiss_max">500</integer>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <stroke
+        android:width="@dimen/lk_textbutton_stroke"
+        android:color="@color/lk_textbutton_stroke_pressed"/>
+
+    <solid
+        android:color="@color/lk_textbutton_background_pressed"/>
+</shape>

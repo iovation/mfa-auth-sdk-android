@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sessions_layout_top"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/lk_backgrounds_touchable">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/session_image"
+        android:layout_width="@dimen/lk_authorizations_item_icon_dimension"
+        android:layout_height="@dimen/lk_authorizations_item_icon_dimension"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/lk_authorizations_item_icon_spacing"
+        android:layout_marginEnd="@dimen/lk_authorizations_item_icon_spacing"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Circle"
+        app:srcCompat="@color/lk_accent" />
+
+    <TextView
+        android:id="@+id/session_text_time"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/lk_authorizations_item_height"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/lk_authorizations_item_icon_spacing"
+        android:paddingEnd="@dimen/lk_authorizations_item_icon_spacing"
+        android:textSize="@dimen/lk_authorizations_item_time_size"
+        app:layout_constraintBottom_toBottomOf="@id/session_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/session_image"
+        tools:text="20m" />
+
+    <TextView
+        android:id="@+id/session_text_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:layout_marginStart="@dimen/lk_authorizations_item_icon_spacing"
+        android:gravity="start"
+        android:singleLine="true"
+        android:textAlignment="viewStart"
+        android:textColor="@color/lk_gray_dark"
+        android:textSize="@dimen/lk_authorizations_item_title_size"
+        app:layout_constraintBottom_toBottomOf="@id/session_image"
+        app:layout_constraintEnd_toStartOf="@id/session_text_time"
+        app:layout_constraintStart_toEndOf="@id/session_image"
+        app:layout_constraintTop_toTopOf="@id/session_image"
+        tools:text="Bank Acct 5678 Transaction 1234" />
+</androidx.constraintlayout.widget.ConstraintLayout>

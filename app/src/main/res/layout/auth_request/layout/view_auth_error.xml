@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2018. iovation, LLC. All rights reserved.
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/ioa_theme_layouts_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="#f1f1f1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/lk_spacing_m"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:screenReaderFocusable="true"
+        android:accessibilityLiveRegion="assertive">
+
+        <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeAuthContentBgLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/lk_spacing_m"
+            tools:background="#fff">
+
+            <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+                android:id="@+id/auth_error_label_title"
+                style="@style/AuthText.Title"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                tools:text="Website Login Request" />
+
+            <!-- Duplicate top margin to match specs and also to
+            have it disappear with auth_error_label_details if
+            View.GONE -->
+            <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+                android:id="@+id/auth_error_label_details"
+                android:text="@string/ioa_ar_info_details"
+                style="@style/AuthText.Subtitle"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:gravity="start"
+                android:textAlignment="viewStart" />
+
+            <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+                android:id="@+id/auth_error_text_details"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:visibility="gone"
+                android:gravity="start"
+                android:textAlignment="viewStart"
+                tools:visibility="visible"
+                tools:text="Auth Request details shown to the end user. Cotta, visus, et messor. A falsis, pulchritudine neuter tata."
+                style="@style/AuthText.Body" />
+        </com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeAuthContentBgLinearLayout>
+
+        <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeAuthContentBgLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/lk_spacing_xxs"
+            android:orientation="vertical"
+            android:padding="@dimen/lk_spacing_m"
+            tools:background="#fff">
+
+            <TextView
+                android:id="@+id/auth_error_label_result"
+                android:layout_marginTop="0dp"
+                android:gravity="start"
+                android:textAlignment="viewStart"
+                tools:text="@string/ioa_ar_error_result_expi_title"
+                tools:textColor="#DB416A"
+                style="@style/AuthText.Subtitle" />
+
+            <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+                android:id="@+id/auth_error_text_result"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="start"
+                android:textAlignment="viewStart"
+                tools:text="@string/ioa_ar_error_result_expi_message"
+                style="@style/AuthText.Body" />
+
+            <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeButton
+                android:id="@+id/auth_error_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/lk_spacing_m"
+                android:textSize="@dimen/lk_pair_entercode_button_text_size"
+                android:text="@string/ioa_ar_error_result_button"
+                android:paddingTop="@dimen/lk_spacing_m"
+                android:paddingBottom="@dimen/lk_spacing_m"
+                android:paddingEnd="@dimen/lk_spacing_l"
+                android:paddingStart="@dimen/lk_spacing_l"
+                style="@style/AuthenticatorButtonStyle" />
+        </com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeAuthContentBgLinearLayout>
+    </LinearLayout>
+</ScrollView>

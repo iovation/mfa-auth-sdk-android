@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="lk_primary">#2061c7</color>
+    <color name="lk_primaryDark">#214b8c</color> 
+    <color name="lk_accent">#2061c7</color>
+
+    <color name="lk_wl_default_primary">#9e9e9e</color>
+    <color name="lk_wl_default_primaryDark">#616161</color>
+    <color name="lk_wl_default_backgrounds">#f1f1f1</color>
+    <color name="lk_wl_default_backgrounds_overlay">#888888</color>
+    <color name="lk_wl_default_accent">#9e9e9e</color>
+    <color name="lk_wl_default_list_item_icons">#999</color>
+    <color name="lk_wl_default_circlepad_hightlight">#4d333333</color>
+    <color name="lk_wl_default_circlepad_marks">#333333</color>
+
+    <color name="lk_backgrounds_base">@color/lk_wl_default_backgrounds</color>
+    <color name="lk_backgrounds_touchable">#fafafa</color>
+
+    <color name="lk_gray_icons">#222222</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="lk_text_instructions">#ffffff</color>
+    <color name="lk_textbutton_stroke_normal">#bfffffff</color>
+    <color name="lk_textbutton_stroke_pressed">#bfffffff</color>
+    <color name="lk_textbutton_background_normal">#1affffff</color>
+    <color name="lk_textbutton_background_pressed">#35ffffff</color>
+
+    <color name="lk_accent_color">#888888</color>
+
+    <color name="lk_toast_background">#191919</color>
+    <color name="lk_toast_text">#eee</color>
+
+    <color name="lk_custom_button_white_background_normal">#ffffff</color>
+    <color name="lk_custom_button_white_background_pressed">#aaaaaa</color>
+    <color name="lk_custom_button_white_text">#333333</color>
+    <color name="lk_custom_button_blue_text">#ffffff</color>
+    <color name="ioa_button_background_subtle_pressed">#25000000</color>
+
+    <!--generic-->
+    <color name="lk_gray_dark">#333333</color>
+    <color name="lk_gray">#666666</color>
+    <color name="lk_gray_med">#777777</color>
+    <color name="lk_gray_light">#aaaaaa</color>
+
+    <!--authorizations-->
+    <color name="lk_authorization_back_background">#c5c5c5</color>
+
+    <!-- 4.6 -->
+    <color name="ioa_ar_contentview_bg">@android:color/transparent</color>
+    <color name="ioa_ar_authorized">#43b77d</color>
+    <color name="ioa_ar_denied">#db416a</color>
+    <color name="ioa_ar_failed">#db416a</color>
+    <color name="ioa_ar_expirationtimer_bg_default">#d9d9d9</color>
+    <color name="ioa_ar_expirationtimer_fill_default">#777</color>
+    <color name="ioa_ar_expirationtimer_warn_default">#DB416A</color>
+    <color name="ioa_ar_denialoptions_normal">#888888</color>
+    <color name="ioa_ar_denialoptions_checked">#db416a</color>
+    <color name="ioa_ar_card_bg">#39ffffff</color>
+    <color name="ioa_ar_arb_positive">#2699FB</color>
+    <color name="ioa_ar_arb_positive_fill">#097FE3</color>
+    <color name="ioa_ar_arb_negative">#DB416A</color>
+    <color name="ioa_ar_arb_negative_fill">#A32F5C</color>
+</resources>

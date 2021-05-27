@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/ioa_theme_layouts_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/authenticatorColorBackground">
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeSettingsHeaderLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/lk_spacing_s"
+        android:background="@color/lk_backgrounds_base"
+        android:paddingEnd="@dimen/lk_spacing_s"
+        android:paddingStart="@dimen/lk_spacing_s">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/fingerprint_add_text_verifywhen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/lk_spacing_s"
+                android:layout_centerVertical="true"
+                android:text="@string/ioa_sec_panel_verify_whenrequired"
+                android:layout_alignParentStart="true" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/fingerprint_add_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_gravity="end"
+                android:checked="true"
+                style="@style/AuthenticatorSwitchStyle"
+                android:layout_toEndOf="@id/fingerprint_add_text_verifywhen"
+                android:layout_alignParentEnd="true"
+                android:paddingEnd="@dimen/lk_spacing_m"
+                android:paddingStart="@dimen/lk_spacing_m" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fingerprint_add_text_instruction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/lk_spacing_s"
+                android:text="@string/ioa_sec_fs_add_message"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/lk_spacing_s">
+
+                <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeButton
+                    android:id="@+id/fingerprint_add_button_startscan"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_height="@dimen/lk_button_height"
+                    android:text="@string/ioa_sec_fs_add_button"
+                    style="@style/AuthenticatorButtonStyle" />
+            </FrameLayout>
+        </LinearLayout>
+    </com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeSettingsHeaderLinearLayout>
+</com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundRelativeLayout>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2018. iovation, LLC. All rights reserved.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="#f1f1f1">
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeAuthContentBgLinearLayout
+        android:id="@+id/auth_do_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ioa_auth_short_timeranddeny_height"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/lk_spacing_m"
+        android:padding="@dimen/lk_spacing_m"
+        tools:background="#fff">
+
+        <com.launchkey.android.authenticator.sdk.ui.internal.view.ExpirationTimer
+            android:id="@+id/auth_do_timer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="50" />
+
+        <com.launchkey.android.authenticator.sdk.ui.internal.auth_request.TimerAuthResponseButton
+            android:id="@+id/auth_do_action_negative"
+            style="@style/NegativeAuthResponseButton"
+            android:layout_height="match_parent" />
+    </com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeAuthContentBgLinearLayout>
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeAuthContentBgScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/auth_do_bottom"
+        android:layout_marginTop="@dimen/lk_spacing_m"
+        android:orientation="vertical"
+        android:scrollbarFadeDuration="0"
+        android:fadeScrollbars="false"
+        tools:background="#fff"
+        android:paddingStart="@dimen/lk_spacing_m"
+        android:layout_marginEnd="@dimen/lk_spacing_m"
+        android:paddingEnd="@dimen/lk_spacing_m"
+        android:layout_marginStart="@dimen/lk_spacing_m">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:accessibilityLiveRegion="assertive">
+
+            <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+                style="@style/AuthText.Title"
+                android:layout_marginBottom="0dp"
+                android:text="@string/ioa_ar_denialoptions_title" />
+
+            <com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeTextView
+                style="@style/AuthText.Body"
+                android:gravity="center"
+                android:text="@string/ioa_ar_denialoptions_subtitle" />
+
+            <RadioGroup
+                android:id="@+id/auth_do_options"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/lk_spacing_l"
+                android:layout_weight="100" />
+        </LinearLayout>
+    </com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeAuthContentBgScrollView>
+</RelativeLayout>

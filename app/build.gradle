@@ -1,0 +1,182 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions' // deprecated in kotlin 1.4.20
+    id 'org.jetbrains.dokka'
+}
+
+def sdkVersion = '5.1.0'
+
+// TODO: Update this value before releases
+def authSdkCodeVersion = 117
+
+android {
+    buildToolsVersion "30.0.2"
+    ndkVersion "21.3.6528147"
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode authSdkCodeVersion
+        versionName sdkVersion
+        defaultPublishConfig getBuildToUpload()
+
+        // For instrumentation tests, not the lib itself
+        multiDexEnabled true
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures.viewBinding = true
+
+    // Makes organizing a bunch of layouts easier
+    sourceSets.main.res.srcDirs = file('src/main/res/layout').list().collect { 'src/main/res/layout/' + it } + ['src/main/res']
+
+    // Sharing fakes from unit tests
+    sourceSets.androidTest.java.srcDirs += "$projectDir/src/test/java/com/launchkey/android/authenticator/sdk/ui/fake"
+
+    flavorDimensions "fips"
+    productFlavors {
+        fips_on {
+            dimension "fips"
+        }
+        fips_off {
+            dimension "fips"
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            // Order matters, flatten-package-hierarchy will be copied in a different order to the
+            // merged proguard.txt, we want the current project's flatten-package-hierarchy to take
+            // precedence
+            consumerProguardFiles file('consumer-proguard-rules.pro')
+            proguardFiles consumerProguardFiles.toArray() + getDefaultProguardFile('proguard-android.txt') + file('proguard-rules.pro') + file('debug-proguard-rules.pro')
+        }
+
+        release {
+            minifyEnabled true
+            // Order matters, flatten-package-hierarchy will be copied in a different order to the
+            // merged proguard.txt, we want the current project's flatten-package-hierarchy to take
+            // precedence
+            consumerProguardFiles file('consumer-proguard-rules.pro')
+            proguardFiles consumerProguardFiles.toArray() + getDefaultProguardFile('proguard-android.txt') + file('proguard-rules.pro')
+        }
+    }
+
+    lintOptions {
+        lintConfig file("lint.xml")
+        abortOnError false
+    }
+
+    // For tests
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}
+
+//This enables setting which build to upload via command line argument. Ex. "-PbuildUpload=debug"
+def getBuildToUpload() {
+    return hasProperty('buildUpload') ? buildUpload : "release"
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+
+    def fragment_version = "1.3.0"
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0"
+
+    implementation "com.google.android.gms:play-services-base:17.2.1"
+    implementation "com.google.android.gms:play-services-location:17.0.0"
+    implementation "com.google.android.gms:play-services-wearable:17.0.0"
+
+    // We don't technically require any of these to run
+    compileOnly 'com.google.android.gms:play-services-maps:17.0.0'
+
+    // Auth SDK Dependencies
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation files('libs/barcodelib.jar')
+    implementation 'com.google.zxing:core:3.4.0'
+    compileOnly 'org.osmdroid:osmdroid-android:6.1.8'
+    compileOnly 'com.getpebble:pebblekit:3.0.0'
+
+    // LK Core Logic library
+    implementation findProject(':lk-auth-sdk-core') ?: 'com.launchkey.android.authenticator.sdk:lk-auth-sdk-core:2.0.0'
+
+    // You can change the versions of these (or add to them), they never go into the .aar
+    // we distribute
+    // Unit Testing
+    testImplementation 'org.json:json:20190722'
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.robolectric:robolectric:4.5.1'
+    testImplementation 'org.mockito:mockito-core:3.3.3'
+    testImplementation 'androidx.test:core:1.3.0'
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2"
+
+    debugImplementation 'androidx.test:core:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.2'
+    debugImplementation("androidx.fragment:fragment-testing:$fragment_version") {
+        exclude group: 'androidx.test', module: 'monitor'
+    }
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation 'org.mockito:mockito-core:3.3.3'
+    androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito-inline:2.28.1'
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'androidx.test:rules:1.3.0'
+    androidTestImplementation 'androidx.multidex:multidex-instrumentation:2.0.0'
+}
+
+dokkaJavadoc {
+    configure {
+        outputDirectory = file(rootProject.projectDir.absolutePath + "/javadocs/lk-wl-sdk-ui/")
+        moduleName = "LaunchKey Authenticator SDK v" + sdkVersion + " (" + authSdkCodeVersion + ")"
+
+        dokkaSourceSets {
+            configureEach {
+                skipEmptyPackages.set(true)
+                noAndroidSdkLink.set(false)
+
+                perPackageOption {
+                    matchingRegex.set(".*\\.internal.*")
+                    suppress.set(true)
+                }
+            }
+        }
+    }
+}
+
+// build a jar with source files
+task sourcesJarTask(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier 'sources'
+    destinationDir file(rootProject.projectDir.absolutePath + "/sources/lk-wl-sdk-ui/")
+}
+
+task javadocJarTask(type: Jar, dependsOn: dokkaJavadoc) {
+    classifier 'javadoc'
+    from dokkaJavadoc.outputDirectory
+}

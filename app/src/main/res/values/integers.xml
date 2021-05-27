@@ -1,0 +1,5 @@
+<resources>
+    <integer name="lk_animation_alpha_in">600</integer>
+    <integer name="lk_haptic_feedback_pin_circle">20</integer>
+    <integer name="lk_link_code_length">7</integer>
+</resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2018. iovation, LLC. All rights reserved.
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.launchkey.android.authenticator.sdk.ui.internal.view.CircularProgressBar
+        android:id="@+id/et_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cpb_cutoutRatio="0.6"
+        app:cpb_startAngleOffset="-90"
+        />
+
+    <TextView
+        android:id="@+id/et_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:textColor="#aaa"
+        android:textStyle="bold"
+        android:gravity="center"
+        tools:text="05:00"
+        />
+</FrameLayout>

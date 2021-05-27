@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/ioa_theme_layouts_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/AuthenticatorTheme">
+
+    <include
+        android:id="@+id/authenticator_toolbar"
+        layout="@layout/toinclude_toolbar"
+        android:visibility="?attr/authenticatorAuthToolbarVisibility"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:name="com.launchkey.android.authenticator.sdk.ui.internal.auth_request.AuthRequestEndFragment"
+        android:id="@+id/auth_request_result"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
+        android:layout_margin="16dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/authenticator_toolbar"
+        tools:visibility="visible" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/authenticator_frame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/lk_spacing_m"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/authenticator_toolbar" />
+</com.launchkey.android.authenticator.sdk.ui.internal.view.DynamicThemeBackgroundConstraintLayout>

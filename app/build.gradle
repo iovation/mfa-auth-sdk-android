@@ -3,9 +3,11 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions' // deprecated in kotlin 1.4.20
     id 'org.jetbrains.dokka'
+    id 'maven-publish'
 }
 
 def sdkVersion = '5.1.0'
+def isSnapshot = false
 
 // TODO: Update this value before releases
 def authSdkCodeVersion = 117
@@ -179,4 +181,26 @@ task sourcesJarTask(type: Jar) {
 task javadocJarTask(type: Jar, dependsOn: dokkaJavadoc) {
     classifier 'javadoc'
     from dokkaJavadoc.outputDirectory
+}
+
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                url "$buildDir/repo"
+            }
+        }
+
+        publications {
+            release(MavenPublication) {
+                from components.fips_offRelease
+
+                groupId = 'com.launchkey.android.authenticator.sdk'
+                artifactId = 'lk-auth-sdk'
+                version = "$sdkVersion${isSnapshot ? '-SNAPSHOT' : ''}"
+                artifact(javadocJarTask)
+                artifact(sourcesJarTask)
+            }
+        }
+    }
 }

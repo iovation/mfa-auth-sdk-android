@@ -1,4 +1,4 @@
-# Multifactor Authentication Mobile Authenticator UI SDK for Android
+# TruValidate Multifactor Authentication SDK for Android
 
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/lacaprjc/Multifactor-Authentication-Mobile-Authenticator-UI-SDK?label=latest%20release)
 
@@ -11,8 +11,8 @@
 
 # <a name="introduction"></a>Introduction
 
-This is the open-source repository of the Multifactor Authentication Mobile Authenticator **UI** SDK for Android. This module serves as a UI wrapper for the
-Multifactor Authentication Mobile Authenticator **Core** SDK for Android. Any and all configuration of the **Core** SDK must be done through the **Core** SDK. The
+This is the open-source repository of the TruValidate Multifactor Authentication Mobile Authenticator **UI** SDK for Android. This module serves as a UI wrapper for the
+TruValidate Multifactor Authentication Mobile Authenticator **Core** SDK for Android. Any and all configuration of the **Core** SDK must be done through the **Core** SDK. The
 primary purpose of the **UI** SDK is to provide a bare bones UI implementation of the Core SDK. Because the Core SDK requires, at a minimum, that implementors
 set an SDK key allowing users to link their device, this means the UI SDK will provide little use without properly configuring the Core SDK first.
 
@@ -20,7 +20,7 @@ Developer documentation for using the Core and UI Authenticator SDKs is found [h
 
 # <a name="latestrelease"></a>Running the Latest Release
 
-To run the latest release of the Multifactor Authentication Mobile Authenticator UI SDK add the following repository and dependency to your
+To run the latest release of the TruValidate Multifactor Authentication Mobile Authenticator UI SDK add the following repository and dependency to your
 project-level `build.gradle` and your app-level `build.gradle` respectively:
 ```gradle
 // project-level build.gradle
@@ -127,5 +127,5 @@ class MyApplication : Application() {
 
 ## FAQ's
 
-Browse FAQ's or submit a question to the Multifactor Authentication support team for both
-technical and non-technical issues. Visit the Multifactor Authentication Support website [here](https://www.iovation.com/contact).
+Browse FAQ's or submit a question to the TruValidate Multifactor Authentication support team for both
+technical and non-technical issues. Visit the TruValidate Multifactor Authentication Support website [here](https://www.iovation.com/contact).

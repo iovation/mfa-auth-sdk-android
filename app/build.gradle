@@ -6,6 +6,7 @@ plugins {
     id 'maven-publish'
 }
 
+def sdkArtifactId = 'lk-auth-sdk'
 def sdkVersion = '5.1.0'
 def isSnapshot = false
 
@@ -81,6 +82,12 @@ android {
     testOptions {
         unitTests {
             includeAndroidResources = true
+        }
+    }
+
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "$sdkArtifactId-$sdkVersion${isSnapshot ? '-SNAPSHOT' : ''}.aar"
         }
     }
 }
@@ -196,7 +203,7 @@ afterEvaluate {
                 from components.fips_offRelease
 
                 groupId = 'com.launchkey.android.authenticator.sdk'
-                artifactId = 'lk-auth-sdk'
+                artifactId = sdkArtifactId
                 version = "$sdkVersion${isSnapshot ? '-SNAPSHOT' : ''}"
                 artifact(javadocJarTask)
                 artifact(sourcesJarTask)

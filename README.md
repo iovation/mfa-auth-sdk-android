@@ -1,6 +1,6 @@
 # TruValidate Multifactor Authentication SDK for Android
 
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/lacaprjc/Multifactor-Authentication-Mobile-Authenticator-UI-SDK?label=latest%20release)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/iovation/mfa-auth-sdk-android?label=latest%20release)
 
   * [Introduction](introduction)
   * [Running the Latest Release](#latestrelease)

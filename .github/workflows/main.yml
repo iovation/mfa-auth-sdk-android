@@ -28,6 +28,9 @@ jobs:
         
       - name: Test Release
         run: ./gradlew --stacktrace testFips_offRelease
+        
+      - name: Analyze Code
+        run: ./gradlew --stacktrace sonarqube -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} -Dsonar.login=${{ secrets.SONAR_PROJECT_TOKEN }}
 
       - name: Generate JavaDocs
         run: ./gradlew dokkaJavadoc

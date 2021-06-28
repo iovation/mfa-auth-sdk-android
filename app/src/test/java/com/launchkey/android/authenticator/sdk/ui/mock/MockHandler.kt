@@ -1,69 +1,66 @@
-package com.launchkey.android.authenticator.sdk.ui.mock;
+package com.launchkey.android.authenticator.sdk.ui.mock
 
-import android.os.Handler;
+import android.os.Handler
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito
+import java.util.*
 
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
-import java.util.LinkedList;
-import java.util.Queue;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.withSettings;
-
-public class MockHandler extends Handler {
-
-    private Queue<Runnable> runnables;
-
-    public int getNumberOfRunnables() {
-        return runnables.size();
+class MockHandler : Handler() {
+    private var runnables: Queue<Runnable>? = null
+    fun getNumberOfRunnables(): Int {
+        return runnables!!.size
     }
-
-    public void executeRunnablesInOrder() {
-        while (!runnables.isEmpty()) {
-            runnables.poll().run();
+    
+    fun executeRunnablesInOrder() {
+        while (!runnables!!.isEmpty()) {
+            runnables!!.poll().run()
         }
     }
-
-    public void executeNRunnables(int n) {
-        for (int i = 0; i < n; ++i) {
-            runnables.poll().run();
+    
+    fun executeNRunnables(n: Int) {
+        for (i in 0 until n) {
+            runnables!!.poll().run()
         }
     }
-
-    public static MockHandler createMockHandler() {
-        MockHandler handler = Mockito.mock(MockHandler.class, withSettings().lenient());
-        handler.runnables = new LinkedList<>();
-        Mockito.doCallRealMethod().when(handler).executeRunnablesInOrder();
-        Mockito.doCallRealMethod().when(handler).executeNRunnables(anyInt());
-        Mockito.doCallRealMethod().when(handler).getNumberOfRunnables();
-        when(handler.post(any(Runnable.class))).thenAnswer(
-                new Answer() {
-                    public Object answer(InvocationOnMock invocation) {
-                        ((MockHandler)invocation.getMock()).runnables.add((Runnable) invocation.getArgument(0));
-                        return true;
-                    }
-                });
-        when(handler.postDelayed(any(Runnable.class), anyLong())).thenAnswer(
-                new Answer() {
-                    public Object answer(InvocationOnMock invocation) {
-                        ((MockHandler)invocation.getMock()).runnables.add((Runnable) invocation.getArgument(0));
-                        return true;
-                    }
-                });
-        doAnswer(
-                new Answer() {
-                    public Object answer(InvocationOnMock invocation) {
-                        ((MockHandler)invocation.getMock()).runnables.remove(invocation.getArgument(0));
-                        return null;
-                    }
-                }).when(handler).removeCallbacks(any(Runnable.class));
-
-        return handler;
+    
+    companion object {
+        fun createMockHandler(): MockHandler {
+            val handler = Mockito.mock(
+                MockHandler::class.java, Mockito.withSettings().lenient()
+            )
+            handler.runnables = LinkedList()
+            Mockito.doCallRealMethod().`when`(handler).executeRunnablesInOrder()
+            Mockito.doCallRealMethod().`when`(handler).executeNRunnables(ArgumentMatchers.anyInt())
+            Mockito.doCallRealMethod().`when`(handler).getNumberOfRunnables()
+            Mockito.`when`(
+                handler.post(
+                    ArgumentMatchers.any(
+                        Runnable::class.java
+                    )
+                )
+            ).thenAnswer { invocation ->
+                (invocation.mock as MockHandler).runnables!!.add(invocation.getArgument<Any>(0) as Runnable)
+                true
+            }
+            Mockito.`when`(
+                handler.postDelayed(
+                    ArgumentMatchers.any(
+                        Runnable::class.java
+                    ), ArgumentMatchers.anyLong()
+                )
+            ).thenAnswer { invocation ->
+                (invocation.mock as MockHandler).runnables!!.add(invocation.getArgument<Any>(0) as Runnable)
+                true
+            }
+            Mockito.doAnswer { invocation ->
+                (invocation.mock as MockHandler).runnables!!.remove(invocation.getArgument<Any>(0))
+                null
+            }.`when`(handler).removeCallbacks(
+                ArgumentMatchers.any(
+                    Runnable::class.java
+                )
+            )
+            return handler
+        }
     }
 }

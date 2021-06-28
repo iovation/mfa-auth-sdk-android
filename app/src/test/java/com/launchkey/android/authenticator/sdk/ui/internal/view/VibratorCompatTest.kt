@@ -1,63 +1,75 @@
 /*
  *  Copyright (c) 2018. iovation, LLC. All rights reserved.
  */
+package com.launchkey.android.authenticator.sdk.ui.internal.view
 
-package com.launchkey.android.authenticator.sdk.ui.internal.view;
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Vibrator
+import com.nhaarman.mockitokotlin2.mock
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.junit.MockitoJUnitRunner
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Vibrator;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-@RunWith(MockitoJUnitRunner.class)
-public class VibratorCompatTest {
-
+@RunWith(MockitoJUnitRunner::class)
+class VibratorCompatTest {
     @Mock
-    private Context mockContext;
-
-    @Test(expected = NullPointerException.class)
-    public void testInstantiation() {
-        new VibratorCompat(null);
+    private val mockContext: Context = mock()
+    @Test(expected = NullPointerException::class)
+    fun testInstantiation() {
+        VibratorCompat(mockContext)
     }
-
+    
     @Test
-    public void testVibratorNotCalled() {
-        PackageManager mockPackageManager = mock(PackageManager.class);
-        when(mockPackageManager.checkPermission(anyString(), anyString())).thenReturn(1);
-        when(mockContext.getPackageManager()).thenReturn(mockPackageManager);
-        when(mockContext.getPackageName()).thenReturn("asdf");
-        when(mockContext.getApplicationContext()).thenReturn(mockContext);
-        Vibrator mockVibrator = mock(Vibrator.class);
-        when(mockContext.getSystemService(any(String.class))).thenReturn(mockVibrator);
-        VibratorCompat vibrator = new VibratorCompat(mockContext);
-        vibrator.vibrate(1000);
-        verify(mockVibrator, times(0)).vibrate(anyLong());
+    fun testVibratorNotCalled() {
+        val mockPackageManager = Mockito.mock(PackageManager::class.java)
+        Mockito.`when`(
+            mockPackageManager.checkPermission(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyString()
+            )
+        ).thenReturn(1)
+        Mockito.`when`(mockContext!!.packageManager).thenReturn(mockPackageManager)
+        Mockito.`when`(mockContext.packageName).thenReturn("asdf")
+        Mockito.`when`(mockContext.applicationContext).thenReturn(mockContext)
+        val mockVibrator = Mockito.mock(Vibrator::class.java)
+        Mockito.`when`(
+            mockContext.getSystemService(
+                ArgumentMatchers.any(
+                    String::class.java
+                )
+            )
+        ).thenReturn(mockVibrator)
+        val vibrator = VibratorCompat(mockContext)
+        vibrator.vibrate(1000)
+        Mockito.verify(mockVibrator, Mockito.times(0)).vibrate(ArgumentMatchers.anyLong())
     }
-
+    
     @Test
-    public void testVibratorCalled() {
-        PackageManager mockPackageManager = mock(PackageManager.class);
-        when(mockPackageManager.checkPermission(anyString(), anyString())).thenReturn(0);
-        when(mockContext.getPackageManager()).thenReturn(mockPackageManager);
-        when(mockContext.getPackageName()).thenReturn("asdf");
-        when(mockContext.getApplicationContext()).thenReturn(mockContext);
-        Vibrator mockVibrator = mock(Vibrator.class);
-        when(mockContext.getSystemService(any(String.class))).thenReturn(mockVibrator);
-        VibratorCompat vibrator = new VibratorCompat(mockContext);
-        vibrator.vibrate(1000);
-        verify(mockVibrator, times(1)).vibrate(anyLong());
+    fun testVibratorCalled() {
+        val mockPackageManager = Mockito.mock(PackageManager::class.java)
+        Mockito.`when`(
+            mockPackageManager.checkPermission(
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyString()
+            )
+        ).thenReturn(0)
+        Mockito.`when`(mockContext!!.packageManager).thenReturn(mockPackageManager)
+        Mockito.`when`(mockContext.packageName).thenReturn("asdf")
+        Mockito.`when`(mockContext.applicationContext).thenReturn(mockContext)
+        val mockVibrator = Mockito.mock(Vibrator::class.java)
+        Mockito.`when`(
+            mockContext.getSystemService(
+                ArgumentMatchers.any(
+                    String::class.java
+                )
+            )
+        ).thenReturn(mockVibrator)
+        val vibrator = VibratorCompat(mockContext)
+        vibrator.vibrate(1000)
+        Mockito.verify(mockVibrator, Mockito.times(1)).vibrate(ArgumentMatchers.anyLong())
     }
 }

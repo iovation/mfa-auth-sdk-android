@@ -1,291 +1,243 @@
-package com.launchkey.android.authenticator.sdk.ui.internal.auth_request;
+package com.launchkey.android.authenticator.sdk.ui.internal.auth_request
 
-import com.launchkey.android.authenticator.sdk.core.auth_method_management.AuthMethod;
+import com.launchkey.android.authenticator.sdk.core.auth_method_management.AuthMethod
+import org.junit.Assert
+import org.junit.Test
+import java.util.*
 
-import org.junit.Test;
-
-import java.util.Arrays;
-
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertEquals;
-
-public class FactorsTrackerTest {
+class FactorsTrackerTest {
     @Test
-    public void testTrackerNoFactors() {
+    fun testTrackerNoFactors() {
         // All zeroes if no auth methods are verified
-        FactorsTracker tracker = getTracker();
-        assertEquals(0, tracker.getCurrentForUi());
-        assertEquals(0, tracker.getCountForUi());
+        val tracker = getTracker()
+        Assert.assertEquals(0, tracker.currentForUi.toLong())
+        Assert.assertEquals(0, tracker.countForUi.toLong())
     }
-
+    
     @Test
-    public void testTrackerNone() {
-        FactorsTracker tracker = getTracker(
-                AuthMethod.PIN_CODE);
-
-        tracker.setVerified(AuthMethod.PIN_CODE);
-
-        assertNull(tracker.getCurrentId());
-        assertEquals(1, tracker.getCountForUi());
+    fun testTrackerNone() {
+        val tracker = getTracker(
+            AuthMethod.PIN_CODE
+        )
+        tracker.setVerified(AuthMethod.PIN_CODE)
+        Assert.assertNull(tracker.currentId)
+        Assert.assertEquals(1, tracker.countForUi.toLong())
     }
-
+    
     @Test
-    public void testTrackerVerifiedFlags1() {
-        FactorsTracker tracker = getTracker(
-                AuthMethod.CIRCLE_CODE,
-                AuthMethod.PIN_CODE);
-
-        tracker.setVerified(AuthMethod.CIRCLE_CODE);
-        tracker.setVerified(AuthMethod.PIN_CODE);
-
-        assertEquals(true, tracker.isVerified(AuthMethod.CIRCLE_CODE));
-        assertEquals(true, tracker.isVerified(AuthMethod.PIN_CODE));
+    fun testTrackerVerifiedFlags1() {
+        val tracker = getTracker(
+            AuthMethod.CIRCLE_CODE,
+            AuthMethod.PIN_CODE
+        )
+        tracker.setVerified(AuthMethod.CIRCLE_CODE)
+        tracker.setVerified(AuthMethod.PIN_CODE)
+        Assert.assertEquals(true, tracker.isVerified(AuthMethod.CIRCLE_CODE))
+        Assert.assertEquals(true, tracker.isVerified(AuthMethod.PIN_CODE))
     }
-
+    
     @Test
-    public void testTrackerVerifiedFlags2() {
-
-        FactorsTracker tracker = getTracker(
-                AuthMethod.WEARABLES,
-                AuthMethod.PIN_CODE,
-                AuthMethod.BIOMETRIC);
-
-        tracker.setVerified(AuthMethod.WEARABLES);
-        tracker.setVerified(AuthMethod.PIN_CODE);
-
-        assertEquals(true, tracker.isVerified(AuthMethod.WEARABLES));
-        assertEquals(true, tracker.isVerified(AuthMethod.PIN_CODE));
-        assertEquals(false, tracker.isVerified(AuthMethod.BIOMETRIC));
+    fun testTrackerVerifiedFlags2() {
+        val tracker = getTracker(
+            AuthMethod.WEARABLES,
+            AuthMethod.PIN_CODE,
+            AuthMethod.BIOMETRIC
+        )
+        tracker.setVerified(AuthMethod.WEARABLES)
+        tracker.setVerified(AuthMethod.PIN_CODE)
+        Assert.assertEquals(true, tracker.isVerified(AuthMethod.WEARABLES))
+        Assert.assertEquals(true, tracker.isVerified(AuthMethod.PIN_CODE))
+        Assert.assertEquals(false, tracker.isVerified(AuthMethod.BIOMETRIC))
     }
-
+    
     @Test
-    public void testTrackerVerifiedFlags3() {
-
-        FactorsTracker tracker = getTracker(
-                AuthMethod.WEARABLES,
-                AuthMethod.PIN_CODE,
-                AuthMethod.BIOMETRIC);
-
-        assertEquals(false, tracker.isVerified(AuthMethod.WEARABLES));
-        assertEquals(false, tracker.isVerified(AuthMethod.PIN_CODE));
-        assertEquals(false, tracker.isVerified(AuthMethod.BIOMETRIC));
+    fun testTrackerVerifiedFlags3() {
+        val tracker = getTracker(
+            AuthMethod.WEARABLES,
+            AuthMethod.PIN_CODE,
+            AuthMethod.BIOMETRIC
+        )
+        Assert.assertEquals(false, tracker.isVerified(AuthMethod.WEARABLES))
+        Assert.assertEquals(false, tracker.isVerified(AuthMethod.PIN_CODE))
+        Assert.assertEquals(false, tracker.isVerified(AuthMethod.BIOMETRIC))
     }
-
+    
     @Test
-    public void testTrackerOneFactor() {
-
-        FactorsTracker tracker = getTracker(
-                AuthMethod.CIRCLE_CODE,
-                AuthMethod.PIN_CODE);
-
-        assertEquals(1, tracker.getCurrentForUi());
-
-        tracker.setVerified(AuthMethod.CIRCLE_CODE);
-
-        assertEquals(2, tracker.getCurrentForUi());
-        assertEquals(2, tracker.getCountForUi());
+    fun testTrackerOneFactor() {
+        val tracker = getTracker(
+            AuthMethod.CIRCLE_CODE,
+            AuthMethod.PIN_CODE
+        )
+        Assert.assertEquals(1, tracker.currentForUi.toLong())
+        tracker.setVerified(AuthMethod.CIRCLE_CODE)
+        Assert.assertEquals(2, tracker.currentForUi.toLong())
+        Assert.assertEquals(2, tracker.countForUi.toLong())
     }
-
+    
     @Test
-    public void testTrackerTwoFactors() {
-
-        FactorsTracker tracker = getTracker(
-                AuthMethod.CIRCLE_CODE,
-                AuthMethod.BIOMETRIC);
-
-        tracker.setVerified(AuthMethod.CIRCLE_CODE);
-
-        assertEquals(AuthMethod.BIOMETRIC, tracker.getCurrentId());
-        assertEquals(2, tracker.getCurrentForUi());
-        assertEquals(2, tracker.getCountForUi());
+    fun testTrackerTwoFactors() {
+        val tracker = getTracker(
+            AuthMethod.CIRCLE_CODE,
+            AuthMethod.BIOMETRIC
+        )
+        tracker.setVerified(AuthMethod.CIRCLE_CODE)
+        Assert.assertEquals(AuthMethod.BIOMETRIC, tracker.currentId)
+        Assert.assertEquals(2, tracker.currentForUi.toLong())
+        Assert.assertEquals(2, tracker.countForUi.toLong())
     }
-
+    
     @Test
-    public void testTrackerTwoVerifiedOnePending() {
-
-        FactorsTracker tracker = getTracker(
-                AuthMethod.LOCATIONS,
-                AuthMethod.CIRCLE_CODE,
-                AuthMethod.BIOMETRIC);
-
-        tracker.setVerified(AuthMethod.LOCATIONS);
-        tracker.setVerified(AuthMethod.CIRCLE_CODE);
-
-        assertEquals(AuthMethod.BIOMETRIC, tracker.getCurrentId());
-        assertEquals(3, tracker.getCurrentForUi());
-        assertEquals(3, tracker.getCountForUi());
+    fun testTrackerTwoVerifiedOnePending() {
+        val tracker = getTracker(
+            AuthMethod.LOCATIONS,
+            AuthMethod.CIRCLE_CODE,
+            AuthMethod.BIOMETRIC
+        )
+        tracker.setVerified(AuthMethod.LOCATIONS)
+        tracker.setVerified(AuthMethod.CIRCLE_CODE)
+        Assert.assertEquals(AuthMethod.BIOMETRIC, tracker.currentId)
+        Assert.assertEquals(3, tracker.currentForUi.toLong())
+        Assert.assertEquals(3, tracker.countForUi.toLong())
     }
-
+    
     @Test
-    public void testTrackerThreeVerifiedNonePending() {
-
-        FactorsTracker tracker = getTracker(
-                AuthMethod.GEOFENCING,
-                AuthMethod.CIRCLE_CODE,
-                AuthMethod.BIOMETRIC);
-
-        tracker.setVerified(AuthMethod.GEOFENCING);
-        tracker.setVerified(AuthMethod.CIRCLE_CODE);
-        tracker.setVerified(AuthMethod.BIOMETRIC);
-
-        assertNull(tracker.getCurrentId());
-        assertEquals(3, tracker.getCurrentForUi());
-        assertEquals(3, tracker.getCountForUi());
+    fun testTrackerThreeVerifiedNonePending() {
+        val tracker = getTracker(
+            AuthMethod.GEOFENCING,
+            AuthMethod.CIRCLE_CODE,
+            AuthMethod.BIOMETRIC
+        )
+        tracker.setVerified(AuthMethod.GEOFENCING)
+        tracker.setVerified(AuthMethod.CIRCLE_CODE)
+        tracker.setVerified(AuthMethod.BIOMETRIC)
+        Assert.assertNull(tracker.currentId)
+        Assert.assertEquals(3, tracker.currentForUi.toLong())
+        Assert.assertEquals(3, tracker.countForUi.toLong())
     }
-
+    
     @Test
-    public void testTrackerTwoVerifiedNonePending() {
-
-        FactorsTracker tracker = getTracker(
-                AuthMethod.CIRCLE_CODE,
-                AuthMethod.PIN_CODE,
-                AuthMethod.GEOFENCING);
-
-        tracker.setVerified(AuthMethod.CIRCLE_CODE);
-        tracker.setVerified(AuthMethod.PIN_CODE);
-        tracker.setVerified(AuthMethod.GEOFENCING);
-
-        assertNull(tracker.getCurrentId());
-        assertEquals(3, tracker.getCurrentForUi());
-        assertEquals(3, tracker.getCountForUi());
+    fun testTrackerTwoVerifiedNonePending() {
+        val tracker = getTracker(
+            AuthMethod.CIRCLE_CODE,
+            AuthMethod.PIN_CODE,
+            AuthMethod.GEOFENCING
+        )
+        tracker.setVerified(AuthMethod.CIRCLE_CODE)
+        tracker.setVerified(AuthMethod.PIN_CODE)
+        tracker.setVerified(AuthMethod.GEOFENCING)
+        Assert.assertNull(tracker.currentId)
+        Assert.assertEquals(3, tracker.currentForUi.toLong())
+        Assert.assertEquals(3, tracker.countForUi.toLong())
     }
-
+    
     @Test
-    public void testTrackerGeofencing() {
-
-        FactorsTracker tracker = getTracker(
-                AuthMethod.GEOFENCING,
-                AuthMethod.LOCATIONS);
-
-        assertEquals(1, tracker.getCurrentForUi());
-        assertEquals(1, tracker.getCountForUi());
-        assertEquals(AuthMethod.GEOFENCING, tracker.getCurrentId());
-
-        tracker.setVerified(AuthMethod.GEOFENCING);
-        assertEquals(AuthMethod.LOCATIONS, tracker.getCurrentId());
-
-        tracker.setVerified(AuthMethod.LOCATIONS);
-
-        assertNull(tracker.getCurrentId());
+    fun testTrackerGeofencing() {
+        val tracker = getTracker(
+            AuthMethod.GEOFENCING,
+            AuthMethod.LOCATIONS
+        )
+        Assert.assertEquals(1, tracker.currentForUi.toLong())
+        Assert.assertEquals(1, tracker.countForUi.toLong())
+        Assert.assertEquals(AuthMethod.GEOFENCING, tracker.currentId)
+        tracker.setVerified(AuthMethod.GEOFENCING)
+        Assert.assertEquals(AuthMethod.LOCATIONS, tracker.currentId)
+        tracker.setVerified(AuthMethod.LOCATIONS)
+        Assert.assertNull(tracker.currentId)
     }
-
+    
     @Test
-    public void testTrackerGeofencingAsOne() {
-
-        FactorsTracker tracker = getTracker(
-                AuthMethod.GEOFENCING,
-                AuthMethod.LOCATIONS,
-                AuthMethod.BIOMETRIC);
-
-        assertEquals(1, tracker.getCurrentForUi());
-        assertEquals(2, tracker.getCountForUi());
-        assertEquals(AuthMethod.GEOFENCING, tracker.getCurrentId());
-
-        tracker.setVerified(AuthMethod.GEOFENCING);
-
-        assertEquals(AuthMethod.LOCATIONS, tracker.getCurrentId());
-
-        tracker.setVerified(AuthMethod.LOCATIONS);
-
-        assertEquals(AuthMethod.BIOMETRIC, tracker.getCurrentId());
-        assertEquals(2, tracker.getCurrentForUi());
+    fun testTrackerGeofencingAsOne() {
+        val tracker = getTracker(
+            AuthMethod.GEOFENCING,
+            AuthMethod.LOCATIONS,
+            AuthMethod.BIOMETRIC
+        )
+        Assert.assertEquals(1, tracker.currentForUi.toLong())
+        Assert.assertEquals(2, tracker.countForUi.toLong())
+        Assert.assertEquals(AuthMethod.GEOFENCING, tracker.currentId)
+        tracker.setVerified(AuthMethod.GEOFENCING)
+        Assert.assertEquals(AuthMethod.LOCATIONS, tracker.currentId)
+        tracker.setVerified(AuthMethod.LOCATIONS)
+        Assert.assertEquals(AuthMethod.BIOMETRIC, tracker.currentId)
+        Assert.assertEquals(2, tracker.currentForUi.toLong())
     }
-
+    
     @Test
-    public void testTrackerAllUserSet() {
-
-        FactorsTracker tracker = getTracker(
-                AuthMethod.WEARABLES,
-                AuthMethod.LOCATIONS,
-                AuthMethod.CIRCLE_CODE,
-                AuthMethod.PIN_CODE,
-                AuthMethod.BIOMETRIC);
-
-        tracker.setVerified(AuthMethod.WEARABLES);
-        tracker.setVerified(AuthMethod.LOCATIONS);
-        tracker.setVerified(AuthMethod.CIRCLE_CODE);
-
-        assertEquals(4, tracker.getCurrentForUi());
-        assertEquals(5, tracker.getCountForUi());
-        assertEquals(AuthMethod.PIN_CODE, tracker.getCurrentId());
+    fun testTrackerAllUserSet() {
+        val tracker = getTracker(
+            AuthMethod.WEARABLES,
+            AuthMethod.LOCATIONS,
+            AuthMethod.CIRCLE_CODE,
+            AuthMethod.PIN_CODE,
+            AuthMethod.BIOMETRIC
+        )
+        tracker.setVerified(AuthMethod.WEARABLES)
+        tracker.setVerified(AuthMethod.LOCATIONS)
+        tracker.setVerified(AuthMethod.CIRCLE_CODE)
+        Assert.assertEquals(4, tracker.currentForUi.toLong())
+        Assert.assertEquals(5, tracker.countForUi.toLong())
+        Assert.assertEquals(AuthMethod.PIN_CODE, tracker.currentId)
     }
-
+    
     @Test
-    public void testTrackerAllUserSet2() {
-
-        FactorsTracker tracker = getTracker(
-                AuthMethod.WEARABLES,
-                AuthMethod.LOCATIONS,
-                AuthMethod.CIRCLE_CODE,
-                AuthMethod.PIN_CODE);
-
-        tracker.setVerified(AuthMethod.WEARABLES);
-        tracker.setVerified(AuthMethod.LOCATIONS);
-
-        assertEquals(3, tracker.getCurrentForUi());
-        assertEquals(4, tracker.getCountForUi());
-        assertEquals(AuthMethod.CIRCLE_CODE, tracker.getCurrentId());
+    fun testTrackerAllUserSet2() {
+        val tracker = getTracker(
+            AuthMethod.WEARABLES,
+            AuthMethod.LOCATIONS,
+            AuthMethod.CIRCLE_CODE,
+            AuthMethod.PIN_CODE
+        )
+        tracker.setVerified(AuthMethod.WEARABLES)
+        tracker.setVerified(AuthMethod.LOCATIONS)
+        Assert.assertEquals(3, tracker.currentForUi.toLong())
+        Assert.assertEquals(4, tracker.countForUi.toLong())
+        Assert.assertEquals(AuthMethod.CIRCLE_CODE, tracker.currentId)
     }
-
+    
     @Test
-    public void testTrackerAllUserAndServiceSet() {
-
-        FactorsTracker tracker = getTracker(
-                AuthMethod.WEARABLES,
-                AuthMethod.GEOFENCING,
-                AuthMethod.LOCATIONS,
-                AuthMethod.CIRCLE_CODE,
-                AuthMethod.PIN_CODE,
-                AuthMethod.BIOMETRIC);
-
-        tracker.setVerified(AuthMethod.WEARABLES);
-
-        assertEquals(2, tracker.getCurrentForUi());
-
-        tracker.setVerified(AuthMethod.GEOFENCING);
-
-        assertEquals(2, tracker.getCurrentForUi());
-        assertEquals(AuthMethod.LOCATIONS, tracker.getCurrentId());
-
-        tracker.setVerified(AuthMethod.LOCATIONS);
-
-        assertEquals(3, tracker.getCurrentForUi());
-        assertEquals(5, tracker.getCountForUi());
-        assertEquals(AuthMethod.CIRCLE_CODE, tracker.getCurrentId());
+    fun testTrackerAllUserAndServiceSet() {
+        val tracker = getTracker(
+            AuthMethod.WEARABLES,
+            AuthMethod.GEOFENCING,
+            AuthMethod.LOCATIONS,
+            AuthMethod.CIRCLE_CODE,
+            AuthMethod.PIN_CODE,
+            AuthMethod.BIOMETRIC
+        )
+        tracker.setVerified(AuthMethod.WEARABLES)
+        Assert.assertEquals(2, tracker.currentForUi.toLong())
+        tracker.setVerified(AuthMethod.GEOFENCING)
+        Assert.assertEquals(2, tracker.currentForUi.toLong())
+        Assert.assertEquals(AuthMethod.LOCATIONS, tracker.currentId)
+        tracker.setVerified(AuthMethod.LOCATIONS)
+        Assert.assertEquals(3, tracker.currentForUi.toLong())
+        Assert.assertEquals(5, tracker.countForUi.toLong())
+        Assert.assertEquals(AuthMethod.CIRCLE_CODE, tracker.currentId)
     }
-
+    
     @Test
-    public void testTrackerAllUserAndServiceSet2() {
-
-        FactorsTracker tracker = getTracker(
-                AuthMethod.WEARABLES,
-                AuthMethod.GEOFENCING,
-                AuthMethod.LOCATIONS,
-                AuthMethod.CIRCLE_CODE,
-                AuthMethod.PIN_CODE);
-
-        tracker.setVerified(AuthMethod.WEARABLES);
-
-        assertEquals(2, tracker.getCurrentForUi());
-
-        tracker.setVerified(AuthMethod.GEOFENCING);
-
-        assertEquals(2, tracker.getCurrentForUi());
-
-        assertEquals(AuthMethod.LOCATIONS, tracker.getCurrentId());
-
-        tracker.setVerified(AuthMethod.LOCATIONS);
-
-        assertEquals(3, tracker.getCurrentForUi());
-        assertEquals(4, tracker.getCountForUi());
-        assertEquals(AuthMethod.CIRCLE_CODE, tracker.getCurrentId());
-
-        tracker.setVerified(AuthMethod.CIRCLE_CODE);
-
-        assertEquals(AuthMethod.PIN_CODE, tracker.getCurrentId());
+    fun testTrackerAllUserAndServiceSet2() {
+        val tracker = getTracker(
+            AuthMethod.WEARABLES,
+            AuthMethod.GEOFENCING,
+            AuthMethod.LOCATIONS,
+            AuthMethod.CIRCLE_CODE,
+            AuthMethod.PIN_CODE
+        )
+        tracker.setVerified(AuthMethod.WEARABLES)
+        Assert.assertEquals(2, tracker.currentForUi.toLong())
+        tracker.setVerified(AuthMethod.GEOFENCING)
+        Assert.assertEquals(2, tracker.currentForUi.toLong())
+        Assert.assertEquals(AuthMethod.LOCATIONS, tracker.currentId)
+        tracker.setVerified(AuthMethod.LOCATIONS)
+        Assert.assertEquals(3, tracker.currentForUi.toLong())
+        Assert.assertEquals(4, tracker.countForUi.toLong())
+        Assert.assertEquals(AuthMethod.CIRCLE_CODE, tracker.currentId)
+        tracker.setVerified(AuthMethod.CIRCLE_CODE)
+        Assert.assertEquals(AuthMethod.PIN_CODE, tracker.currentId)
     }
-
-    private FactorsTracker getTracker(AuthMethod... authMethods) {
-        return new FactorsTracker(Arrays.asList(authMethods));
+    
+    private fun getTracker(vararg authMethods: AuthMethod): FactorsTracker {
+        return FactorsTracker(Arrays.asList(*authMethods))
     }
 }

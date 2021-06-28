@@ -1,84 +1,80 @@
 /*
  *  Copyright (c) 2018. iovation, LLC. All rights reserved.
  */
+package com.launchkey.android.authenticator.sdk.ui.internal.util
 
-package com.launchkey.android.authenticator.sdk.ui.internal.util;
+import android.view.View
+import org.junit.Assert
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.junit.MockitoJUnitRunner
 
-import android.view.View;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
-
-@RunWith(MockitoJUnitRunner.class)
-public class FpsRefreshHelperTest {
-
-    private final long RATE = 1000L / (long) FpsRefreshHelper.FPS_MAX;
-
-    @Mock private View mMockView;
-    @Mock private TimingCounter.NowProvider mockNowProvider;
-
+@RunWith(MockitoJUnitRunner::class)
+class FpsRefreshHelperTest {
+    private val RATE = 1000L / FpsRefreshHelper.FPS_MAX.toLong()
+    
+    @Mock
+    private val mMockView: View? = null
+    
+    @Mock
+    private val mockNowProvider: TimingCounter.NowProvider? = null
     @Test
-    public void testInstantiation() {
-        FpsRefreshHelper helper = new FpsRefreshHelper(null);
-        assertNotNull(helper);
+    fun testInstantiation() {
+        val helper = FpsRefreshHelper(null)
+        Assert.assertNotNull(helper)
     }
-
+    
     @Test
-    public void testNullViewNonCrash() {
-        FpsRefreshHelper fpsRefreshHelper = getFpsRefreshHelper();
-        when(mockNowProvider.getNow()).thenReturn(100L);
-        fpsRefreshHelper.forceInvalidate();
+    fun testNullViewNonCrash() {
+        val fpsRefreshHelper = getFpsRefreshHelper()
+        Mockito.`when`(mockNowProvider!!.now).thenReturn(100L)
+        fpsRefreshHelper.forceInvalidate()
         // Test passing if no crash happens
     }
-
+    
     @Test
-    public void testNoUpdateAllowed() {
-        FpsRefreshHelper fpsRefreshHelper = getFpsRefreshHelper();
-        when(mockNowProvider.getNow()).thenReturn(0L);
-        fpsRefreshHelper.forceInvalidate();
-        when(mockNowProvider.getNow()).thenReturn(RATE/2L);
-        final boolean invalidated = fpsRefreshHelper.invalidate();
-        assertFalse(invalidated);
+    fun testNoUpdateAllowed() {
+        val fpsRefreshHelper = getFpsRefreshHelper()
+        Mockito.`when`(mockNowProvider!!.now).thenReturn(0L)
+        fpsRefreshHelper.forceInvalidate()
+        Mockito.`when`(mockNowProvider.now).thenReturn(RATE / 2L)
+        val invalidated = fpsRefreshHelper.invalidate()
+        Assert.assertFalse(invalidated)
     }
-
+    
     @Test
-    public void testUpdateAllowedSame() {
-        FpsRefreshHelper fpsRefreshHelper = getFpsRefreshHelper();
-        when(mockNowProvider.getNow()).thenReturn(0L);
-        fpsRefreshHelper.forceInvalidate();
-        when(mockNowProvider.getNow()).thenReturn(RATE);
-        final boolean invalidated = fpsRefreshHelper.invalidate();
-        assertTrue(invalidated);
+    fun testUpdateAllowedSame() {
+        val fpsRefreshHelper = getFpsRefreshHelper()
+        Mockito.`when`(mockNowProvider!!.now).thenReturn(0L)
+        fpsRefreshHelper.forceInvalidate()
+        Mockito.`when`(mockNowProvider.now).thenReturn(RATE)
+        val invalidated = fpsRefreshHelper.invalidate()
+        Assert.assertTrue(invalidated)
     }
-
+    
     @Test
-    public void testUpdateAllowedGreater() {
-        FpsRefreshHelper fpsRefreshHelper = getFpsRefreshHelper();
-        when(mockNowProvider.getNow()).thenReturn(0L);
-        fpsRefreshHelper.forceInvalidate();
-        when(mockNowProvider.getNow()).thenReturn(RATE * 2L);
-        final boolean invalidated = fpsRefreshHelper.invalidate();
-        assertTrue(invalidated);
+    fun testUpdateAllowedGreater() {
+        val fpsRefreshHelper = getFpsRefreshHelper()
+        Mockito.`when`(mockNowProvider!!.now).thenReturn(0L)
+        fpsRefreshHelper.forceInvalidate()
+        Mockito.`when`(mockNowProvider.now).thenReturn(RATE * 2L)
+        val invalidated = fpsRefreshHelper.invalidate()
+        Assert.assertTrue(invalidated)
     }
-
+    
     @Test
-    public void testUpdateForced() {
-        FpsRefreshHelper fpsRefreshHelper = getFpsRefreshHelper();
-        when(mockNowProvider.getNow()).thenReturn(0L);
-        fpsRefreshHelper.forceInvalidate();
-        when(mockNowProvider.getNow()).thenReturn(RATE/2L);
-        final boolean invalidated = fpsRefreshHelper.forceInvalidate();
-        assertTrue(invalidated);
+    fun testUpdateForced() {
+        val fpsRefreshHelper = getFpsRefreshHelper()
+        Mockito.`when`(mockNowProvider!!.now).thenReturn(0L)
+        fpsRefreshHelper.forceInvalidate()
+        Mockito.`when`(mockNowProvider.now).thenReturn(RATE / 2L)
+        val invalidated = fpsRefreshHelper.forceInvalidate()
+        Assert.assertTrue(invalidated)
     }
-
-    private FpsRefreshHelper getFpsRefreshHelper() {
-        return new FpsRefreshHelper(mMockView, FpsRefreshHelper.FPS_MAX, mockNowProvider);
+    
+    private fun getFpsRefreshHelper(): FpsRefreshHelper {
+        return FpsRefreshHelper(mMockView, FpsRefreshHelper.FPS_MAX, mockNowProvider!!)
     }
 }

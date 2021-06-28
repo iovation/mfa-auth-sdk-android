@@ -1,42 +1,41 @@
-package com.launchkey.android.authenticator.sdk.ui.internal.util;
+package com.launchkey.android.authenticator.sdk.ui.internal.util
 
-import android.content.Intent;
+import android.content.Intent
+import com.launchkey.android.authenticator.sdk.ui.internal.util.IntentUtils.addInternalVerification
+import com.launchkey.android.authenticator.sdk.ui.internal.util.IntentUtils.isIntentInvalid
+import org.junit.Assert
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
-import org.junit.Assert;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
-@RunWith(RobolectricTestRunner.class)
-@Config(sdk = 23)
-public class IntentUtilsTest {
-
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [23])
+class IntentUtilsTest {
     @Test
-    public void testNullIntent() {
-        Assert.assertTrue(IntentUtils.isIntentInvalid(null));
+    fun testNullIntent() {
+        Assert.assertTrue(isIntentInvalid(null))
     }
-
+    
     @Test
-    public void testUntrustedIntent() {
-        Intent i = new Intent();
-        Assert.assertTrue(IntentUtils.isIntentInvalid(i));
+    fun testUntrustedIntent() {
+        val i = Intent()
+        Assert.assertTrue(isIntentInvalid(i))
     }
-
+    
     @Test
-    public void testTrustedIntent() {
-        Intent i = new Intent();
-        IntentUtils.addInternalVerification(i);
-        Assert.assertFalse(IntentUtils.isIntentInvalid(i));
+    fun testTrustedIntent() {
+        val i = Intent()
+        addInternalVerification(i)
+        Assert.assertFalse(isIntentInvalid(i))
     }
-
+    
     @Test
-    public void testIntentWithExtrasHasTrustAppended() {
-        Intent i = new Intent();
-        i.putExtra("asdf", "fdsa");
-        IntentUtils.addInternalVerification(i);
-        Assert.assertFalse(IntentUtils.isIntentInvalid(i));
-        Assert.assertEquals(i.getExtras().getString("asdf"), "fdsa");
+    fun testIntentWithExtrasHasTrustAppended() {
+        val i = Intent()
+        i.putExtra("asdf", "fdsa")
+        addInternalVerification(i)
+        Assert.assertFalse(isIntentInvalid(i))
+        Assert.assertEquals(i.extras!!.getString("asdf"), "fdsa")
     }
 }

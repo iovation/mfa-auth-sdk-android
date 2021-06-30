@@ -18,7 +18,18 @@ buildscript {
 }
 
 plugins {
+    id "org.sonarqube" version "2.7"
     id 'base'
+}
+
+sonarqube {
+    properties {
+        def appConfig = project('app').android.defaultConfig
+        property "sonar.projectName", "c3-android-auth-sdk"
+        property "sonar.projectVersion", "${appConfig.versionName}-${appConfig.versionCode}"
+        property "sonar.verbose", "true"
+        property "sonar.sourceEncoding", "UTF-8"
+    }
 }
 
 allprojects {
@@ -30,5 +41,15 @@ allprojects {
     }
     tasks.withType(JavaCompile) {
         options.compilerArgs << "-Xlint:deprecation"
+    }
+}
+
+subprojects {
+    sonarqube {
+        properties {
+            property "sonar.sources", "src"
+            property "sonar.tests", ["src/test/java"]
+            property "sonar.test.inclusions", "**/*Test*/**"
+        }
     }
 }

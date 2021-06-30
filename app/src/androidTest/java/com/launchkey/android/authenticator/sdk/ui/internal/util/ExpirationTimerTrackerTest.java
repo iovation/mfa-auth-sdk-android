@@ -75,8 +75,8 @@ public class ExpirationTimerTrackerTest extends BaseTest {
         ArgumentCaptor<ExpirationTimerTracker.State> expState = ArgumentCaptor.forClass(ExpirationTimerTracker.State.class);
         verify(mockObserver, times(11)).onChanged(expState.capture());
         for (int i = 0; i < 9; ++i) {
-            assertEquals(10-(i+1), ((ExpirationTimerTracker.State.Update)expState.getAllValues().get(i)).remainingMillis);
-            assertEquals((i+1) / 10f, ((ExpirationTimerTracker.State.Update)expState.getAllValues().get(i)).progress, .0001);
+            assertEquals(10-(i+1), ((ExpirationTimerTracker.State.Update)expState.getAllValues().get(i)).getRemainingMillis());
+            assertEquals((i+1) / 10f, ((ExpirationTimerTracker.State.Update)expState.getAllValues().get(i)).getProgress(), .0001);
         }
     }
 

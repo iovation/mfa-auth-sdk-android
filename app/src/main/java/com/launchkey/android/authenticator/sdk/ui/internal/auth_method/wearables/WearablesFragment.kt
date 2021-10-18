@@ -17,15 +17,20 @@ import com.launchkey.android.authenticator.sdk.ui.internal.util.*
 
 class WearablesFragment : BaseAppCompatFragment(R.layout.fragment_wearables) {
     private val binding by viewBinding(FragmentWearablesBinding::bind)
-    private val page: AuthMethodActivity.Page by bundleArgument(AuthMethodActivity.PAGE_KEY)
+    private val startPage: AuthMethodActivity.Page by bundleArgument(AuthMethodActivity.PAGE_KEY)
     var wearableAdded = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            setupScreen()
+            setupToolbar()
+        }
+
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (page == AuthMethodActivity.Page.ADD) {
+                    if (startPage == AuthMethodActivity.Page.ADD) {
                         if (wearableAdded) {
                             requireActivity().setResult(Activity.RESULT_OK, Intent().apply {
                                 putExtra(
@@ -44,13 +49,8 @@ class WearablesFragment : BaseAppCompatFragment(R.layout.fragment_wearables) {
                 }
             })
 
-        if (savedInstanceState != null) return
-        setupScreen()
-        updateToolbar(page)
-
         childFragmentManager.registerFragmentLifecycleCallbacks(object :
             FragmentManager.FragmentLifecycleCallbacks() {
-
             override fun onFragmentViewCreated(
                 fm: FragmentManager,
                 f: Fragment,
@@ -70,6 +70,14 @@ class WearablesFragment : BaseAppCompatFragment(R.layout.fragment_wearables) {
         }, false)
     }
 
+    private fun setupToolbar() {
+        with(binding.wearablesToolbar.root) {
+            (requireActivity() as AppCompatActivity).setSupportActionBar(this)
+            setNavigationOnClickListener { requireActivity().onBackPressed() }
+            updateToolbar(startPage)
+        }
+    }
+
     private fun updateToolbar(page: AuthMethodActivity.Page) {
         with(binding.wearablesToolbar.root) {
             when (page) {
@@ -83,13 +91,11 @@ class WearablesFragment : BaseAppCompatFragment(R.layout.fragment_wearables) {
                 }
                 else -> throw IllegalArgumentException("Unknown argument")
             }
-            (requireActivity() as AppCompatActivity).setSupportActionBar(this)
-            setNavigationOnClickListener { requireActivity().onBackPressed() }
         }
     }
 
     private fun setupScreen() {
-        when (page) {
+        when (startPage) {
             AuthMethodActivity.Page.ADD -> {
                 goToAdd()
             }
@@ -103,6 +109,7 @@ class WearablesFragment : BaseAppCompatFragment(R.layout.fragment_wearables) {
                     )
                 }
             }
+            else -> throw IllegalStateException("Invalid Fragment Start Page")
         }
     }
 

@@ -13,16 +13,13 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.launchkey.android.authenticator.sdk.core.auth_method_management.WearablesManager
 import com.launchkey.android.authenticator.sdk.core.auth_method_management.exception.wearables.BluetoothDisabledException
 import com.launchkey.android.authenticator.sdk.core.auth_method_management.exception.wearables.BluetoothPermissionException
 import com.launchkey.android.authenticator.sdk.core.auth_method_management.exception.wearables.WearableWithSameNameExistsException
-import com.launchkey.android.authenticator.sdk.ui.AuthenticatorUIManager
 import com.launchkey.android.authenticator.sdk.ui.R
 import com.launchkey.android.authenticator.sdk.ui.databinding.FragmentWearablesAddBinding
-import com.launchkey.android.authenticator.sdk.ui.databinding.ItemBluetoothDeviceDiscoverBinding
 import com.launchkey.android.authenticator.sdk.ui.internal.common.Constants
 import com.launchkey.android.authenticator.sdk.ui.internal.dialog.*
 import com.launchkey.android.authenticator.sdk.ui.internal.util.*
@@ -257,36 +254,5 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
     private fun onItemSelect(genericDevice: WearablesManager.Wearable) {
         selectedItem = genericDevice
         setNameAlertDialog.changeState(DialogFragmentViewModel.State.NeedsToBeShown)
-    }
-
-    private class DiscoveredWearablesAdapter(
-        private val devices: List<WearablesManager.Wearable>,
-        private val onItemClickListener: ((WearablesManager.Wearable) -> Unit)
-    ) : RecyclerView.Adapter<DiscoveredWearablesAdapter.ViewHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            return ViewHolder(
-                ItemBluetoothDeviceDiscoverBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                ).apply {
-                    val listItemsUiProp =
-                        AuthenticatorUIManager.instance.config.themeObj().listItems
-                    root.background = listItemsUiProp.colorBg
-                    bluetoothTextTitle.setTextColor(listItemsUiProp.colorText)
-                })
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val item = devices[position]
-            val label = if (item.name.trim { it <= ' ' }.isEmpty()) item.id else item.name
-            holder.binding.bluetoothTextTitle.text = label
-            holder.binding.root.setOnClickListener { onItemClickListener(devices[position]) }
-        }
-
-        override fun getItemCount(): Int = devices.size
-
-        private class ViewHolder(val binding: ItemBluetoothDeviceDiscoverBinding) :
-            RecyclerView.ViewHolder(binding.root)
     }
 }

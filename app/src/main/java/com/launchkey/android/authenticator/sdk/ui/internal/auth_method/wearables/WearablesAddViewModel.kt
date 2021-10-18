@@ -22,26 +22,27 @@ class WearablesAddViewModel(
         if (savedStateHandle.contains(HANDLE_KEY_AVAILABLE_WEARABLE_STATE)) MutableLiveData(
             savedStateHandle.get(HANDLE_KEY_AVAILABLE_WEARABLE_STATE)!!
         ) else MutableLiveData()
+
     val availableWearablesState: LiveData<AvailableWearablesState>
         get() = _availableWearablesState
 
     private val _addWearableState: MutableLiveData<AddWearableState> =
-        if (savedStateHandle.contains(HANDLE_KEY_ADD_WEARABLE_STATE)) MutableLiveData(
-            savedStateHandle.get(HANDLE_KEY_ADD_WEARABLE_STATE)!!
-        ) else MutableLiveData()
+        savedStateHandle.getLiveData(HANDLE_KEY_ADD_WEARABLE_STATE)
 
     val addWearableState: LiveData<AddWearableState>
         get() = _addWearableState
+
 
     init {
         getAvailableWearables()
     }
 
-    fun addWearable(wearable: WearablesManager.Wearable) =
+    fun addWearable(wearable: WearablesManager.Wearable, name: String) =
         executor.run {
             try {
-                if (wearable.name.trim().length < Constants.MINIMUM_INPUT_LENGTH) throw WearableNameTooShortException
+                if (name.trim().length < Constants.MINIMUM_INPUT_LENGTH) throw WearableNameTooShortException
 
+                wearable.name = name
                 wearablesManager.addWearable(
                     wearable,
                     object : WearablesManager.AddWearableCallback {
@@ -68,6 +69,8 @@ class WearablesAddViewModel(
 
     fun getAvailableWearables() =
         executor.run {
+            _availableWearablesState.postValue(AvailableWearablesState.ScanningDevices)
+
             wearablesManager.getAvailableWearables(object :
                 WearablesManager.GetAvailableWearablesCallback {
                 override fun onGetSuccess(wearables: List<WearablesManager.Wearable>) {
@@ -84,16 +87,32 @@ class WearablesAddViewModel(
             })
         }
 
+    fun cancelNaming() {
+        _addWearableState.postValue(AddWearableState.SelectingWearable)
+    }
+
+    fun startNamingWearable(wearable: WearablesManager.Wearable) {
+        _addWearableState.postValue(AddWearableState.NamingWearable(wearable))
+    }
+
+    fun getSelectedWearable() = if (addWearableState.value is AddWearableState.NamingWearable)
+        (addWearableState.value as AddWearableState.NamingWearable).wearable
+    else null
+
     fun isSupported(): Boolean = wearablesManager.isSupported
 
     internal object WearableNameTooShortException : RuntimeException()
 
     sealed class AddWearableState {
+        object SelectingWearable : AddWearableState()
+        data class NamingWearable(val wearable: WearablesManager.Wearable) : AddWearableState()
         data class AddedNewWearable(val wearable: WearablesManager.Wearable) : AddWearableState()
         data class FailedToAddWearable(val failure: Exception) : AddWearableState()
     }
 
     sealed class AvailableWearablesState {
+        object ScanningDevices : AvailableWearablesState()
+
         data class AvailableWearablesSuccess(val wearables: List<WearablesManager.Wearable>) :
             AvailableWearablesState()
 

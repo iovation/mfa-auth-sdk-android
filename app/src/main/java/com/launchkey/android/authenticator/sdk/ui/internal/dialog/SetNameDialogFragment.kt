@@ -19,9 +19,14 @@ class SetNameDialogFragment : AlertDialogFragment() {
     private var defaultTextValue: String? = null
     private var setNameListener: SetNameListener? = null
     private val binding: DialogFragmentSetnameBinding by viewBinding(DialogFragmentSetnameBinding::bind)
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val binding = DialogFragmentSetnameBinding.inflate(
-                LayoutInflater.from(requireActivity()), null, false)
+            LayoutInflater.from(requireActivity()), null, false
+        )
         val arguments = arguments
         if (arguments != null) {
             hint = arguments.getString(HINT_ARG)
@@ -37,7 +42,8 @@ class SetNameDialogFragment : AlertDialogFragment() {
         editText.setOnEditorActionListener(OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (dialog != null && dialog is AlertDialog) {
-                    val positiveButton = (dialog as AlertDialog?)!!.getButton(AlertDialog.BUTTON_POSITIVE)
+                    val positiveButton =
+                        (dialog as AlertDialog?)!!.getButton(AlertDialog.BUTTON_POSITIVE)
                     positiveButton?.performClick()
                     return@OnEditorActionListener true
                 }
@@ -90,23 +96,28 @@ class SetNameDialogFragment : AlertDialogFragment() {
     companion object {
         private const val HINT_ARG = "hint"
         private const val DEFAULT_TEXT_ARG = "default_text"
+
         @Deprecated(message = "Use alternative show method with corresponding viewmodel")
         @JvmStatic
         fun show(
-                context: Context,
-                fm: FragmentManager,
-                titleResourceId: Int,
-                hintRes: Int,
-                positiveButtonTextRes: Int,
-                defaultValue: String?,
-                onNameSet: SetNameListener?,
-                onCancel: DialogInterface.OnCancelListener?,
-                cancellable: Boolean): SetNameDialogFragment {
-            
+            context: Context,
+            fm: FragmentManager,
+            titleResourceId: Int,
+            hintRes: Int,
+            positiveButtonTextRes: Int,
+            defaultValue: String?,
+            onNameSet: SetNameListener?,
+            onCancel: DialogInterface.OnCancelListener?,
+            cancellable: Boolean
+        ): SetNameDialogFragment {
+
             val arguments = Bundle()
             arguments.putString(TITLE_ARG, context.getString(titleResourceId))
             arguments.putString(POSITIVE_BUTTON_ARG, context.getString(positiveButtonTextRes))
-            arguments.putString(NEGATIVE_BUTTON_TEXT_ARG, context.getString(R.string.ioa_generic_cancel))
+            arguments.putString(
+                NEGATIVE_BUTTON_TEXT_ARG,
+                context.getString(R.string.ioa_generic_cancel)
+            )
             arguments.putString(HINT_ARG, context.getString(hintRes))
             arguments.putString(DEFAULT_TEXT_ARG, defaultValue)
             arguments.putBoolean(CANCELLABLE_ARG, cancellable)
@@ -117,24 +128,25 @@ class SetNameDialogFragment : AlertDialogFragment() {
             dialog.show(fm, SetNameDialogFragment::class.java.simpleName)
             return dialog
         }
+
+        @JvmStatic
         fun show(
-                context: Context,
-                fm: FragmentManager,
-                titleResourceId: Int,
-                hintRes: Int,
-                positiveButtonTextRes: Int,
-                defaultValue: String?): SetNameDialogFragment? {
-            val arguments = Bundle()
-            arguments.putString(TITLE_ARG, context.getString(titleResourceId))
-            arguments.putString(POSITIVE_BUTTON_ARG, context.getString(positiveButtonTextRes))
-            arguments.putString(NEGATIVE_BUTTON_TEXT_ARG, context.getString(R.string.ioa_generic_cancel))
-            arguments.putString(HINT_ARG, context.getString(hintRes))
-            arguments.putString(DEFAULT_TEXT_ARG, defaultValue)
-            arguments.putBoolean(CANCELLABLE_ARG, false)
-            val dialog = SetNameDialogFragment()
-            dialog.arguments = arguments
-            dialog.show(fm, SetNameDialogFragment::class.java.simpleName)
-            return dialog
+            context: Context,
+            fragmentManager: FragmentManager,
+            titleResourceId: Int,
+            hintRes: Int,
+            positiveButtonTextRes: Int,
+            defaultValue: String?
+        ): SetNameDialogFragment = SetNameDialogFragment().apply {
+            arguments = Bundle().apply {
+                putString(TITLE_ARG, context.getString(titleResourceId))
+                putString(POSITIVE_BUTTON_ARG, context.getString(positiveButtonTextRes))
+                putString(NEGATIVE_BUTTON_TEXT_ARG, context.getString(R.string.ioa_generic_cancel))
+                putString(HINT_ARG, context.getString(hintRes))
+                putString(DEFAULT_TEXT_ARG, defaultValue)
+                putBoolean(CANCELLABLE_ARG, false)
+            }
+            show(fragmentManager, SetNameDialogFragment::class.java.simpleName)
         }
     }
 }

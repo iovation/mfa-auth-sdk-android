@@ -9,9 +9,9 @@ import com.launchkey.android.authenticator.sdk.ui.internal.common.Constants
 import java.util.concurrent.ExecutorService
 
 class WearablesAddViewModel(
-        private val wearablesManager: WearablesManager,
-        private val executor: ExecutorService,
-        savedStateHandle: SavedStateHandle
+    private val wearablesManager: WearablesManager,
+    private val executor: ExecutorService,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     companion object {
         private const val HANDLE_KEY_ADD_WEARABLE_STATE = "add_wearables_state"
@@ -19,12 +19,16 @@ class WearablesAddViewModel(
     }
 
     private val _availableWearablesState: MutableLiveData<AvailableWearablesState> =
-            if (savedStateHandle.contains(HANDLE_KEY_AVAILABLE_WEARABLE_STATE)) MutableLiveData(savedStateHandle.get(HANDLE_KEY_AVAILABLE_WEARABLE_STATE)!!) else MutableLiveData()
+        if (savedStateHandle.contains(HANDLE_KEY_AVAILABLE_WEARABLE_STATE)) MutableLiveData(
+            savedStateHandle.get(HANDLE_KEY_AVAILABLE_WEARABLE_STATE)!!
+        ) else MutableLiveData()
     val availableWearablesState: LiveData<AvailableWearablesState>
         get() = _availableWearablesState
 
     private val _addWearableState: MutableLiveData<AddWearableState> =
-            if (savedStateHandle.contains(HANDLE_KEY_ADD_WEARABLE_STATE)) MutableLiveData(savedStateHandle.get(HANDLE_KEY_ADD_WEARABLE_STATE)!!) else MutableLiveData()
+        if (savedStateHandle.contains(HANDLE_KEY_ADD_WEARABLE_STATE)) MutableLiveData(
+            savedStateHandle.get(HANDLE_KEY_ADD_WEARABLE_STATE)!!
+        ) else MutableLiveData()
 
     val addWearableState: LiveData<AddWearableState>
         get() = _addWearableState
@@ -34,11 +38,13 @@ class WearablesAddViewModel(
     }
 
     fun addWearable(wearable: WearablesManager.Wearable) =
-            executor.run {
-                try {
-                    if (wearable.name.trim().length < Constants.MINIMUM_INPUT_LENGTH) throw WearableNameTooShortException
+        executor.run {
+            try {
+                if (wearable.name.trim().length < Constants.MINIMUM_INPUT_LENGTH) throw WearableNameTooShortException
 
-                    wearablesManager.addWearable(wearable, object : WearablesManager.AddWearableCallback {
+                wearablesManager.addWearable(
+                    wearable,
+                    object : WearablesManager.AddWearableCallback {
                         override fun onAddSuccess() {
                             val state = AddWearableState.AddedNewWearable(wearable)
 //                            savedStateHandle.set(HANDLE_KEY_ADD_WEARABLE_STATE, state)
@@ -52,30 +58,31 @@ class WearablesAddViewModel(
                         }
 
                     })
-                } catch (e: Exception) {
-                    val state = AddWearableState.FailedToAddWearable(e)
+            } catch (e: Exception) {
+                val state = AddWearableState.FailedToAddWearable(e)
 //                    savedStateHandle.set(HANDLE_KEY_ADD_WEARABLE_STATE, state)
-                    _addWearableState.postValue(state)
+                _addWearableState.postValue(state)
 
-                }
             }
+        }
 
     fun getAvailableWearables() =
-            executor.run {
-                wearablesManager.getAvailableWearables(object : WearablesManager.GetAvailableWearablesCallback {
-                    override fun onGetSuccess(wearables: List<WearablesManager.Wearable>) {
-                        val state = AvailableWearablesState.AvailableWearablesSuccess(wearables)
+        executor.run {
+            wearablesManager.getAvailableWearables(object :
+                WearablesManager.GetAvailableWearablesCallback {
+                override fun onGetSuccess(wearables: List<WearablesManager.Wearable>) {
+                    val state = AvailableWearablesState.AvailableWearablesSuccess(wearables)
 //                        savedStateHandle.set(HANDLE_KEY_AVAILABLE_WEARABLE_STATE, state)
-                        _availableWearablesState.postValue(state)
-                    }
+                    _availableWearablesState.postValue(state)
+                }
 
-                    override fun onGetFailure(e: Exception) {
-                        val state = AvailableWearablesState.FailedToGetAvailableWearables(e)
+                override fun onGetFailure(e: Exception) {
+                    val state = AvailableWearablesState.FailedToGetAvailableWearables(e)
 //                        savedStateHandle.set(HANDLE_KEY_AVAILABLE_WEARABLE_STATE, state)
-                        _availableWearablesState.postValue(state)
-                    }
-                })
-            }
+                    _availableWearablesState.postValue(state)
+                }
+            })
+        }
 
     fun isSupported(): Boolean = wearablesManager.isSupported
 
@@ -87,7 +94,10 @@ class WearablesAddViewModel(
     }
 
     sealed class AvailableWearablesState {
-        class AvailableWearablesSuccess(val wearables: List<WearablesManager.Wearable>) : AvailableWearablesState()
-        data class FailedToGetAvailableWearables(val exception: Exception) : AvailableWearablesState()
+        data class AvailableWearablesSuccess(val wearables: List<WearablesManager.Wearable>) :
+            AvailableWearablesState()
+
+        data class FailedToGetAvailableWearables(val exception: Exception) :
+            AvailableWearablesState()
     }
 }

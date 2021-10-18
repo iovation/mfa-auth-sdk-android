@@ -5,7 +5,6 @@ package com.launchkey.android.authenticator.sdk.ui.internal.auth_method.wearable
 
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
@@ -29,11 +28,14 @@ import com.launchkey.android.authenticator.sdk.ui.internal.dialog.*
 import com.launchkey.android.authenticator.sdk.ui.internal.util.*
 import java.util.*
 
-class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_add), OnRefreshListener {
+class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_add),
+    OnRefreshListener {
     companion object {
-        private const val BT_DISABLED_ALERT_RESULT = "BT_DISABLED_ALERT_RESULT"
         private const val BT_DISABLED_ALERT = "BT_DISABLED_ALERT"
     }
+
+    private val bluetoothDisabledDialog: AlertDialogFragment?
+        get() = childFragmentManager.findFragmentByTag(BT_DISABLED_ALERT) as? AlertDialogFragment
 
     private val binding: FragmentWearablesAddBinding by viewBinding(FragmentWearablesAddBinding::bind)
     private val wearablesAddViewModel: WearablesAddViewModel by viewModels({ requireParentFragment() })
@@ -41,25 +43,17 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
     private val devicesWithNames: MutableList<WearablesManager.Wearable> = mutableListOf()
     private val devicesWithoutNames: MutableList<WearablesManager.Wearable> = mutableListOf()
     private var selectedItem: WearablesManager.Wearable? = null
-    private var bluetoothOffNotified = false
-    private val btLauncher = registerForActivityResult(StartActivityForResult(), ActivityResultCallback { result ->
-        if (result == null) return@ActivityResultCallback
-        if (result.resultCode == Activity.RESULT_OK) {
-            onRefresh()
-        } else {
-            bluetoothDisabledAlertDialog.changeState(DialogFragmentViewModel.State.NeedsToBeShown)
-        }
-    })
-    private lateinit var bluetoothDisabledAlertDialog: DialogFragmentViewModel
-    private lateinit var bluetoothDisabledResultAlertDialog: DialogFragmentViewModel
+    private val enabledBluetoothLauncher =
+        registerForActivityResult(StartActivityForResult(), ActivityResultCallback { result ->
+            if (result == null) return@ActivityResultCallback
+            if (result.resultCode == Activity.RESULT_OK) {
+                onRefresh()
+            } else {
+                requireActivity().onBackPressed()
+            }
+        })
+
     private lateinit var setNameAlertDialog: DialogFragmentViewModel
-    private val okClick = DialogInterface.OnClickListener { _, _ ->
-        val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-        btLauncher.launch(enableBtIntent)
-    }
-    private val cancelListener = DialogInterface.OnCancelListener { requireActivity().onBackPressed() }
-    private val okClickResult = DialogInterface.OnClickListener { dialog, which -> cancelListener.onCancel(dialog) }
-    private val cancelListenerResult = DialogInterface.OnCancelListener { requireActivity().onBackPressed() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
@@ -68,13 +62,24 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        bluetoothDisabledDialog?.setPositiveButtonClickListener { _, _ -> requestBluetoothEnabling() }
+        bluetoothDisabledDialog?.setCancelListener { requireActivity().onBackPressed() }
+
         binding.proximityAddSwiperefresh.setOnRefreshListener(this)
         binding.proximityAddSwiperefresh.isRefreshing = true
         binding.proximityAddSwiperefresh.setColorSchemeColors(
-                UiUtils.getColorFromTheme(requireContext(), R.attr.authenticatorColorAccent, R.color.lk_wl_default_accent))
-        bluetoothDisabledAlertDialog = ViewModelProvider(this, defaultViewModelProviderFactory).get(BT_DISABLED_ALERT_RESULT, DialogFragmentViewModel::class.java)
-        bluetoothDisabledResultAlertDialog = ViewModelProvider(this, defaultViewModelProviderFactory).get(BT_DISABLED_ALERT, DialogFragmentViewModel::class.java)
-        setNameAlertDialog = ViewModelProvider(this, defaultViewModelProviderFactory).get(SetNameDialogFragment::class.java.simpleName, DialogFragmentViewModel::class.java)
+            UiUtils.getColorFromTheme(
+                requireContext(),
+                R.attr.authenticatorColorAccent,
+                R.color.lk_wl_default_accent
+            )
+        )
+
+        setNameAlertDialog = ViewModelProvider(
+            this,
+            defaultViewModelProviderFactory
+        ).get(SetNameDialogFragment::class.java.simpleName, DialogFragmentViewModel::class.java)
         val toggle = binding.proximityAddFilterSwitch
         toggle.setOnCheckedChangeListener { _, isChecked -> updateDevicesDisplayed(isChecked) }
         val toggleLayout: View = binding.proximityAddFilterLayout
@@ -84,56 +89,23 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
-        if (!wearablesAddViewModel.isSupported()) {
-            requireActivity().onBackPressed()
-        }
-        bluetoothDisabledAlertDialog.state.observe(viewLifecycleOwner) { state ->
-            if (state is DialogFragmentViewModel.State.NeedsToBeShown) {
-                GenericAlertDialogFragment.show(childFragmentManager,
-                        this@WearablesAddFragment.requireContext(),
-                        getString(R.string.ioa_generic_warning),
-                        getString(R.string.ioa_sec_bp_add_error_bluetoothdisabled_message),
-                        null,
-                        true,
-                        null,
-                        BT_DISABLED_ALERT)
-                bluetoothDisabledAlertDialog.changeState(DialogFragmentViewModel.State.Shown)
-            } else if (state is DialogFragmentViewModel.State.Shown) {
-                val bluetoothDisabledDialog = childFragmentManager.findFragmentByTag(BT_DISABLED_ALERT) as AlertDialogFragment
-                bluetoothDisabledDialog.setPositiveButtonClickListener(okClickResult)
-                bluetoothDisabledDialog.setCancelListener(cancelListenerResult)
-            }
-        }
-        bluetoothDisabledResultAlertDialog.state.observe(viewLifecycleOwner) { state ->
-            if (state is DialogFragmentViewModel.State.NeedsToBeShown) {
-                GenericAlertDialogFragment.show(childFragmentManager,
-                        this@WearablesAddFragment.requireContext(),
-                        getString(R.string.ioa_sec_bp_add_error_bluetoothdisabled_title),
-                        getString(R.string.ioa_sec_bp_add_error_bluetoothdisabled_message),
-                        null,
-                        true,
-                        null,
-                        BT_DISABLED_ALERT_RESULT)
-                bluetoothDisabledResultAlertDialog.changeState(DialogFragmentViewModel.State.Shown)
-            } else if (state is DialogFragmentViewModel.State.Shown) {
-                val bluetoothDisabledDialog = childFragmentManager.findFragmentByTag(BT_DISABLED_ALERT_RESULT) as AlertDialogFragment
-                bluetoothDisabledDialog.setPositiveButtonClickListener(okClick)
-                bluetoothDisabledDialog.setCancelListener(cancelListener)
-            }
-        }
+
         setNameAlertDialog.state.observe(viewLifecycleOwner) { state ->
             if (state is DialogFragmentViewModel.State.NeedsToBeShown) {
                 SetNameDialogFragment.show(
-                        requireContext(),
-                        childFragmentManager,
-                        R.string.ioa_sec_bp_add_dialog_setname_title,
-                        R.string.ioa_sec_bp_add_dialog_setname_hint,
-                        R.string.ioa_generic_done,
-                        selectedItem!!.name)
+                    requireContext(),
+                    childFragmentManager,
+                    R.string.ioa_sec_bp_add_dialog_setname_title,
+                    R.string.ioa_sec_bp_add_dialog_setname_hint,
+                    R.string.ioa_generic_done,
+                    selectedItem!!.name
+                )
                 setNameAlertDialog.changeState(DialogFragmentViewModel.State.Shown)
             } else if (state is DialogFragmentViewModel.State.Shown) {
-                val setNameDialogFragment = childFragmentManager.findFragmentByTag(SetNameDialogFragment::class.java.simpleName) as SetNameDialogFragment
-                setNameDialogFragment.setPositiveButtonClickListener(object : SetNameDialogFragment.SetNameListener {
+                val setNameDialogFragment =
+                    childFragmentManager.findFragmentByTag(SetNameDialogFragment::class.java.simpleName) as SetNameDialogFragment
+                setNameDialogFragment.setPositiveButtonClickListener(object :
+                    SetNameDialogFragment.SetNameListener {
                     override fun onNameSet(dialog: SetNameDialogFragment?, name: String?) {
                         selectedItem!!.name = name!!
                         wearablesAddViewModel.addWearable(selectedItem!!)
@@ -142,11 +114,33 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
             }
         }
 
+        subscribeObservers()
+    }
+
+    private fun getErrorMessage(exception: Exception): String? {
+        if (exception is WearablesAddViewModel.WearableNameTooShortException) {
+            return resources.getQuantityString(
+                R.plurals.ioa_sec_bp_add_error_invalidname_message_format,
+                Constants.MINIMUM_INPUT_LENGTH,
+                Constants.MINIMUM_INPUT_LENGTH
+            )
+        }
+
+        return if (exception is WearableWithSameNameExistsException) {
+            getString(R.string.ioa_sec_bp_add_error_usedname_message)
+        } else {
+            getString(R.string.ioa_error_unknown_format, exception.message)
+        }
+    }
+
+    private fun subscribeObservers() {
         wearablesAddViewModel.availableWearablesState.observe(viewLifecycleOwner) {
+            binding.proximityAddSwiperefresh.isRefreshing = false
             when (it) {
                 is WearablesAddViewModel.AvailableWearablesState.AvailableWearablesSuccess -> {
                     val nameFilter = { withName: Boolean ->
-                        filter@{ wearable: WearablesManager.Wearable -> Boolean
+                        filter@{ wearable: WearablesManager.Wearable ->
+                            Boolean
                             val s = wearable.name.trim { it <= ' ' }
                             return@filter if (withName) s.isNotEmpty() else s.isEmpty()
                         }
@@ -161,46 +155,37 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
                     val emptyView = binding.proximityAddEmpty
                     emptyView.makeVisible()
                     emptyView.setText(R.string.ioa_sec_bp_add_empty)
-                    if (it.exception is BluetoothDisabledException ||
-                            it.exception is BluetoothPermissionException) {
-                        requestBluetoothEnabling()
-                    } else {
-                        // Exit
-                        requireActivity().onBackPressed()
+                    when (it.exception) {
+                        // TODO: 10/18/21 BluetoothPermissionException needs a separate case?
+                        is BluetoothDisabledException, is BluetoothPermissionException -> {
+                            showBluetoothDisabledDialog()
+                        }
+                        else -> requireActivity().onBackPressed() // exit
                     }
                 }
             }
         }
+
         wearablesAddViewModel.addWearableState.observe(viewLifecycleOwner) {
             when (it) {
                 is WearablesAddViewModel.AddWearableState.AddedNewWearable -> {
-                    val setNameDialogFragment = childFragmentManager.findFragmentByTag(SetNameDialogFragment::class.java.simpleName) as SetNameDialogFragment
+                    val setNameDialogFragment =
+                        childFragmentManager.findFragmentByTag(SetNameDialogFragment::class.java.simpleName) as SetNameDialogFragment
                     setNameDialogFragment.dismiss()
                     (requireParentFragment() as WearablesFragment).wearableAdded = true
                     requireActivity().onBackPressed()
                 }
                 is WearablesAddViewModel.AddWearableState.FailedToAddWearable -> {
                     val errorMessage = getErrorMessage(it.failure)
-                    val setNameDialogFragment = childFragmentManager.findFragmentByTag(SetNameDialogFragment::class.java.simpleName) as SetNameDialogFragment
+                    val setNameDialogFragment =
+                        childFragmentManager.findFragmentByTag(SetNameDialogFragment::class.java.simpleName) as SetNameDialogFragment
                     setNameDialogFragment.setErrorMessage(errorMessage)
                 }
             }
         }
+
     }
 
-    private fun getErrorMessage(exception: Exception): String? {
-        if (exception is WearablesAddViewModel.WearableNameTooShortException) {
-            return resources.getQuantityString(
-                    R.plurals.ioa_sec_bp_add_error_invalidname_message_format, Constants.MINIMUM_INPUT_LENGTH, Constants.MINIMUM_INPUT_LENGTH)
-        }
-
-        return if (exception is WearableWithSameNameExistsException) {
-            getString(R.string.ioa_sec_bp_add_error_usedname_message)
-        } else {
-            getString(R.string.ioa_error_unknown_format, exception.message)
-        }
-    }
-    
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         UiUtils.applyThemeToMenu(inflater, menu)
     }
@@ -208,7 +193,12 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.action_help) {
-            HelpDialogFragment.show(childFragmentManager, requireContext(), getString(R.string.ioa_sec_bp_help_title), getString(R.string.ioa_sec_bp_help_message))
+            HelpDialogFragment.show(
+                childFragmentManager,
+                requireContext(),
+                getString(R.string.ioa_sec_bp_help_title),
+                getString(R.string.ioa_sec_bp_help_message)
+            )
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -241,12 +231,27 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
         wearablesAddViewModel.getAvailableWearables()
     }
 
-    private fun requestBluetoothEnabling() {
-        if (bluetoothOffNotified) {
-            return
+    private fun showBluetoothDisabledDialog() {
+        if (bluetoothDisabledDialog != null) return
+
+        GenericAlertDialogFragment.show(
+            childFragmentManager,
+            requireContext(),
+            getString(R.string.ioa_sec_bp_add_error_bluetoothdisabled_title),
+            getString(R.string.ioa_sec_bp_add_error_bluetoothdisabled_message),
+            null,
+            true,
+            null,
+            BT_DISABLED_ALERT
+        ).also {
+            it.setPositiveButtonClickListener { _, _ -> requestBluetoothEnabling() }
+            it.setCancelListener { requireActivity().onBackPressed() }
         }
-        bluetoothOffNotified = true
-        bluetoothDisabledResultAlertDialog.changeState(DialogFragmentViewModel.State.NeedsToBeShown)
+    }
+
+    private fun requestBluetoothEnabling() {
+        val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+        enabledBluetoothLauncher.launch(enableBtIntent)
     }
 
     private fun onItemSelect(genericDevice: WearablesManager.Wearable) {
@@ -255,15 +260,21 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
     }
 
     private class DiscoveredWearablesAdapter(
-            private val devices: List<WearablesManager.Wearable>,
-            private val onItemClickListener: ((WearablesManager.Wearable) -> Unit)
-            ) : RecyclerView.Adapter<DiscoveredWearablesAdapter.ViewHolder>() {
+        private val devices: List<WearablesManager.Wearable>,
+        private val onItemClickListener: ((WearablesManager.Wearable) -> Unit)
+    ) : RecyclerView.Adapter<DiscoveredWearablesAdapter.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            return ViewHolder(ItemBluetoothDeviceDiscoverBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
-                val listItemsUiProp = AuthenticatorUIManager.instance.config.themeObj().listItems
-                root.background = listItemsUiProp.colorBg
-                bluetoothTextTitle.setTextColor(listItemsUiProp.colorText)
-            })
+            return ViewHolder(
+                ItemBluetoothDeviceDiscoverBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ).apply {
+                    val listItemsUiProp =
+                        AuthenticatorUIManager.instance.config.themeObj().listItems
+                    root.background = listItemsUiProp.colorBg
+                    bluetoothTextTitle.setTextColor(listItemsUiProp.colorText)
+                })
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -275,6 +286,7 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
 
         override fun getItemCount(): Int = devices.size
 
-        private class ViewHolder(val binding: ItemBluetoothDeviceDiscoverBinding) : RecyclerView.ViewHolder(binding.root)
+        private class ViewHolder(val binding: ItemBluetoothDeviceDiscoverBinding) :
+            RecyclerView.ViewHolder(binding.root)
     }
 }

@@ -233,6 +233,7 @@ class WearablesSettingsFragment : BaseAppCompatFragment(R.layout.fragment_blueto
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (R.id.bluetooth_add == id) {
+            // TODO: 10/15/21 don't call parent fragments method
             (requireParentFragment() as WearablesFragment).goToAdd(true)
             return true
         }

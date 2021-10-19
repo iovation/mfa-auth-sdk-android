@@ -34,9 +34,7 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
 
     private val binding: FragmentWearablesAddBinding by viewBinding(FragmentWearablesAddBinding::bind)
     private val wearablesAddViewModel: WearablesAddViewModel by viewModels({ requireParentFragment() })
-    private val devicesDisplayed: MutableList<WearablesManager.Wearable> = mutableListOf()
-    private val devicesWithNames: MutableList<WearablesManager.Wearable> = mutableListOf()
-    private val devicesWithoutNames: MutableList<WearablesManager.Wearable> = mutableListOf()
+    private val wearablesScanViewModel: WearablesScanViewModel by viewModels({ requireParentFragment() })
 
     private val enabledBluetoothLauncher =
         registerForActivityResult(StartActivityForResult(), ActivityResultCallback { result ->
@@ -130,7 +128,13 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
     private fun setupToggle() {
         val includeUnnamedDevicesToggle = binding.proximityAddFilterSwitch
         includeUnnamedDevicesToggle.setOnCheckedChangeListener { _, isChecked ->
-            updateDevicesDisplayed(isChecked)
+            val scanState =
+                (wearablesScanViewModel.scanState.value as WearablesScanViewModel.WearablesScanState.FoundAvailableWearables)
+
+            discoveredWearablesAdapter.submitList(
+                if (isChecked) scanState.wearablesWithNames + scanState.wearablesWithoutNames
+                else scanState.wearablesWithNames
+            )
         }
         binding.proximityAddFilterLayout.setOnClickListener {
             includeUnnamedDevicesToggle.isChecked = !includeUnnamedDevicesToggle.isChecked
@@ -139,49 +143,34 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
 
     private fun setupWearablesList() {
         with(binding.wearablesAddRecyclerview) {
-            adapter = DiscoveredWearablesAdapter(devicesDisplayed) {
-                wearablesAddViewModel.startNamingWearable(it)
-            }
+            adapter = DiscoveredWearablesAdapter { wearablesAddViewModel.startNamingWearable(it) }
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
         }
     }
 
     private fun subscribeObservers() {
-        wearablesAddViewModel.availableWearablesState.observe(viewLifecycleOwner) { availableWearablesState ->
-            when (availableWearablesState) {
-                is WearablesAddViewModel.AvailableWearablesState.ScanningDevices -> {
+        wearablesScanViewModel.scanState.observe(viewLifecycleOwner) { scanState ->
+            when (scanState) {
+                WearablesScanViewModel.WearablesScanState.Scanning -> {
                     binding.proximityAddSwiperefresh.isRefreshing = true
                     binding.proximityAddEmpty.setText(R.string.ioa_sec_bp_add_searching)
                 }
-                is WearablesAddViewModel.AvailableWearablesState.AvailableWearablesSuccess -> {
+                is WearablesScanViewModel.WearablesScanState.FoundAvailableWearables -> {
                     binding.proximityAddSwiperefresh.isRefreshing = false
-                    val nameFilter = { withName: Boolean ->
-                        filter@{ wearable: WearablesManager.Wearable ->
-                            Boolean
-                            val s = wearable.name.trim { it <= ' ' }
-                            return@filter if (withName) s.isNotEmpty() else s.isEmpty()
-                        }
-                    }
-                    devicesWithNames.clear()
-                    devicesWithNames.addAll(availableWearablesState.wearables.filter(nameFilter(true)))
-                    devicesWithoutNames.clear()
-                    devicesWithoutNames.addAll(
-                        availableWearablesState.wearables.filter(
-                            nameFilter(
-                                false
-                            )
-                        )
+                    updateDevicesDisplayed(
+                        scanState.wearablesWithNames,
+                        scanState.wearablesWithoutNames,
+                        binding.proximityAddFilterSwitch.isChecked
                     )
-                    updateDevicesDisplayed(binding.proximityAddFilterSwitch.isChecked)
                 }
-                is WearablesAddViewModel.AvailableWearablesState.FailedToGetAvailableWearables -> {
+                is WearablesScanViewModel.WearablesScanState.FailedToGetAvailableWearables -> {
                     binding.proximityAddSwiperefresh.isRefreshing = false
                     val emptyView = binding.proximityAddEmpty
                     emptyView.makeVisible()
                     emptyView.setText(R.string.ioa_sec_bp_add_empty)
-                    when (availableWearablesState.exception) {
-                        // TODO: 10/18/21 BluetoothPermissionException needs a separate case?
+                    when (scanState.failure) {
+                        // TODO: 10/18/21 BluetoothPermissionException might need a separate case?
                         is BluetoothDisabledException, is BluetoothPermissionException -> {
                             showBluetoothDisabledDialog()
                         }
@@ -231,31 +220,23 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
         }
     }
 
-    private fun updateDevicesDisplayed(toggle: Boolean) {
-        devicesDisplayed.clear()
-        devicesDisplayed.addAll(devicesWithNames)
-        if (toggle) {
-            devicesDisplayed.addAll(devicesWithoutNames)
-        }
+    private fun updateDevicesDisplayed(
+        wearablesWithNames: List<WearablesManager.Wearable>,
+        wearablesWithoutNames: List<WearablesManager.Wearable>,
+        includeWearablesWithoutNames: Boolean
+    ) {
+        val wearables =
+            if (includeWearablesWithoutNames) wearablesWithNames + wearablesWithoutNames
+            else wearablesWithNames
 
-        binding.wearablesAddRecyclerview.adapter!!.notifyDataSetChanged()
-
+        discoveredWearablesAdapter.submitList(wearables)
         binding.proximityAddEmpty.setText(R.string.ioa_sec_bp_add_empty)
-        val emptyView = binding.proximityAddEmpty
-        binding.proximityAddSwiperefresh.isRefreshing = false
-        if (devicesDisplayed.isEmpty()) {
-            emptyView.makeVisible()
-        } else {
-            emptyView.makeInvisible()
-        }
+        if (wearables.isEmpty()) binding.proximityAddEmpty.makeVisible()
+        else binding.proximityAddEmpty.makeInvisible()
     }
 
     private fun scanWearables() {
-//        devicesWithNames.clear()
-//        devicesWithoutNames.clear()
-//        devicesDisplayed.clear()
-//        binding.wearablesAddRecyclerview.adapter!!.notifyDataSetChanged()
-        wearablesAddViewModel.getAvailableWearables()
+        wearablesScanViewModel.scanForAvailableWearables()
     }
 
     private fun showBluetoothDisabledDialog() {

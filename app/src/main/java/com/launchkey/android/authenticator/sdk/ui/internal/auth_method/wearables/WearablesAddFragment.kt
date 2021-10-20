@@ -23,7 +23,10 @@ import com.launchkey.android.authenticator.sdk.core.auth_method_management.excep
 import com.launchkey.android.authenticator.sdk.ui.R
 import com.launchkey.android.authenticator.sdk.ui.databinding.FragmentWearablesAddBinding
 import com.launchkey.android.authenticator.sdk.ui.internal.common.Constants
-import com.launchkey.android.authenticator.sdk.ui.internal.dialog.*
+import com.launchkey.android.authenticator.sdk.ui.internal.dialog.AlertDialogFragment
+import com.launchkey.android.authenticator.sdk.ui.internal.dialog.GenericAlertDialogFragment
+import com.launchkey.android.authenticator.sdk.ui.internal.dialog.HelpDialogFragment
+import com.launchkey.android.authenticator.sdk.ui.internal.dialog.SetNameDialogFragment
 import com.launchkey.android.authenticator.sdk.ui.internal.util.*
 
 class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_add) {
@@ -34,7 +37,7 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
 
     private val binding: FragmentWearablesAddBinding by viewBinding(FragmentWearablesAddBinding::bind)
     private val wearablesAddViewModel: WearablesAddViewModel by viewModels({ requireParentFragment() })
-    private val wearablesScanViewModel: WearablesScanViewModel by viewModels({ requireParentFragment() })
+    private val wearablesScanViewModel: WearablesScanViewModel by viewModels()
 
     private val enabledBluetoothLauncher =
         registerForActivityResult(StartActivityForResult(), ActivityResultCallback { result ->
@@ -51,8 +54,7 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
 
     private val setNameDialogDone =
         SetNameDialogFragment.SetNameListener { _, name ->
-            val selectedWearable = wearablesAddViewModel.getSelectedWearable()!!
-            wearablesAddViewModel.addWearable(selectedWearable, name!!)
+            wearablesAddViewModel.addSelectedWearableWithName(name!!)
         }
 
     private val setNameDialogCancel =
@@ -188,17 +190,10 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
                     showSetNameDialog(it.wearable)
                 }
                 is WearablesAddViewModel.AddWearableState.AddedNewWearable -> {
-                    val setNameDialogFragment =
-                        childFragmentManager.findFragmentByTag(SetNameDialogFragment::class.java.simpleName) as SetNameDialogFragment
-                    setNameDialogFragment.dismiss()
-                    (requireParentFragment() as WearablesFragment).wearableAdded = true
-                    requireActivity().onBackPressed()
+                    setNameDialogFragment?.dismiss()
                 }
                 is WearablesAddViewModel.AddWearableState.FailedToAddWearable -> {
-                    val errorMessage = getErrorMessage(it.failure)
-                    val setNameDialogFragment =
-                        childFragmentManager.findFragmentByTag(SetNameDialogFragment::class.java.simpleName) as SetNameDialogFragment
-                    setNameDialogFragment.setErrorMessage(errorMessage)
+                    setNameDialogFragment?.setErrorMessage(getErrorMessage(it.failure))
                 }
             }
         }
@@ -258,15 +253,14 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
     }
 
     private fun showSetNameDialog(wearable: WearablesManager.Wearable) {
-        if (setNameDialogFragment != null) return
-
         SetNameDialogFragment.show(
             requireContext(),
             childFragmentManager,
             R.string.ioa_sec_bp_add_dialog_setname_title,
             R.string.ioa_sec_bp_add_dialog_setname_hint,
             R.string.ioa_generic_done,
-            wearable.name
+            wearable.name,
+            DIALOG_SET_NAME
         ).also {
             it.setPositiveButtonClickListener(setNameDialogDone)
             it.setCancelListener(setNameDialogCancel)

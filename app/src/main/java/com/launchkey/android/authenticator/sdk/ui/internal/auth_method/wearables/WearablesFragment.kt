@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
+import androidx.fragment.app.viewModels
 import com.launchkey.android.authenticator.sdk.ui.R
 import com.launchkey.android.authenticator.sdk.ui.SecurityFragment
 import com.launchkey.android.authenticator.sdk.ui.databinding.FragmentWearablesBinding
@@ -16,9 +17,9 @@ import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.AuthMetho
 import com.launchkey.android.authenticator.sdk.ui.internal.util.*
 
 class WearablesFragment : BaseAppCompatFragment(R.layout.fragment_wearables) {
+    private val wearablesAddViewModel: WearablesAddViewModel by viewModels()
     private val binding by viewBinding(FragmentWearablesBinding::bind)
     private val startPage: AuthMethodActivity.Page by bundleArgument(AuthMethodActivity.PAGE_KEY)
-    var wearableAdded = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
@@ -30,18 +31,7 @@ class WearablesFragment : BaseAppCompatFragment(R.layout.fragment_wearables) {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (startPage == AuthMethodActivity.Page.ADD) {
-                        if (wearableAdded) {
-                            requireActivity().setResult(Activity.RESULT_OK, Intent().apply {
-                                putExtra(
-                                    SecurityFragment.REQUEST_CODE,
-                                    SecurityFragment.REQUEST_ADD_WEARABLES
-                                )
-                            })
-                        }
-                    } else {
-                        childFragmentManager.popBackStack()
-                    }
+                    childFragmentManager.popBackStack()
                     if (childFragmentManager.backStackEntryCount == 0) {
                         isEnabled = false
                         requireActivity().onBackPressed()
@@ -68,6 +58,8 @@ class WearablesFragment : BaseAppCompatFragment(R.layout.fragment_wearables) {
 
             // TODO: 10/15/21 onFragmentResumed should check for bluetooth permission
         }, false)
+
+        subscribeObservers()
     }
 
     private fun setupToolbar() {
@@ -113,9 +105,28 @@ class WearablesFragment : BaseAppCompatFragment(R.layout.fragment_wearables) {
         }
     }
 
+    private fun subscribeObservers() {
+        wearablesAddViewModel.addWearableState.observe(viewLifecycleOwner) { addWearableState ->
+            when (addWearableState) {
+                is WearablesAddViewModel.AddWearableState.AddedNewWearable -> {
+                    if (startPage == AuthMethodActivity.Page.ADD) {
+                        UiUtils.finishAddingFactorActivity(
+                            requireActivity(),
+                            SecurityFragment.REQUEST_ADD_WEARABLES
+                        )
+                    } else {
+                        // pop add fragment
+                        childFragmentManager.popBackStack()
+                    }
+                }
+                else -> TODO("Failure? Permission or disabled?")
+            }
+        }
+    }
+
     fun goToAdd(backstack: Boolean = false) {
         childFragmentManager.commit {
-            replace(binding.fragmentContainer.id, WearablesAddFragment())
+            replace(binding.fragmentContainer.id, WearablesAddFragment::class.java, null, null)
             if (backstack) addToBackStack(null)
         }
     }

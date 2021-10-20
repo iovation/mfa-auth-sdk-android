@@ -136,7 +136,8 @@ class SetNameDialogFragment : AlertDialogFragment() {
             titleResourceId: Int,
             hintRes: Int,
             positiveButtonTextRes: Int,
-            defaultValue: String?
+            defaultValue: String?,
+            tag: String = SetNameDialogFragment::class.java.simpleName
         ): SetNameDialogFragment = SetNameDialogFragment().apply {
             arguments = Bundle().apply {
                 putString(TITLE_ARG, context.getString(titleResourceId))
@@ -146,7 +147,7 @@ class SetNameDialogFragment : AlertDialogFragment() {
                 putString(DEFAULT_TEXT_ARG, defaultValue)
                 putBoolean(CANCELLABLE_ARG, false)
             }
-            show(fragmentManager, SetNameDialogFragment::class.java.simpleName)
+            show(fragmentManager, tag)
         }
     }
 }

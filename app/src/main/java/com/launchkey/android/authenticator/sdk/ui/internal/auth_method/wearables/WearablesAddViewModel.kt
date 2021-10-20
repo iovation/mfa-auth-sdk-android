@@ -1,72 +1,73 @@
 package com.launchkey.android.authenticator.sdk.ui.internal.auth_method.wearables
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.launchkey.android.authenticator.sdk.core.auth_method_management.WearablesManager
 import com.launchkey.android.authenticator.sdk.ui.internal.common.Constants
-import java.util.concurrent.ExecutorService
+import com.launchkey.android.authenticator.sdk.ui.internal.viewmodel.SingleLiveEvent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.launch
 
 class WearablesAddViewModel(
     private val wearablesManager: WearablesManager,
-    private val executor: ExecutorService,
-    savedStateHandle: SavedStateHandle
+    private val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
-    companion object {
-        private const val HANDLE_KEY_ADD_WEARABLE_STATE = "add_wearables_state"
-    }
 
-    private val _addWearableState: MutableLiveData<AddWearableState> =
-        savedStateHandle.getLiveData(HANDLE_KEY_ADD_WEARABLE_STATE)
+    private var wearableToAdd: WearablesManager.Wearable? = null
+
+    private val _addWearableState =
+        SingleLiveEvent<AddWearableState>(AddWearableState.SelectingWearable)
 
     val addWearableState: LiveData<AddWearableState>
         get() = _addWearableState
 
+    fun addSelectedWearableWithName(name: String) {
+        viewModelScope.launch(defaultDispatcher) {
+            if (name.trim().length < Constants.MINIMUM_INPUT_LENGTH) {
+                _addWearableState.postValue(
+                    AddWearableState.FailedToAddWearable(WearableNameTooShortException)
+                )
+            } else {
+                wearableToAdd?.let {
+                    it.name = name
+                    addWearable(it)
+                }
+            }
+        }
+    }
 
-    fun addWearable(wearable: WearablesManager.Wearable, name: String) =
-        executor.run {
+    private fun addWearable(wearable: WearablesManager.Wearable) {
+        viewModelScope.launch(defaultDispatcher) {
             try {
-                if (name.trim().length < Constants.MINIMUM_INPUT_LENGTH) throw WearableNameTooShortException
-
-                wearable.name = name
                 wearablesManager.addWearable(
                     wearable,
                     object : WearablesManager.AddWearableCallback {
                         override fun onAddSuccess() {
                             val state = AddWearableState.AddedNewWearable(wearable)
-//                            savedStateHandle.set(HANDLE_KEY_ADD_WEARABLE_STATE, state)
                             _addWearableState.postValue(state)
                         }
 
                         override fun onAddFailure(e: Exception) {
-                            val state = AddWearableState.FailedToAddWearable(e)
-//                            savedStateHandle.set(HANDLE_KEY_ADD_WEARABLE_STATE, state)
-                            _addWearableState.postValue(state)
+                            _addWearableState.postValue(AddWearableState.FailedToAddWearable(e))
                         }
-
                     })
             } catch (e: Exception) {
-                val state = AddWearableState.FailedToAddWearable(e)
-//                    savedStateHandle.set(HANDLE_KEY_ADD_WEARABLE_STATE, state)
-                _addWearableState.postValue(state)
+                _addWearableState.postValue(AddWearableState.FailedToAddWearable(e))
 
             }
         }
+    }
 
     fun cancelNaming() {
+        wearableToAdd = null
         _addWearableState.postValue(AddWearableState.SelectingWearable)
     }
 
     fun startNamingWearable(wearable: WearablesManager.Wearable) {
+        wearableToAdd = wearable
         _addWearableState.postValue(AddWearableState.NamingWearable(wearable))
     }
-
-    fun getSelectedWearable() = if (addWearableState.value is AddWearableState.NamingWearable)
-        (addWearableState.value as AddWearableState.NamingWearable).wearable
-    else null
-
-    fun isSupported(): Boolean = wearablesManager.isSupported
 
     internal object WearableNameTooShortException : RuntimeException()
 

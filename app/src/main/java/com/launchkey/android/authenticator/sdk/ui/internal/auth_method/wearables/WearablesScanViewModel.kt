@@ -20,7 +20,7 @@ class WearablesScanViewModel(
         scanForAvailableWearables()
     }
 
-    private val _scanState = MutableLiveData<WearablesScanState>()
+    private val _scanState = MutableLiveData<WearablesScanState>(WearablesScanState.Scanning)
 
     val scanState: LiveData<WearablesScanState>
         get() = _scanState

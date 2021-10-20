@@ -44,7 +44,6 @@ import com.launchkey.android.authenticator.sdk.ui.internal.auth_request.verify.A
 import com.launchkey.android.authenticator.sdk.ui.internal.dialog.DialogFragmentViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.viewmodel.SecurityViewModel
 import kotlinx.coroutines.Dispatchers
-import java.util.concurrent.Executors
 
 abstract class BaseAppCompatFragment : Fragment {
     private val viewModelProviderFactory: ViewModelProvider.Factory by lazy {
@@ -188,8 +187,7 @@ abstract class BaseAppCompatFragment : Fragment {
                     WearablesAddViewModel::class.java ->
                         WearablesAddViewModel(
                             AuthMethodManagerFactory.getWearablesManager(),
-                            Executors.newSingleThreadExecutor(),
-                            handle
+                            Dispatchers.IO
                         ) as T
                     WearablesScanViewModel::class.java ->
                         WearablesScanViewModel(

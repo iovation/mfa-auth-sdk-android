@@ -1,7 +1,5 @@
 package com.launchkey.android.authenticator.sdk.ui.internal.auth_method.wearables
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -24,8 +22,10 @@ class WearablesFragment : BaseAppCompatFragment(R.layout.fragment_wearables) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             setupScreen()
-            setupToolbar()
         }
+
+        setupToolbar()
+        subscribeObservers()
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -59,11 +59,11 @@ class WearablesFragment : BaseAppCompatFragment(R.layout.fragment_wearables) {
             // TODO: 10/15/21 onFragmentResumed should check for bluetooth permission
         }, false)
 
-        subscribeObservers()
     }
 
     private fun setupToolbar() {
         with(binding.wearablesToolbar.root) {
+            title = ""
             (requireActivity() as AppCompatActivity).setSupportActionBar(this)
             setNavigationOnClickListener { requireActivity().onBackPressed() }
             updateToolbar(startPage)
@@ -74,12 +74,12 @@ class WearablesFragment : BaseAppCompatFragment(R.layout.fragment_wearables) {
         with(binding.wearablesToolbar.root) {
             when (page) {
                 AuthMethodActivity.Page.ADD -> {
-                    setNavigationButton(UiUtils.NavButton.CANCEL)
                     setTitle(R.string.ioa_sec_bp_title)
+                    setNavigationButton(UiUtils.NavButton.CANCEL)
                 }
                 AuthMethodActivity.Page.SETTINGS -> {
-                    setNavigationButton(UiUtils.NavButton.BACK)
                     setTitle(R.string.ioa_sec_bp_sett_title)
+                    setNavigationButton(UiUtils.NavButton.BACK)
                 }
                 else -> throw IllegalArgumentException("Unknown argument")
             }
@@ -119,7 +119,10 @@ class WearablesFragment : BaseAppCompatFragment(R.layout.fragment_wearables) {
                         childFragmentManager.popBackStack()
                     }
                 }
-                else -> TODO("Failure? Permission or disabled?")
+                is WearablesAddViewModel.AddWearableState.FailedToAddWearable -> {
+                    TODO("Failure? Permission or disabled?")
+                }
+                else -> Unit
             }
         }
     }

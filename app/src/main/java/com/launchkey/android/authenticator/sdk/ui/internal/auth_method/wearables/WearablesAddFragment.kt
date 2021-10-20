@@ -52,13 +52,13 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
     private val setNameDialogFragment: SetNameDialogFragment?
         get() = childFragmentManager.findFragmentByTag(DIALOG_SET_NAME) as? SetNameDialogFragment
 
-    private val setNameDialogDone =
-        SetNameDialogFragment.SetNameListener { _, name ->
-            wearablesAddViewModel.addSelectedWearableWithName(name!!)
-        }
+    private val setNameDialogDone = SetNameDialogFragment.SetNameListener { _, name ->
+        wearablesAddViewModel.addSelectedWearableWithName(name!!)
+    }
 
-    private val setNameDialogCancel =
-        DialogInterface.OnCancelListener { wearablesAddViewModel.cancelNaming() }
+    private val setNameDialogCancel = DialogInterface.OnCancelListener {
+        wearablesAddViewModel.cancelNaming()
+    }
 
     private val discoveredWearablesAdapter: DiscoveredWearablesAdapter
         get() = binding.wearablesAddRecyclerview.adapter as DiscoveredWearablesAdapter
@@ -66,10 +66,9 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
     private val bluetoothDisabledDialogFragment: AlertDialogFragment?
         get() = childFragmentManager.findFragmentByTag(DIALOG_BLUETOOTH_DISABLED) as? AlertDialogFragment
 
-    private val bluetoothDialogOk =
-        DialogInterface.OnClickListener { _, _ ->
-            requestBluetoothEnabling()
-        }
+    private val bluetoothDialogOk = DialogInterface.OnClickListener { _, _ ->
+        requestBluetoothEnabling()
+    }
 
     private val bluetoothDialogCancel = DialogInterface.OnCancelListener {
         requireActivity().onBackPressed()

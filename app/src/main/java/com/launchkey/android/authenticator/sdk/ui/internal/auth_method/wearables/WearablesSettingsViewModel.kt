@@ -1,8 +1,6 @@
 package com.launchkey.android.authenticator.sdk.ui.internal.auth_method.wearables
 
 import androidx.lifecycle.*
-import com.launchkey.android.authenticator.sdk.core.auth_method_management.LocationsManager
-import com.launchkey.android.authenticator.sdk.core.auth_method_management.VerificationFlag
 import com.launchkey.android.authenticator.sdk.core.auth_method_management.WearablesManager
 import com.launchkey.android.authenticator.sdk.ui.internal.util.TimingCounter
 import com.launchkey.android.authenticator.sdk.ui.internal.util.disposeWhenCancelled
@@ -14,11 +12,14 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class WearablesSettingsViewModel(private val wearablesManager: WearablesManager,
-                                 private val nowProvider: TimingCounter.NowProvider,
-                                 private val defaultDispatcher: CoroutineDispatcher,
-                                 savedStateHandle: SavedStateHandle) : ViewModel() {
-    private val _getStoredWearablesState: MutableLiveData<GetStoredWearablesState> = MutableLiveData()
+class WearablesSettingsViewModel(
+    private val wearablesManager: WearablesManager,
+    private val nowProvider: TimingCounter.NowProvider,
+    private val defaultDispatcher: CoroutineDispatcher,
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
+    private val _getStoredWearablesState: MutableLiveData<GetStoredWearablesState> =
+        MutableLiveData()
     val getStoredWearablesState: LiveData<GetStoredWearablesState> = _getStoredWearablesState
 
     private val _cancelRemoveState: MutableLiveData<CancelRemoveState> = SingleLiveEvent()
@@ -31,47 +32,64 @@ class WearablesSettingsViewModel(private val wearablesManager: WearablesManager,
     val removeAllState: LiveData<RemoveAllState> = _removeAllState
 
     init {
-        getStoredWearables()
+        fetchWearables()
     }
 
-    private suspend fun getStoredWearablesAsync() = suspendCancellableCoroutine<List<WearablesManager.Wearable>> { continuation ->
-        wearablesManager.getStoredWearables(object : WearablesManager.GetStoredWearablesCallback {
-            override fun onGetSuccess(wearables: MutableList<WearablesManager.Wearable>) {
-                continuation.resume(wearables)
-            }
+    private suspend fun getStoredWearablesAsync() =
+        suspendCancellableCoroutine<List<WearablesManager.Wearable>> { continuation ->
+            wearablesManager.getStoredWearables(object :
+                WearablesManager.GetStoredWearablesCallback {
+                override fun onGetSuccess(wearables: MutableList<WearablesManager.Wearable>) {
+                    continuation.resume(wearables)
+                }
 
-            override fun onGetFailure(e: Exception) {
-                continuation.resumeWithException(e)
-            }
-        }).disposeWhenCancelled(continuation)
-    }
+                override fun onGetFailure(e: Exception) {
+                    continuation.resumeWithException(e)
+                }
+            }).disposeWhenCancelled(continuation)
+        }
 
-    fun getStoredWearables() = viewModelScope.launch(defaultDispatcher) {
+    fun fetchWearables() = viewModelScope.launch(defaultDispatcher) {
         try {
-            _getStoredWearablesState.postValue(GetStoredWearablesState.Success(getStoredWearablesAsync().map { WearableItem(it, nowProvider.now) }))
+            _getStoredWearablesState.postValue(
+                GetStoredWearablesState.Success(
+                    getStoredWearablesAsync().map { WearableItem(it, nowProvider.now) })
+            )
         } catch (exception: Exception) {
             _getStoredWearablesState.postValue(GetStoredWearablesState.Failure(exception))
         }
     }
 
-    fun cancelRemoveWearable(wearable: WearablesManager.Wearable) = viewModelScope.launch(defaultDispatcher) {
-        wearablesManager.cancelRemoveWearable(wearable, object : WearablesManager.CancelRemoveWearableCallback {
-            override fun onCancelRemoveSuccess() {
-                _cancelRemoveState.postValue(CancelRemoveState.Success(WearableItem(wearable, nowProvider.now)))
-                getStoredWearables()
-            }
-            override fun onCancelRemoveFailure(e: Exception) {
-                _cancelRemoveState.postValue(CancelRemoveState.Failure(e))
-            }
-        })
-    }
+    fun cancelRemoveWearable(wearable: WearablesManager.Wearable) =
+        viewModelScope.launch(defaultDispatcher) {
+            wearablesManager.cancelRemoveWearable(
+                wearable,
+                object : WearablesManager.CancelRemoveWearableCallback {
+                    override fun onCancelRemoveSuccess() {
+                        _cancelRemoveState.postValue(
+                            CancelRemoveState.Success(
+                                WearableItem(
+                                    wearable,
+                                    nowProvider.now
+                                )
+                            )
+                        )
+                        fetchWearables()
+                    }
+
+                    override fun onCancelRemoveFailure(e: Exception) {
+                        _cancelRemoveState.postValue(CancelRemoveState.Failure(e))
+                    }
+                })
+        }
 
     fun removeWearable(wearable: WearablesManager.Wearable) {
         wearablesManager.removeWearable(wearable, object : WearablesManager.RemoveWearableCallback {
             override fun onRemoveSuccess() {
                 _removeState.postValue(RemoveState.Success(WearableItem(wearable, nowProvider.now)))
-                getStoredWearables()
+                fetchWearables()
             }
+
             override fun onRemoveFailure(e: Exception) {
                 _removeState.postValue(RemoveState.Failure(e))
             }

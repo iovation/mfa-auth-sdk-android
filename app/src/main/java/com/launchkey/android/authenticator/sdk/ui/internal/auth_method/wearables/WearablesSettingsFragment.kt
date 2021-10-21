@@ -210,7 +210,7 @@ class WearablesSettingsFragment : BaseAppCompatFragment(R.layout.fragment_blueto
                     adapter.notifyTimerUpdate(item.timerItem.item, item.remainingMillis)
                 }
                 TimerViewModel.State.AllItemsFinished -> {
-                    wearablesSettingsViewModel.getStoredWearables()
+                    wearablesSettingsViewModel.fetchWearables()
                 }
             }
         }

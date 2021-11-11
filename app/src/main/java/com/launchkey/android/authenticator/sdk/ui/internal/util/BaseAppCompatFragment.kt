@@ -19,15 +19,15 @@ import com.launchkey.android.authenticator.sdk.core.authentication_management.Au
 import com.launchkey.android.authenticator.sdk.ui.AuthenticatorUIManager
 import com.launchkey.android.authenticator.sdk.ui.fragment.DevicesViewModel
 import com.launchkey.android.authenticator.sdk.ui.fragment.SessionsViewModel
+import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.TimerViewModel
+import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.VerificationFlagViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.biometric.BiometricAddViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.biometric.BiometricCheckViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.circle_code.CircleCodeAddViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.circle_code.CircleCodeCheckViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.locations.LocationsAddViewModel
-import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.locations.LocationsSettingsViewModel
-import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.VerificationFlagViewModel
-import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.TimerViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.locations.LocationsAsyncVerificationFlagManager
+import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.locations.LocationsSettingsViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.locations.location_tracker.LocationTrackerFactory
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.locations.map.MapViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.locations.map.MapViewModel.Companion.GEO_FENCE_FILL_ALPHA
@@ -37,13 +37,13 @@ import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.pin_code.
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.pin_code.PinCodeCheckViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.wearables.WearablesAddViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.wearables.WearablesAsyncVerificationFlagManager
+import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.wearables.WearablesScanViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.wearables.WearablesSettingsViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_request.AuthRequestFragmentViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_request.verify.AuthRequestVerificationViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.dialog.DialogFragmentViewModel
 import com.launchkey.android.authenticator.sdk.ui.internal.viewmodel.SecurityViewModel
 import kotlinx.coroutines.Dispatchers
-import java.util.concurrent.Executors
 
 abstract class BaseAppCompatFragment : Fragment {
     private val viewModelProviderFactory: ViewModelProvider.Factory by lazy {
@@ -102,38 +102,38 @@ abstract class BaseAppCompatFragment : Fragment {
                         DialogFragmentViewModel(handle) as T
                     PinCodeAddViewModel::class.java ->
                         PinCodeAddViewModel(
-                                AuthMethodManagerFactory.getPINCodeManager(),
-                                PINCodeRequirement.pinCodeRequirements,
-                                handle
+                            AuthMethodManagerFactory.getPINCodeManager(),
+                            PINCodeRequirement.pinCodeRequirements,
+                            handle
                         ) as T
                     PinCodeCheckViewModel::class.java ->
                         PinCodeCheckViewModel(
-                                AuthMethodManagerFactory.getPINCodeManager(),
-                                AuthenticatorManager.instance.config.thresholdAutoUnlink(),
-                                handle
+                            AuthMethodManagerFactory.getPINCodeManager(),
+                            AuthenticatorManager.instance.config.thresholdAutoUnlink(),
+                            handle
                         ) as T
                     CircleCodeAddViewModel::class.java ->
                         CircleCodeAddViewModel(
-                                AuthMethodManagerFactory.getCircleCodeManager(),
-                                handle
+                            AuthMethodManagerFactory.getCircleCodeManager(),
+                            handle
                         ) as T
                     CircleCodeCheckViewModel::class.java ->
                         CircleCodeCheckViewModel(
-                                AuthMethodManagerFactory.getCircleCodeManager(),
-                                AuthenticatorManager.instance.config.thresholdAutoUnlink(),
-                                handle
+                            AuthMethodManagerFactory.getCircleCodeManager(),
+                            AuthenticatorManager.instance.config.thresholdAutoUnlink(),
+                            handle
                         ) as T
                     BiometricAddViewModel::class.java ->
                         BiometricAddViewModel(
-                                AuthMethodManagerFactory.getBiometricManager(),
-                                Dispatchers.IO,
-                                handle
+                            AuthMethodManagerFactory.getBiometricManager(),
+                            Dispatchers.IO,
+                            handle
                         ) as T
                     BiometricCheckViewModel::class.java ->
                         BiometricCheckViewModel(
-                                AuthMethodManagerFactory.getBiometricManager(),
-                                AuthenticatorManager.instance.config.thresholdAutoUnlink(),
-                                handle
+                            AuthMethodManagerFactory.getBiometricManager(),
+                            AuthenticatorManager.instance.config.thresholdAutoUnlink(),
+                            handle
                         ) as T
                     MapViewModel::class.java -> {
                         val strokeColor =
@@ -144,7 +144,7 @@ abstract class BaseAppCompatFragment : Fragment {
                             Color.green(strokeColor),
                             Color.blue(strokeColor)
                         )
-        
+
                         return MapViewModel(
                             strokeColor,
                             fillColor,
@@ -153,16 +153,16 @@ abstract class BaseAppCompatFragment : Fragment {
                     }
                     LocationsAddViewModel::class.java ->
                         LocationsAddViewModel(
-                                AuthMethodManagerFactory.getLocationsManager(),
-                                Dispatchers.IO,
-                                handle
+                            AuthMethodManagerFactory.getLocationsManager(),
+                            Dispatchers.IO,
+                            handle
                         ) as T
                     LocationsSettingsViewModel::class.java ->
                         LocationsSettingsViewModel(
-                                AuthMethodManagerFactory.getLocationsManager(),
-                                TimingCounter.DefaultTimeProvider(),
-                                Dispatchers.IO,
-                                handle
+                            AuthMethodManagerFactory.getLocationsManager(),
+                            TimingCounter.DefaultTimeProvider(),
+                            Dispatchers.IO,
+                            handle
                         ) as T
                     UserLocationViewModel::class.java ->
                         UserLocationViewModel(
@@ -172,8 +172,12 @@ abstract class BaseAppCompatFragment : Fragment {
                     VerificationFlagViewModel::class.java ->
                         VerificationFlagViewModel(
                             when (key) {
-                                VerificationFlagViewModel.LOCATIONS -> LocationsAsyncVerificationFlagManager(AuthMethodManagerFactory.getLocationsManager())
-                                VerificationFlagViewModel.WEARABLES -> WearablesAsyncVerificationFlagManager(AuthMethodManagerFactory.getWearablesManager())
+                                VerificationFlagViewModel.LOCATIONS -> LocationsAsyncVerificationFlagManager(
+                                    AuthMethodManagerFactory.getLocationsManager()
+                                )
+                                VerificationFlagViewModel.WEARABLES -> WearablesAsyncVerificationFlagManager(
+                                    AuthMethodManagerFactory.getWearablesManager()
+                                )
                                 else -> throw IllegalArgumentException("Unkown auth method")
                             },
                             TimingCounter.DefaultTimeProvider(),
@@ -182,16 +186,20 @@ abstract class BaseAppCompatFragment : Fragment {
                         ) as T
                     WearablesAddViewModel::class.java ->
                         WearablesAddViewModel(
-                                AuthMethodManagerFactory.getWearablesManager(),
-                                Executors.newSingleThreadExecutor(),
-                                handle
+                            AuthMethodManagerFactory.getWearablesManager(),
+                            Dispatchers.IO
+                        ) as T
+                    WearablesScanViewModel::class.java ->
+                        WearablesScanViewModel(
+                            AuthMethodManagerFactory.getWearablesManager(),
+                            Dispatchers.IO,
                         ) as T
                     WearablesSettingsViewModel::class.java ->
                         WearablesSettingsViewModel(
-                                AuthMethodManagerFactory.getWearablesManager(),
-                                TimingCounter.DefaultTimeProvider(),
-                                Dispatchers.IO,
-                                handle
+                            AuthMethodManagerFactory.getWearablesManager(),
+                            TimingCounter.DefaultTimeProvider(),
+                            Dispatchers.IO,
+                            handle
                         ) as T
                     TimerViewModel::class.java ->
                         TimerViewModel(
@@ -206,24 +214,24 @@ abstract class BaseAppCompatFragment : Fragment {
             }
         }
     }
-    
+
     constructor() : super()
     constructor(@LayoutRes layoutId: Int) : super(layoutId)
-    
+
     override fun getDefaultViewModelProviderFactory(): ViewModelProvider.Factory {
         return viewModelProviderFactory
     }
-    
+
     override fun startActivity(intent: Intent) {
         IntentUtils.addInternalVerification(intent)
         super.startActivity(intent)
     }
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         UiUtils.themeStatusBar(activity)
     }
-    
+
     /**
      * Method to potentially unmask a request code modified by v4 Support Fragment/Activity to
      * redirect result back to the right fragment after

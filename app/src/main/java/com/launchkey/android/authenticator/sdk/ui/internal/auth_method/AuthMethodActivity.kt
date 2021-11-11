@@ -37,7 +37,6 @@ class AuthMethodActivity : BaseAppCompatActivity(R.layout.auth_method_activity) 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 replace(binding.authMethodFragmentContainer.id, when (authMethod) {
-                    // TODO: Fill in for each method
                     AuthMethod.CIRCLE_CODE -> CircleCodeFragment::class.java
                     AuthMethod.LOCATIONS -> LocationsFragment::class.java
                     AuthMethod.BIOMETRIC -> BiometricFragment::class.java

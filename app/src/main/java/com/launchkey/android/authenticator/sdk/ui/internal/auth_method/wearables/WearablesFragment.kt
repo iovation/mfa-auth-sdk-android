@@ -1,82 +1,157 @@
 package com.launchkey.android.authenticator.sdk.ui.internal.auth_method.wearables
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
+import androidx.fragment.app.viewModels
 import com.launchkey.android.authenticator.sdk.ui.R
+import com.launchkey.android.authenticator.sdk.ui.SecurityFragment
 import com.launchkey.android.authenticator.sdk.ui.databinding.FragmentWearablesBinding
 import com.launchkey.android.authenticator.sdk.ui.internal.auth_method.AuthMethodActivity
-import com.launchkey.android.authenticator.sdk.ui.SecurityFragment
-import com.launchkey.android.authenticator.sdk.ui.internal.util.BaseAppCompatFragment
-import com.launchkey.android.authenticator.sdk.ui.internal.util.UiUtils
-import com.launchkey.android.authenticator.sdk.ui.internal.util.bundleArgument
-import com.launchkey.android.authenticator.sdk.ui.internal.util.setNavigationButton
-import com.launchkey.android.authenticator.sdk.ui.internal.util.viewBinding
+import com.launchkey.android.authenticator.sdk.ui.internal.util.*
 
 class WearablesFragment : BaseAppCompatFragment(R.layout.fragment_wearables) {
     private val binding by viewBinding(FragmentWearablesBinding::bind)
-    private val page: AuthMethodActivity.Page by bundleArgument(AuthMethodActivity.PAGE_KEY)
-    var wearableAdded = false
+    private val startPage: AuthMethodActivity.Page by bundleArgument(AuthMethodActivity.PAGE_KEY)
+    private val wearablesAddViewModel: WearablesAddViewModel by viewModels()
+    private val wearablesSettingsViewModel: WearablesSettingsViewModel by viewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (page == AuthMethodActivity.Page.ADD) {
-                    if (wearableAdded) {
-                        requireActivity().setResult(Activity.RESULT_OK, Intent().apply {
-                            putExtra(SecurityFragment.REQUEST_CODE, SecurityFragment.REQUEST_ADD_WEARABLES)
-                        })
-                    }
-                } else {
-                    childFragmentManager.popBackStack()
-                }
-                if (childFragmentManager.backStackEntryCount == 0) {
-                    isEnabled = false
-                    requireActivity().onBackPressed()
-                }
+        if (savedInstanceState == null) {
+            childFragmentManager.commit {
+                replace(
+                    binding.fragmentContainer.id,
+                    when (startPage) {
+                        AuthMethodActivity.Page.ADD -> WearablesAddFragment::class.java
+                        AuthMethodActivity.Page.SETTINGS -> WearablesSettingsFragment::class.java
+                        else -> throw IllegalStateException("Unexpected argument")
+                    },
+                    null
+                )
             }
-        })
-        if (savedInstanceState != null) return
-        setupScreen()
-        setupToolbar(page)
+        }
+
+        setupToolbar()
+        subscribeObservers()
+
+        childFragmentManager.registerFragmentLifecycleCallbacks(object :
+            FragmentManager.FragmentLifecycleCallbacks() {
+            override fun onFragmentViewCreated(
+                fm: FragmentManager,
+                f: Fragment,
+                v: View,
+                savedInstanceState: Bundle?
+            ) {
+                updateToolbar(
+                    when (f::class.java) {
+                        WearablesAddFragment::class.java -> AuthMethodActivity.Page.ADD
+                        WearablesSettingsFragment::class.java -> AuthMethodActivity.Page.SETTINGS
+                        else -> throw IllegalStateException("Invalid fragment $f")
+                    }
+                )
+            }
+
+            // TODO: 10/15/21 onFragmentResumed should check for bluetooth permission
+        }, false)
+
     }
 
-    private fun setupToolbar(page: AuthMethodActivity.Page?) {
-        val page = page ?: this.page
+    private fun setupToolbar() {
         with(binding.wearablesToolbar.root) {
-            setNavigationButton(
-                    when (page) {
-                        AuthMethodActivity.Page.ADD -> UiUtils.NavButton.CANCEL
-                        AuthMethodActivity.Page.SETTINGS -> UiUtils.NavButton.BACK
-                        else -> throw IllegalArgumentException("Unknown argument")
-                    }
-            )
+            title = ""
             (requireActivity() as AppCompatActivity).setSupportActionBar(this)
             setNavigationOnClickListener { requireActivity().onBackPressed() }
+            updateToolbar(startPage)
         }
     }
 
-    private fun setupScreen() {
-        when (page) {
-            AuthMethodActivity.Page.ADD -> {
-                goToAdd()
+    private fun updateToolbar(page: AuthMethodActivity.Page) {
+        with(binding.wearablesToolbar.root) {
+            when (page) {
+                AuthMethodActivity.Page.ADD -> {
+                    setTitle(R.string.ioa_sec_bp_title)
+                    setNavigationButton(UiUtils.NavButton.CANCEL)
+                }
+                AuthMethodActivity.Page.SETTINGS -> {
+                    setTitle(R.string.ioa_sec_bp_sett_title)
+                    setNavigationButton(UiUtils.NavButton.BACK)
+                }
+                else -> throw IllegalArgumentException("Unknown argument")
             }
-            AuthMethodActivity.Page.SETTINGS -> {
-                childFragmentManager.commit {
-                    replace(binding.fragmentContainer.id, WearablesSettingsFragment())
+        }
+    }
+
+    private fun subscribeObservers() {
+        wearablesAddViewModel.addWearableState.observe(viewLifecycleOwner) { addWearableState ->
+            when (addWearableState) {
+                is WearablesAddViewModel.AddWearableState.AddedNewWearable -> {
+                    if (startPage == AuthMethodActivity.Page.ADD) {
+                        UiUtils.finishAddingFactorActivity(
+                            requireActivity(),
+                            SecurityFragment.REQUEST_ADD_WEARABLES
+                        )
+                    } else {
+                        wearablesSettingsViewModel.addedNewWearable()
+                    }
+                }
+                else -> Unit
+            }
+        }
+
+        // only use the wearablesSettingsViewModel if we started with SETTINGS
+        if (startPage != AuthMethodActivity.Page.SETTINGS) return
+
+        wearablesSettingsViewModel.newWearableState.observe(viewLifecycleOwner) { newWearableState ->
+            when (newWearableState) {
+                WearablesSettingsViewModel.NewWearableState.AddedNewWearable -> {
+                    childFragmentManager.popBackStack()
+                    wearablesSettingsViewModel.fetchWearables()
+                }
+                WearablesSettingsViewModel.NewWearableState.AddingNewWearable -> {
+                    childFragmentManager.commit {
+                        replace(
+                            binding.fragmentContainer.id,
+                            WearablesAddFragment::class.java,
+                            null
+                        )
+                        addToBackStack(WearablesAddFragment::class.java.simpleName)
+                    }
                 }
             }
         }
-    }
 
-    fun goToAdd(backstack: Boolean = false) {
-        setupToolbar(AuthMethodActivity.Page.ADD)
-        childFragmentManager.commit {
-            replace(binding.fragmentContainer.id, WearablesAddFragment())
-            if (backstack) addToBackStack(null)
+        wearablesSettingsViewModel.removeSingleWearableState.observe(viewLifecycleOwner) { removeSingleWearableState ->
+            if (removeSingleWearableState is WearablesSettingsViewModel.RemoveSingleWearableState.Failed) {
+                requireActivity().finish()
+            }
+        }
+
+        wearablesSettingsViewModel.removeAllWearablesState.observe(viewLifecycleOwner) { removeAllWearablesState ->
+            when (removeAllWearablesState) {
+                WearablesSettingsViewModel.RemoveAllWearablesState.PendingRemovalForAllWearables,
+                is WearablesSettingsViewModel.RemoveAllWearablesState.Failed -> {
+                    requireActivity().finish()
+                }
+                else -> Unit
+            }
+        }
+
+        wearablesSettingsViewModel.getStoredWearablesState.observe(viewLifecycleOwner) { getStoredWearablesState ->
+            when (getStoredWearablesState) {
+                is WearablesSettingsViewModel.GetStoredWearablesState.Failed -> {
+                    requireActivity().finish()
+                }
+                is WearablesSettingsViewModel.GetStoredWearablesState.GotStoredWearables -> {
+                    if (getStoredWearablesState.wearables.isEmpty()) {
+                        requireActivity().finish()
+                    }
+                }
+                else -> Unit
+            }
         }
     }
 }

@@ -3,19 +3,24 @@
  */
 package com.launchkey.android.authenticator.sdk.ui.internal.auth_method.wearables
 
+import android.Manifest
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.launchkey.android.authenticator.sdk.core.auth_method_management.WearablesManager
 import com.launchkey.android.authenticator.sdk.core.auth_method_management.exception.wearables.BluetoothDisabledException
 import com.launchkey.android.authenticator.sdk.core.auth_method_management.exception.wearables.BluetoothPermissionException
@@ -35,9 +40,13 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
         private const val DIALOG_SET_NAME = "SET_NAME"
     }
 
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private val binding: FragmentWearablesAddBinding by viewBinding(FragmentWearablesAddBinding::bind)
     private val wearablesAddViewModel: WearablesAddViewModel by viewModels({ requireParentFragment() })
     private val wearablesScanViewModel: WearablesScanViewModel by viewModels()
+    private val bluetoothPermission =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) Manifest.permission.BLUETOOTH_CONNECT
+        else Manifest.permission.BLUETOOTH
 
     private val enabledBluetoothLauncher =
         registerForActivityResult(StartActivityForResult(), ActivityResultCallback { result ->
@@ -87,6 +96,15 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
 
         setNameDialogFragment?.setPositiveButtonClickListener(setNameDialogDone)
         setNameDialogFragment?.setCancelListener(setNameDialogCancel)
+
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { permissionGranted ->
+                if (permissionGranted) {
+                    scanWearables()
+                } else {
+                    showBluetoothPermissionDeniedSnackbar(bluetoothPermission, false)
+                }
+            }
 
         setupRefresh()
         setupToggle()
@@ -171,9 +189,15 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
                     emptyView.makeVisible()
                     emptyView.setText(R.string.ioa_sec_bp_add_empty)
                     when (scanState.failure) {
-                        // TODO: 10/18/21 BluetoothPermissionException might need a separate case?
-                        is BluetoothDisabledException, is BluetoothPermissionException -> {
+                        is BluetoothDisabledException -> {
                             showBluetoothDisabledDialog()
+                        }
+                        is BluetoothPermissionException -> {
+                            if (shouldShowRequestPermissionRationale(bluetoothPermission)) {
+                                showBluetoothPermissionDeniedSnackbar(bluetoothPermission, true)
+                            } else {
+                                requestPermissionLauncher.launch(bluetoothPermission)
+                            }
                         }
                         else -> requireActivity().onBackPressed() // exit
                     }
@@ -263,6 +287,31 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
         ).also {
             it.setPositiveButtonClickListener(setNameDialogDone)
             it.setCancelListener(setNameDialogCancel)
+        }
+    }
+
+    private fun showBluetoothPermissionDeniedSnackbar(
+        bluetoothPermission: String,
+        showAction: Boolean
+    ) {
+        Snackbar.make(
+            binding.ioaThemeLayoutsRoot,
+            R.string.ioa_misc_permission_denied_bluetooth,
+            Snackbar.LENGTH_LONG
+        ).apply {
+            if (showAction) {
+                setAction(R.string.ioa_misc_permission_request_permission_action) {
+                    requestPermissionLauncher.launch(bluetoothPermission)
+                }
+                setActionTextColor(
+                    UiUtils.getThemeColor(
+                        requireContext(),
+                        R.attr.authenticatorColorAccent
+                    )
+                )
+            }
+            setMaxLines(10)
+            show()
         }
     }
 

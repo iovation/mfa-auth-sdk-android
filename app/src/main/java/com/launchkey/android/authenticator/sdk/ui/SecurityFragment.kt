@@ -74,6 +74,7 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
                 startAuthMethodActivity(item.type, AuthMethodActivity.Page.ADD)
             }
             AuthMethod.WEARABLES -> {
+                permissionPendingMethod = AuthMethod.WEARABLES
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
                     || wasPermissionGranted(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 ) {
@@ -89,7 +90,7 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
                 }
             }
             AuthMethod.LOCATIONS -> {
-                permissionPendingMethod = item.type
+                permissionPendingMethod = AuthMethod.LOCATIONS
                 if (wasPermissionGranted(activity, Manifest.permission.ACCESS_FINE_LOCATION)) {
                     startAuthMethodActivityIfLocationServicesAreTurnedOn()
                 } else {

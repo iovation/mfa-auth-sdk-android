@@ -12,7 +12,7 @@ import com.launchkey.android.authenticator.sdk.ui.R
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class SecurityItem private constructor(
+class SecurityItem internal constructor(
     val type: AuthMethod,
     @StringRes val titleRes: Int,
     @StringRes val contentDescriptionRes: Int,

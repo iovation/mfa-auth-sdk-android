@@ -44,9 +44,6 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
     private val binding: FragmentWearablesAddBinding by viewBinding(FragmentWearablesAddBinding::bind)
     private val wearablesAddViewModel: WearablesAddViewModel by viewModels({ requireParentFragment() })
     private val wearablesScanViewModel: WearablesScanViewModel by viewModels()
-    private val bluetoothPermission =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) Manifest.permission.BLUETOOTH_CONNECT
-        else Manifest.permission.BLUETOOTH
 
     private val enabledBluetoothLauncher =
         registerForActivityResult(StartActivityForResult(), ActivityResultCallback { result ->
@@ -102,7 +99,7 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
                 if (permissionGranted) {
                     scanWearables()
                 } else {
-                    showBluetoothPermissionDeniedSnackbar(bluetoothPermission, false)
+                    showBluetoothPermissionDeniedSnackbar(false)
                 }
             }
 
@@ -193,13 +190,17 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
                             showBluetoothDisabledDialog()
                         }
                         is BluetoothPermissionException -> {
-                            if (shouldShowRequestPermissionRationale(bluetoothPermission)) {
-                                showBluetoothPermissionDeniedSnackbar(bluetoothPermission, true)
+                            // Manifest.permission.BLUETOOTH does not require runtime permission
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return@observe
+                            if (shouldShowRequestPermissionRationale(Manifest.permission.BLUETOOTH_CONNECT)) {
+                                showBluetoothPermissionDeniedSnackbar(true)
                             } else {
-                                requestPermissionLauncher.launch(bluetoothPermission)
+                                requestPermissionLauncher.launch(Manifest.permission.BLUETOOTH_CONNECT)
                             }
                         }
-                        else -> requireActivity().onBackPressed() // exit
+                        else -> {
+                            scanState.failure.printStackTrace()
+                        }
                     }
                 }
             }
@@ -290,10 +291,7 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
         }
     }
 
-    private fun showBluetoothPermissionDeniedSnackbar(
-        bluetoothPermission: String,
-        showAction: Boolean
-    ) {
+    private fun showBluetoothPermissionDeniedSnackbar(showAction: Boolean) {
         Snackbar.make(
             binding.ioaThemeLayoutsRoot,
             R.string.ioa_misc_permission_denied_bluetooth,
@@ -301,7 +299,7 @@ class WearablesAddFragment : BaseAppCompatFragment(R.layout.fragment_wearables_a
         ).apply {
             if (showAction) {
                 setAction(R.string.ioa_misc_permission_request_permission_action) {
-                    requestPermissionLauncher.launch(bluetoothPermission)
+                    requestPermissionLauncher.launch(Manifest.permission.BLUETOOTH_CONNECT)
                 }
                 setActionTextColor(
                     UiUtils.getThemeColor(

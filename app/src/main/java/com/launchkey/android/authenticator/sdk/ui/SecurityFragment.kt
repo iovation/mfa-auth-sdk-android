@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.*
@@ -49,48 +50,57 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
     private val securityViewModel: SecurityViewModel by viewModels()
     private val timerViewModel: TimerViewModel by viewModels()
     private val binding: FragmentSecurityBinding by viewBinding(FragmentSecurityBinding::bind)
-    
+
     private val loadingDialogFragment: ProgressDialogFragment?
         get() = childFragmentManager.findFragmentByTag(ProgressDialogFragment::class.java.simpleName) as? ProgressDialogFragment
-    
+
     private val addDialogFragment: ItemListDialogFragment?
         get() = childFragmentManager.findFragmentByTag(ItemListDialogFragment::class.java.simpleName) as? ItemListDialogFragment
-    
+
     private val loadingOnCancelListener =
         DialogInterface.OnCancelListener { securityViewModel.cancelJobs() }
-    
+
     private val addOnClickListener = DialogInterface.OnClickListener { _, which ->
         if (which < 0) {
             return@OnClickListener
         }
-        
+
         // Implied success
         val item = (securityViewModel.state.value as SecurityViewModel.GetAuthMethodsState.Success)
             .availableSecurityItems[which]
-        
+
         when (item.type) {
             AuthMethod.PIN_CODE, AuthMethod.CIRCLE_CODE, AuthMethod.BIOMETRIC -> {
                 startAuthMethodActivity(item.type, AuthMethodActivity.Page.ADD)
             }
-            AuthMethod.WEARABLES, AuthMethod.LOCATIONS -> {
-                permissionPendingMethod = item.type
+            AuthMethod.WEARABLES -> {
+                permissionPendingMethod = AuthMethod.WEARABLES
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+                    || wasPermissionGranted(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                ) {
+                    startAuthMethodActivity(AuthMethod.WEARABLES, AuthMethodActivity.Page.ADD)
+                } else {
+                    // Below Android 12 AND ACCESS_FINE_LOCATION permission not granted
+                    Snackbar.make(
+                        binding.ioaThemeLayoutsRoot,
+                        R.string.ioa_misc_permission_ble_location_suggestion,
+                        Snackbar.LENGTH_LONG
+                    ).setMaxLines(10).show()
+                    permissionsLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                }
+            }
+            AuthMethod.LOCATIONS -> {
+                permissionPendingMethod = AuthMethod.LOCATIONS
                 if (wasPermissionGranted(activity, Manifest.permission.ACCESS_FINE_LOCATION)) {
                     startAuthMethodActivityIfLocationServicesAreTurnedOn()
                 } else {
-                    if (permissionPendingMethod == AuthMethod.WEARABLES) {
-                        Snackbar.make(
-                            binding.ioaThemeLayoutsRoot,
-                            R.string.ioa_misc_permission_ble_location_suggestion,
-                            Snackbar.LENGTH_LONG
-                        ).setMaxLines(10).show()
-                    }
                     permissionsLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                 }
             }
             else -> throw IllegalStateException("Unknown activity to start")
         }
     }
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         timeAgo = TimeAgo(requireActivity())
@@ -119,7 +129,7 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
                     }
                 }
             })
-        
+
         permissionsLauncher =
             this.registerForActivityResult(RequestPermission()) { permissionGranted ->
                 when {
@@ -132,21 +142,21 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
                 }
             }
     }
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-    
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.security, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
-    
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return onMenuItemClick(item)
     }
-    
+
     override fun onMenuItemClick(item: MenuItem): Boolean {
         return if (item.itemId == R.id.security_add) {
             val state = securityViewModel.state.value
@@ -156,7 +166,7 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
             true
         } else false
     }
-    
+
     private fun subscribeObservers() {
         securityViewModel.state.observe(viewLifecycleOwner, { state ->
             when (state) {
@@ -166,11 +176,11 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
                     timerViewModel.stopTimers()
                     setFactorsAdapter.submitList(setSecurityItems)
                     updateSecurityRecyclerViewVisibility(setSecurityItems)
-                    
+
                     // Manual update in visibility of header based on presence of set factors if necessary
                     if (setSecurityItems.isEmpty()) binding.securityTextEnabledfactors.makeInvisible()
                     else binding.securityTextEnabledfactors.makeVisible()
-                    
+
                     val timers = setSecurityItems.mapNotNull { item ->
                         when (item.togglePendingState) {
                             SecurityItem.TogglePendingState.NotPending -> null
@@ -180,7 +190,7 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
                             )
                         }
                     }
-                    
+
                     timerViewModel.startTimers(timers)
                 }
                 is SecurityViewModel.GetAuthMethodsState.Failed -> {
@@ -219,25 +229,25 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
                 }
             }
         }
-        
+
     }
-    
+
     private fun setupUi() {
         setFactorsAdapter = SecurityItemAdapter(
             securityViewModel.getAuthenticatorTheme(),
             timeAgo
         ) { authMethod -> startAuthMethodActivity(authMethod, AuthMethodActivity.Page.SETTINGS) }
-        
+
         with(binding.securityRecyclerView) {
             adapter = setFactorsAdapter
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
         }
-        
+
         addDialogFragment?.setOnClickListener(addOnClickListener)
         loadingDialogFragment?.setCancelListener(loadingOnCancelListener)
     }
-    
+
     private fun updateSecurityRecyclerViewVisibility(items: List<SecurityItem?>) {
         if (items.isEmpty()) {
             binding.securityEmpty.visibility = View.VISIBLE
@@ -247,11 +257,11 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
             binding.securityRecyclerView.visibility = View.VISIBLE
         }
     }
-    
+
     private fun notifyUserOfPassiveFactorCooldown(authMethod: AuthMethod) {
         val activationDelayInSeconds = securityViewModel.getActivationDelay(authMethod).toLong()
         if (activationDelayInSeconds <= 0L) return
-        
+
         val timeRemaining = timeAgo.timeAgoWithDiff(activationDelayInSeconds * 1000, true)
         val titleId =
             if (authMethod === AuthMethod.WEARABLES) R.string.ioa_sec_dialog_bp_firstadded_title
@@ -262,7 +272,7 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
         val message = getString(messageFormatId, timeRemaining.toLowerCase(Locale.getDefault()))
         HelpDialogFragment.show(childFragmentManager, requireContext(), getString(titleId), message)
     }
-    
+
     private fun showAvailableAuthMethodsDialog(availableSecurityItems: List<SecurityItem>) {
         if (availableSecurityItems.isNotEmpty()) {
             ItemListDialogFragment.show(
@@ -284,7 +294,7 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
             )
         }
     }
-    
+
     private fun getIconItems(availableSecurityItems: List<SecurityItem>): Array<IconItem> {
         val items = mutableListOf<IconItem>()
         for (item in availableSecurityItems) {
@@ -299,7 +309,7 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
         }
         return items.toTypedArray()
     }
-    
+
     private fun startAuthMethodActivityIfLocationServicesAreTurnedOn() {
         if (areLocationServicesTurnedOn(requireContext()) || permissionPendingMethod == AuthMethod.WEARABLES) {
             startAuthMethodActivity(permissionPendingMethod, AuthMethodActivity.Page.ADD)
@@ -307,7 +317,7 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
             showLocationServicesTurnedOffSnackbar()
         }
     }
-    
+
     private fun startAuthMethodActivity(authMethod: AuthMethod, page: AuthMethodActivity.Page) {
         val intent = Intent(requireActivity(), AuthMethodActivity::class.java).apply {
             putExtra(AuthMethodActivity.AUTH_METHOD_KEY, authMethod)
@@ -316,7 +326,7 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
         }
         activityLauncher.launch(intent)
     }
-    
+
     private fun showLocationServicesTurnedOffSnackbar() {
         Snackbar.make(
             binding.ioaThemeLayoutsRoot,
@@ -332,7 +342,7 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
             )
         ).setMaxLines(10).show()
     }
-    
+
     private fun showPermissionDeniedSnackbar() {
         Snackbar.make(
             binding.ioaThemeLayoutsRoot,
@@ -350,23 +360,23 @@ class SecurityFragment : BaseAppCompatFragment(R.layout.fragment_security),
             )
         ).setMaxLines(10).show()
     }
-    
+
     @Deprecated("")
     interface SecureTouchFilter {
         fun shouldBlockIfObscured(): Boolean
     }
-    
+
     companion object {
         const val REQUEST_CODE = "request_code"
         const val REQUEST_ADD_LOCATIONS = 20
-        
+
         @Deprecated("")
         val REQUEST_ADD_GEO = REQUEST_ADD_LOCATIONS
         const val REQUEST_ADD_WEARABLES = 30
-        
+
         @Deprecated("")
         val REQUEST_ADD_BT = REQUEST_ADD_WEARABLES
-        
+
         @DrawableRes
         private fun getIconResFromSecurityItem(context: Context, securityItem: SecurityItem): Int {
             return when (securityItem.type) {

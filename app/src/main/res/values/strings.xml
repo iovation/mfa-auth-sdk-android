@@ -263,9 +263,11 @@
     <string name="ioa_misc_devices_current">Current device:</string>
     <string name="ioa_misc_permission_denied_camera">Go to the application settings to grant access to the camera.</string>
     <string name="ioa_misc_permission_denied_location">To add a location, modify your device settings and grant this app permission to access Location Services.</string>
+    <string name="ioa_misc_permission_denied_bluetooth">To add Bluetooth devices, please grant this app permission to connect to bluetooth devices.</string>
     <string name="ioa_misc_permission_ble_location_suggestion">To add Bluetooth Low Energy devices, it is recommended that you grant Locations permissions and enable Location Services due to BLE limitations.</string>
     <string name="ioa_misc_permission_locations_services_turned_off">To add a location, enable Location Services within your device settings.</string>
     <string name="ioa_misc_permission_settings_action">SETTINGS</string>
+    <string name="ioa_misc_permission_request_permission_action">Request Permission</string>
     <string name="ioa_misc_dialog_network_title">Network Error</string>
     <!-- included in ioa_ar_error_responding_message -->
     <string name="ioa_misc_dialog_network_message">@string/ioa_error_nic</string>
